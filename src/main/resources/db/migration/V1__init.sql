@@ -5,9 +5,22 @@ create table roles(
 
 create table users(
     user_id serial not null primary key,
-    user_name varchar(150) not null,
-    role_id int not null,
-    CONSTRAINT users_fk_role_id FOREIGN KEY(role_id) REFERENCES roles(role_id)
+    user_name varchar(150) not null
+);
+
+create table users_roles
+(
+  user_id bigint,
+  role_id bigint,
+  primary key(user_id, role_id),
+  foreign key (user_id) references users(user_id),
+  foreign key (role_id) references roles(role_id)
+);
+
+
+create table statuses (
+    status_id serial not null primary key ,
+    status_name varchar(150) not null
 );
 
 create table categories(
@@ -22,8 +35,10 @@ create table articles(
     dt_published timestamp null,
     title varchar(500) not null,
     text text not null,
-    status varchar(16),
-    CONSTRAINT articles_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id)
+    status_id smallint not null,
+    url varchar(150) null UNIQUE,
+    CONSTRAINT articles_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id),
+    CONSTRAINT articles_fk_status_id FOREIGN KEY(status_id) REFERENCES statuses(status_id)
 );
 
 create table article_to_category(

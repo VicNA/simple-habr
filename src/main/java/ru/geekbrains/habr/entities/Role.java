@@ -3,7 +3,6 @@ package ru.geekbrains.habr.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -16,9 +15,5 @@ public class Role {
 
     @Column(name = "role_name")
     private String name;
-
-//    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-//    private List<User> users;
-
 
 }

@@ -34,11 +34,8 @@ public class Article {
     @Column(name = "text")
     private String text;
 
-//    @ManyToOne
-//    @JoinColumn(name = "status_id")
-//    private Status1 status;
-
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "status_id")
     private Status status;
 
     @ManyToMany
