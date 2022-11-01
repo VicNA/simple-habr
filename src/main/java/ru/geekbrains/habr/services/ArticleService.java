@@ -16,15 +16,10 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public List<Article> findAllSortDesc() {
-        return articleRepository.findAll(Sort.by(Sort.Direction.DESC, "dtPublished"));
+        return articleRepository.findByOrderByDtPublishedDesc();
     }
 
-    public Article findById(Long idArticle) {
-        Optional<Article> optionalArticle = articleRepository.findById(idArticle);
-        Article article = new Article();
-        if(optionalArticle.isPresent()){
-            article = optionalArticle.get();
-        }
-        return article;
+    public Optional<Article> findById(Long id) {
+        return articleRepository.findById(id);
     }
 }
