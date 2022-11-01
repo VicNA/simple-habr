@@ -2,6 +2,7 @@ package ru.geekbrains.habr.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.geekbrains.habr.converters.ArticleConverter;
@@ -23,4 +24,10 @@ public class ArticleController {
         return articleService.findAllSortDesc().stream()
                 .map(articleConverter::entityToDto).collect(Collectors.toList());
     }
+
+    @GetMapping("/view/{id}")
+    public ArticleDto findById(@PathVariable Long idArticle) {
+        return articleConverter.entityToDto(articleService.findById(idArticle));
+    }
+
 }
