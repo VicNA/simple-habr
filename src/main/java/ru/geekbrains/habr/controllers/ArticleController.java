@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.geekbrains.habr.converters.ArticleConverter;
 import ru.geekbrains.habr.dtos.ArticleDto;
+import ru.geekbrains.habr.entities.Article;
+import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.ArticleService;
 
 import java.util.List;
@@ -26,8 +28,9 @@ public class ArticleController {
     }
 
     @GetMapping("/view/{id}")
-    public ArticleDto findById(@PathVariable Long idArticle) {
-        return articleConverter.entityToDto(articleService.findById(idArticle));
+    public ArticleDto findById(@PathVariable Long id) {
+        Article article = articleService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Статья с id = " + id + " не найдена"));
+        return articleConverter.entityToDto(article);
     }
 
 }
