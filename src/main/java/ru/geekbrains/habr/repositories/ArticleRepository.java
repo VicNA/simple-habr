@@ -11,7 +11,7 @@ import ru.geekbrains.habr.entities.Article;
 import java.util.List;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
+public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findByOrderByDtPublishedDesc();
 
     @Query("SELECT a FROM Article a JOIN a.categories c WHERE c.id = :categoryId")
