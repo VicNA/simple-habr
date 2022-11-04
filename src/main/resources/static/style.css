@@ -1,0 +1,21 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+p {
+    display: inline;
+}
+.s0 {
+    margin: auto;
+    width: 1200px;
+    display: flex;
+}
+.s1 {
+    width: 1000px;
+}
+.s2 {
+    width: 200px;
+}
+.s3 {
+    padding: 10px;
+}
