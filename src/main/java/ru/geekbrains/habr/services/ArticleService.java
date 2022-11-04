@@ -3,7 +3,6 @@ package ru.geekbrains.habr.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.repositories.ArticleRepository;
 
@@ -21,5 +20,9 @@ public class ArticleService {
 
     public Optional<Article> findById(Long id) {
         return articleRepository.findById(id);
+    }
+
+    public List<Article> findAllByCategory(Long id) {
+        return articleRepository.findAllByCategory(id, Sort.by("dtPublished").descending());
     }
 }
