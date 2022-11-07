@@ -33,4 +33,10 @@ public class ArticleController {
         return articleConverter.entityToDto(article);
     }
 
+    @GetMapping("/category/{id}")
+    public List<ArticleDto> findAllByCategory(@PathVariable Long id) {
+        return articleService.findAllByCategory(id).stream()
+                .map(articleConverter::entityToDto).collect(Collectors.toList());
+    }
+
 }
