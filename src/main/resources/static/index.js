@@ -1,44 +1,51 @@
-var testApp =
+(function () {
     angular
-        .module("HabrApp", []);
+        .module('HabrApp', ['ngRoute', 'ngStorage'])
+        .config(config)
+        .run(run);
 
-testApp
-    .controller(
-        "HabrController",
-        function (
-            $scope,
-            $http
-        ) {
-            $scope.category = {name: "Все категории"};
-            $scope.getAllCategories = function () {
-                $http
-                    .get('http://localhost:8189/habr/api/v1/categories')
-                    .then(
-                        function (response) {
-                            $scope.categories = response.data;
-                        }
-                    )
-                ;
-            }
-            $scope.getAllArticles = function () {
-                $http
-                    .get('http://localhost:8189/habr/api/v1/articles')
-                    .then(
-                        function (response) {
-                            $scope.articles = response.data;
-                        }
-                    )
-                ;
-            }
-            $scope.setCategory = function (index) {
-                $scope.category = $scope.categories[index];
-            }
-            $scope.setArticle = function (index) {
-                $scope.article = $scope.articles[index];
-            }
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'main/main.html',
+                controller: 'mainController'
+            })
+            .when('/profile', {
+                templateUrl: 'profile/profile.html',
+                controller: 'profileController'
+            })
+            .when('/authorization', {
+                            templateUrl: 'authorization/authorization.html',
+                            controller: 'authorizationController'
+                        })
+            .otherwise({
+                redirectTo: '/'
+            });
+    }
 
-            $scope.getAllCategories();
-            $scope.getAllArticles();
-        }
-    )
-;
+    function run($rootScope, $http, $localStorage) {
+
+       }
+})();
+
+
+angular.module('HabrApp').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
+   const contextPath = 'http://localhost:8189/habr/';
+   $scope.category = {name: "Все категории"};
+
+   $scope.getAllCategories = function () {
+                   $http
+                       .get(contextPath + 'api/v1/categories')
+                       .then(
+                           function (response) {
+                               $scope.categories = response.data;
+                           }
+                       );
+   }
+
+   $scope.setCategory = function (index) {
+                 $scope.category = $scope.categories[index];
+   }
+
+   $scope.getAllCategories();
+});
