@@ -1,40 +1,61 @@
 <!DOCTYPE html>
 <html ng-app="HabrApp">
-    <head>
-        <meta charset="UTF-8">
-        <title>Хабр</title>
-        <link rel="stylesheet" href="style.css">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-        <script src="index.js"></script>
-    </head>
-    <body>
-        <div class="s0" ng-controller="HabrController">
-            <div class="s1">
-                <div class="s3">
-                    <p>Категория: {{category.name}}</p>
-                </div>
-                <div class="s3">
-                    <ul style="list-style: none;"> Статьи:
-                        <li style="padding-left: 10px" ng-repeat="article in articles">
-                            <a href="" ng-click="setArticle($index)">{{article.title}}</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="s2">
-                <div class="s3">
-                    <a href="authorization.html">Авторизация</a>
-                </div>
-                <div class="s3">
-                    <ul style="list-style: none;"> Категории:
-                        <li style="padding-left: 10px" ng-repeat="category in categories">
-                            <a href="" ng-click="setCategory($index)">{{category.name}}</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <title>Хабр</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
+
+</head>
+<body>
+
+
+<div class="container" ng-controller="indexController">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#!">Хабр</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!">Все потоки</a>
+                </li>
+
+                <li ng-repeat="category in categories">
+                    <a class="nav-link" href="#!/">{{category.name}}</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/authorization">Авторизация</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/profile">Личный кабинет</a>
+                </li>
+
+            </ul>
         </div>
-    </body>
+    </nav>
+
+
+    <ng-view></ng-view>
+
+
+
+
+
+    <script src="index.js"></script>
+    <script src="profile/profile.js"></script>
+    <script src="main/main.js"></script>
+    <script src="authorization/authorization.js"></script>
+
+</div>
+
+</body>
 </html>

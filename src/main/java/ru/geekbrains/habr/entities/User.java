@@ -3,6 +3,7 @@ package ru.geekbrains.habr.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,12 @@ public class User {
 
     @Column(name = "user_name")
     private String username;
+
+    @Column(name = "dt_birth")
+    private LocalDate dtBirth;
+
+    @Column(name = "description")
+    private String description;
 
     @ManyToMany
     @JoinTable(
