@@ -18,13 +18,16 @@ public class User {
     @Column(name = "user_name")
     private String username;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "dt_birth")
     private LocalDate dtBirth;
 
     @Column(name = "description")
     private String description;
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
