@@ -18,6 +18,9 @@ public class User {
     @Column(name = "user_name")
     private String username;
 
+    @Column(name = "real_name")
+    private String realname;
+
     @Column(name = "dt_birth")
     private LocalDate dtBirth;
 

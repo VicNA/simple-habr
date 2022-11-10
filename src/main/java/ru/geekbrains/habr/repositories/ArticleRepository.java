@@ -15,4 +15,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query("SELECT a FROM Article a JOIN a.categories c WHERE c.id = :categoryId")
     List<Article> findAllByCategory(@Param("categoryId") Long categoryId, Sort sort);
+
+    @Query("SELECT a FROM Article a JOIN a.user u WHERE u.username = :username")
+    List<Article> findAllByUsername(@Param("username") String username, Sort sort);
+
 }

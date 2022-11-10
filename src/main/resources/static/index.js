@@ -18,6 +18,22 @@
                             templateUrl: 'authorization/authorization.html',
                             controller: 'authorizationController'
                         })
+            .when('/design', {
+                            templateUrl: 'design/design.html',
+                            controller: 'designController'
+                        })
+            .when('/marketing', {
+                            templateUrl: 'marketing/marketing.html',
+                            controller: 'marketingController'
+                        })
+            .when('/mobile_dev', {
+                            templateUrl: 'mobile_dev/mobile_dev.html',
+                            controller: 'mobile_devController'
+                        })
+            .when('/web_dev', {
+                            templateUrl: 'web_dev/web_dev.html',
+                            controller: 'web_devController'
+                        })
             .otherwise({
                 redirectTo: '/'
             });

@@ -29,7 +29,9 @@ public class ArticleController {
 
     @GetMapping("/view/{id}")
     public ArticleDto findById(@PathVariable Long id) {
-        Article article = articleService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Статья с id = " + id + " не найдена"));
+        Article article = articleService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Статья с id = " + id + " не найдена"));
+
         return articleConverter.entityToDto(article);
     }
 
@@ -37,6 +39,14 @@ public class ArticleController {
     public List<ArticleDto> findAllByCategory(@PathVariable Long id) {
         return articleService.findAllByCategory(id).stream()
                 .map(articleConverter::entityToDto).collect(Collectors.toList());
+    }
+
+    @GetMapping("/username/{username}")
+    public List<ArticleDto> findAllByUsername(@PathVariable String username) {
+        return articleService.findAllByUsername(username)
+                .stream()
+                .map(articleConverter::entityToDto)
+                .collect(Collectors.toList());
     }
 
 }
