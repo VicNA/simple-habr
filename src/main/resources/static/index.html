@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html ng-app="HabrApp">
-
 <head>
     <meta charset="UTF-8">
     <title>Хабр</title>
@@ -14,17 +13,15 @@
 
 </head>
 <body>
-
-
 <div class="container" ng-controller="indexController">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#!">Хабр</a>
+                    <a class="nav-link" ng-click="resetCategory()" href="#!">Хабр</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!">Все потоки</a>
+                    <a class="nav-link" ng-click="resetCategory()" href="#!">Все потоки</a>
                 </li>
 
                 <li ng-repeat="category in categories">
@@ -38,28 +35,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#!/profile">Личный кабинет</a>
                 </li>
-
             </ul>
         </div>
     </nav>
 
-
     <ng-view></ng-view>
-
-
-
-
 
     <script src="index.js"></script>
     <script src="profile/profile.js"></script>
-    <script src="main/main.js"></script>
+    <script src="articles/articles.js"></script>
     <script src="design/design.js"></script>
     <script src="marketing/marketing.js"></script>
     <script src="mobile_dev/mobile_dev.js"></script>
     <script src="web_dev/web_dev.js"></script>
     <script src="authorization/authorization.js"></script>
-
 </div>
-
 </body>
 </html>

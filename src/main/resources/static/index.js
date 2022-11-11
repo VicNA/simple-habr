@@ -16,8 +16,8 @@
                 .when(
                     '/',
                     {
-                        templateUrl: 'main/main.html',
-                        controller: 'mainController'
+                        templateUrl: 'articles/articles.html',
+                        controller: 'articlesController'
                     }
                 )
                 .when(
@@ -58,14 +58,22 @@ angular
             $location,
             $localStorage
         ) {
-            const contextPath = 'http://localhost:8189/habr/';
-            const categoryPath = 'api/v1/categories';
+            const rootPath = 'http://localhost:8189/habr/';
+            const categoriesPath = 'api/v1/categories';
+            const defaultCategory =
+                {
+                    id: -1,
+                    name: "Все категории"
+                };
+            var path;
 
-            $rootScope.category = {name: "Все категории"};
+            $rootScope.category = defaultCategory;
 
-            $scope.getAllCategories = function () {
+            $scope.setCategories = function () {
+                path = rootPath + categoriesPath;
+
                 $http
-                    .get(contextPath + categoryPath)
+                    .get(path)
                     .then(
                         function (response) {
                             $scope.categories = response.data;
@@ -73,12 +81,14 @@ angular
                     )
                 ;
             }
-
             $scope.setCategory = function (index) {
                  $rootScope.category = $scope.categories[index];
             }
+            $scope.resetCategory = function () {
+                 $rootScope.category = defaultCategory;
+            }
 
-            $scope.getAllCategories();
+            $scope.setCategories();
         }
     )
 ;
