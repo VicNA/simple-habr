@@ -1,4 +1,5 @@
 <div class="s3">
+    <ul>Категория: {{category.name}}</ul>
     <ul style="list-style: none;"> Статьи:
         <li style="padding-left: 10px" ng-repeat="article in articles">
             <a href="" ng-click="setArticle($index)">{{article.title}}</a>
