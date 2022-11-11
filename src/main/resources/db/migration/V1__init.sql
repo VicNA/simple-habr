@@ -5,7 +5,8 @@ create table roles(
 
 create table users(
     user_id serial not null primary key,
-    user_name varchar(150) not null,
+    user_name varchar(40) not null,
+    real_name varchar(40),
     dt_birth timestamp null,
     description varchar(150)
 );

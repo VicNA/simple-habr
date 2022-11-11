@@ -1,17 +1,17 @@
 insert into roles(role_name)
 values ( 'Usual user'), ('moderator'), ('administrator');
 
-insert into users(user_name)
-values ('First user'),
-       ('bob'),
-       ('ali'),
-       ('nil');
+insert into users(user_name, real_name, dt_birth, description)
+values ('First user', null, null,null),
+       ('bob', 'Петр Смирнов', CAST(CAST('1994-10-12' AS date) as DATE), 'Веселый, общительный'),
+       ('ali', null, null, null),
+       ('nil', 'Николай Петрович', null, null);
 
 insert into users_roles (user_id, role_id)
 values  (1, 2),
         (2, 3),
-        (3,1),
-        (4,1);
+        (3, 1),
+        (4, 1);
 
 
 insert into statuses(status_name)

@@ -25,4 +25,8 @@ public class ArticleService {
     public List<Article> findAllByCategory(Long id) {
         return articleRepository.findAllByCategory(id, Sort.by("dtPublished").descending());
     }
+
+    public List<Article> findAllByUsername(String username) {
+        return articleRepository.findAllByUsername(username, Sort.by("dtCreated").descending());
+    }
 }

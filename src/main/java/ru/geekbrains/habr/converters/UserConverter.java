@@ -7,6 +7,6 @@ import ru.geekbrains.habr.entities.User;
 @Component
 public class UserConverter {
     public UserDto entityToDto(User user) {
-        return new UserDto(user.getUsername(), user.getDtBirth(), user.getDescription());
+        return new UserDto(user.getUsername(), user.getRealname(), user.getDtBirth(), user.getDescription());
     }
 }
