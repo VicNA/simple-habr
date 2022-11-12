@@ -66,7 +66,15 @@ public class ArticleControllerTest {
         article.setStatus(status);
         article.setCategories(List.of(category));
 
-        ArticleDto articleDto = new ArticleDto(article.getId(), article.getTitle(), article.getText());
+        ArticleDto articleDto = new ArticleDto(
+                article.getId(),
+                article.getTitle(),
+                article.getText(),
+                article.getUser(),
+                article.getStatus(),
+                article.getDtCreated(),
+                article.getDtPublished()
+        );
 
         Article article2 = new Article();
         article2.setId(33L);
@@ -78,7 +86,15 @@ public class ArticleControllerTest {
         article2.setStatus(status);
         article2.setCategories(List.of(category));
 
-        ArticleDto articleDto2 = new ArticleDto(article2.getId(), article2.getTitle(), article2.getText());
+        ArticleDto articleDto2 = new ArticleDto(
+                article2.getId(),
+                article2.getTitle(),
+                article2.getText(),
+                article2.getUser(),
+                article2.getStatus(),
+                article2.getDtCreated(),
+                article2.getDtPublished()
+        );
 
         List<Article> articleList = new ArrayList<>(List.of(article, article2));
 

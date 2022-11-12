@@ -1,0 +1,39 @@
+<div>
+    <br>
+    <H1>Создание статьи</H1>
+    <!--label>Заголовок: <em>@{{articleInf.title}} </em> </label-->
+
+
+    <div class="container">
+
+                <!--div class="col-6"-->
+                    <form class="align-middle" ng-submit="createArticle()">
+                        <div class="form-group row">
+                            <label for="articleTitle" class="col-lg-3 col-form-label">Заголовок статьи</label>
+                            <div class="col-lg-9">
+                                <textarea type="text" class="form-control" id="articleTitle" placeholder="Заголовок статьи"
+                                          ng-model="articleInf.title">
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="articleText" class="col-lg-3 col-form-label">Текст статьи</label>
+                            <div class="col-lg-9">
+                                <textarea type="text" class="form-control" id="articleText" placeholder="Заголовок статьи"
+                                          ng-model="articleInf.text" style="height: 600px;">
+                                </textarea>
+                            </div>
+                       </div>
+
+                        <button id="createArticle" class="btn btn-outline-warning btn-sm"
+                                style="margin-left: 10px;" type="submit">Сохранить черновик
+                        </button>
+
+                        <button id="publicateArticle" class="btn btn-outline-warning btn-sm"
+                                style="margin-left: 60px;" type="button" ng-click="publicateArticle()">Опубликовать
+                        </button>
+                    </form>
+
+
+    </div>
+</div>

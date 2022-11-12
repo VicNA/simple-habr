@@ -28,6 +28,20 @@
                     }
                 )
                 .when(
+                    '/edit-article/:articleId',
+                    {
+                        templateUrl: 'edit-article/edit-article.html',
+                        controller: 'editArticleController'
+                    }
+                )
+                .when(
+                '/create-article',
+                {
+                    templateUrl: 'create-article/create-article.html',
+                    controller: 'createArticleController'
+                }
+            )
+                .when(
                     '/authorization',
                     {
                         templateUrl: 'authorization/authorization.html',
