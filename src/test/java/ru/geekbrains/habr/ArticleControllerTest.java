@@ -126,5 +126,4 @@ public class ArticleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists());
     }
-
 }

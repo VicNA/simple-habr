@@ -50,14 +50,14 @@ public class ArticleController {
 
     @PutMapping("/updatePublicFields")
     public void updatePublicFields(@RequestBody ArticleDto articleDto) {
+        articleDto.setStatus(statusService.findByName("hidden").orElseThrow());// Статусы: 1-hidden, 2-moderating, 3-published
         articleService.updateArticlePublicFieldsFromDto(articleDto);
     }
 
 
-    @PutMapping("/updatePublicFields/publicate")
+    @PutMapping("/updatePublicFieldsAndPublicate")
     public void updatePublicFieldsAndPublicate(@RequestBody ArticleDto articleDto) {
-        articleDto.setStatus(statusService.findByName("moderating").orElseThrow());// Статусы: 1-hidden, 2-moderating, 3-published
-        System.out.println(articleDto);
+        articleDto.setStatus(statusService.findByName("moderating").orElseThrow());
         articleService.updateArticlePublicFieldsFromDto(articleDto);
     }
 

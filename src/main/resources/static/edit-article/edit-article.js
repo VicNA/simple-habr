@@ -25,7 +25,7 @@ angular
         }
 
         $scope.updateArticleAndPublicate = function (){
-            $http.put(contextPath + 'api/v1/articles/updatePublicFields/publicate', $scope.articleInf)
+            $http.put(contextPath + 'api/v1/articles/updatePublicFieldsAndPublicate', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья отправлена на модерацию');
                 }, function failureCallback (response) {
