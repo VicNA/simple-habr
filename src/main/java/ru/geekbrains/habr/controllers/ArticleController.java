@@ -1,15 +1,13 @@
 package ru.geekbrains.habr.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.ArticleConverter;
 import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.ArticleService;
+import ru.geekbrains.habr.services.StatusService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +18,7 @@ import java.util.stream.Collectors;
 public class ArticleController {
     private final ArticleService articleService;
     private final ArticleConverter articleConverter;
+    private final StatusService statusService;
 
     @GetMapping
     public List<ArticleDto> findAll() {
@@ -47,6 +46,31 @@ public class ArticleController {
                 .stream()
                 .map(articleConverter::entityToDto)
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/updatePublicFields")
+    public void updatePublicFields(@RequestBody ArticleDto articleDto) {
+        articleDto.setStatus(statusService.findByName("hidden").orElseThrow());// Статусы: 1-hidden, 2-moderating, 3-published
+        articleService.updateArticlePublicFieldsFromDto(articleDto);
+    }
+
+
+    @PutMapping("/updatePublicFieldsAndPublicate")
+    public void updatePublicFieldsAndPublicate(@RequestBody ArticleDto articleDto) {
+        articleDto.setStatus(statusService.findByName("moderating").orElseThrow());
+        articleService.updateArticlePublicFieldsFromDto(articleDto);
+    }
+
+    @PutMapping("/create")
+    public void createArticle(@RequestBody ArticleDto articleDto) {
+        articleDto.setStatus(statusService.findByName("hidden").orElseThrow());
+        articleService.createArticleFromDto(articleDto);
+    }
+
+    @PutMapping("/createAndPublicate")
+    public void createAndPublicate(@RequestBody ArticleDto articleDto) {
+        articleDto.setStatus(statusService.findByName("moderating").orElseThrow());
+        articleService.createArticleFromDto(articleDto);
     }
 
 }

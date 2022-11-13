@@ -8,6 +8,13 @@ import ru.geekbrains.habr.entities.Article;
 public class ArticleConverter {
 
     public ArticleDto entityToDto(Article article){
-        return new ArticleDto(article.getId(), article.getTitle(), article.getText());
+        return new ArticleDto(
+                article.getId(),
+                article.getTitle(),
+                article.getText(),
+                article.getUser(),
+                article.getStatus(),
+                article.getDtCreated(),
+                article.getDtPublished());
     }
 }

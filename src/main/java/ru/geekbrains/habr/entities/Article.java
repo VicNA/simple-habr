@@ -1,6 +1,7 @@
 package ru.geekbrains.habr.entities;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 @Entity
 @Data
+@ToString
 @Table(name = "articles")
 public class Article {
 
