@@ -63,14 +63,12 @@ public class ArticleController {
 
     @PutMapping("/create")
     public void createArticle(@RequestBody ArticleDto articleDto) {
-        System.out.println("controller create");
         articleDto.setStatus(statusService.findByName("hidden").orElseThrow());
         articleService.createArticleFromDto(articleDto);
     }
 
     @PutMapping("/createAndPublicate")
     public void createAndPublicate(@RequestBody ArticleDto articleDto) {
-        System.out.println("controller createAndPublicate");
         articleDto.setStatus(statusService.findByName("moderating").orElseThrow());
         articleService.createArticleFromDto(articleDto);
     }

@@ -48,18 +48,12 @@ public class ArticleService {
 
         article.setText(articleDto.getText());
         article.setTitle(articleDto.getTitle());
-
-        //Пользователь не может перевести статью в статус "Опубликована"
-        if(!articleDto.getStatus().getName().equals("published"))
-            article.setStatus(articleDto.getStatus());
-
-        System.out.println(article);
+        article.setStatus(articleDto.getStatus());
     }
 
 
     @Transactional
     public void createArticleFromDto(ArticleDto articleDto) {
-        System.out.println("service createArticleFromDto");
         Article article = new Article();
         article.setUser(userService.findByUsername("bob").orElseThrow());//здесь надо как-то получать авторизованного юзера
         article.setDtCreated(LocalDateTime.now());
