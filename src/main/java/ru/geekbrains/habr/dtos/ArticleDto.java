@@ -17,10 +17,4 @@ public class ArticleDto {
     private Status status;
     private LocalDateTime dtCreated;
     private LocalDateTime dtPublished;
-
-    public ArticleDto(Long id, String title, String text) {
-        this.id = id;
-        this.title = title;
-        this.text = text;
-    }
 }
