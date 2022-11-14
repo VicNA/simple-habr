@@ -21,6 +21,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "real_name")
+    private String realname;
+
     @Column(name = "dt_birth")
     private LocalDate dtBirth;
 

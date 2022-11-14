@@ -10,8 +10,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RoleService {
-        private final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
+
+    private final static String ROLE_USER = "ROLE_USER";
     public Role getUserRole() {
-        return roleRepository.findByName("Usual user").get();
+        return roleRepository.findByName(ROLE_USER).get();
     }
 }

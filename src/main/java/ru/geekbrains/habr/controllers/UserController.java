@@ -28,5 +28,4 @@ public class UserController {
         userService.updateUserInfoFromDto(userDto);
     }
 
-
 }

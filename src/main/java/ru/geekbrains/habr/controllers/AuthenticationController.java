@@ -33,35 +33,41 @@ public class AuthenticationController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
         } catch (BadCredentialsException e) {
+
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Incorrect username or password"), HttpStatus.UNAUTHORIZED);
         }
         UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
+
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@RequestBody NewUserDto newUserDto) {
+
         if (!newUserDto.getPassword().equals(newUserDto.getConfirmPassword())) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
         }
-//        if (userService.findByUsername(newUserDto.getUsername()) != null) {
-//            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с таким именем уже существует"), HttpStatus.BAD_REQUEST);
-//        }
+
+        if (userService.findByUsername(newUserDto.getUsername()).isPresent()) {
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с таким именем уже существует"), HttpStatus.BAD_REQUEST);
+        }
+
         User user = new User();
         user.setUsername(newUserDto.getUsername());
+        user.setRealname(newUserDto.getRealname());
         user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
-        user.setDtBirth(newUserDto.getDtBirth());
-        user.setDescription(newUserDto.getDescription());
         userService.createUser(user);
         UserDetails userDetails = userService.loadUserByUsername(newUserDto.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
+
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
     @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshToken(@RequestBody String tokenRequest) {
         String tokenResponse = jwtTokenUtil.generateToken(tokenRequest);
+
         return ResponseEntity.ok(new JwtResponse(tokenResponse));
     }
 }

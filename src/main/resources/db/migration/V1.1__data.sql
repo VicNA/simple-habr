@@ -1,5 +1,5 @@
 insert into roles(role_name)
-values ( 'Usual user'), ('moderator'), ('administrator');
+values ('ROLE_USER'), ('ROLE_MODERATOR'), ('ROLE_ADMIN');
 
 insert into users(user_name, real_name, dt_birth, description)
 values ('First user', null, null,null),

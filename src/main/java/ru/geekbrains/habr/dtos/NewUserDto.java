@@ -17,7 +17,5 @@ public class NewUserDto {
 
     private String confirmPassword;
 
-    private LocalDate dtBirth;
-
-    private String description;
+    private String realname;
 }

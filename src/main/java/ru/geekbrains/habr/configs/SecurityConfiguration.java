@@ -26,14 +26,8 @@ public class SecurityConfiguration {
             http.csrf().disable()
                 .cors().disable()
                 .authorizeRequests()
-//                .antMatchers("/api/v1/refreshToken").hasRole("Usual user")
-//                .antMatchers("/api/v1/").permitAll()
-//                .antMatchers("/api/v1/registration").permitAll()
-//                .antMatchers("/api/v1/authorization").permitAll()
-//                .antMatchers("/api/v1/articles", "/api/v1/articles/**").permitAll()
-//                .antMatchers("/api/v1/categories", "/api/v1/categories/**").permitAll()
-//                .antMatchers("/index.html", "authorization/**").permitAll()
-                    .antMatchers().permitAll()
+                .antMatchers("/api/v1/refreshToken").hasRole("USER")
+                .antMatchers("/api/v1/**").permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
