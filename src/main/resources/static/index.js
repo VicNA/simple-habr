@@ -118,15 +118,15 @@ angular
                         }
                     )
                 ;
-            };
+            }
 
             $scope.setCategory = function (index) {
                  $rootScope.category = $scope.categories[index];
-            };
+            }
 
             $scope.resetCategory = function () {
                  $rootScope.category = defaultCategory;
-            };
+            }
 
             $scope.setCategories();
 
