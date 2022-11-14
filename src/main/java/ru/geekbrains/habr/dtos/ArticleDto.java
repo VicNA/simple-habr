@@ -23,5 +23,4 @@ public class ArticleDto {
         this.title = title;
         this.text = text;
     }
-
 }

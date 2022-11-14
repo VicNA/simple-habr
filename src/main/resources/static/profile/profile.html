@@ -62,6 +62,7 @@
                     </button>
                 </form>
             </div>
+
             <div class="col-sm" align="middle">
                 <table class="table">
                     <tr class="table-primary">
@@ -85,6 +86,23 @@
                     </tr>
                     </tbody>
                 </table>
+
+            <div class="col">
+                <div class="s3">
+                    <ul style="list-style: none;"> Статьи:
+                        <li style="padding-left: 10px" ng-repeat="article in userArticles">
+                            <a href="/" ng-click="setArticle($index)">{{article.title}}</a>
+                            <a href="#!/edit-article/{{article.id}}" title="Редактирование статьи">✎</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col">
+                <form action="#!/create-article/">
+                <button id="orderSubmit777" class="btn btn-outline-info btn-sm"
+                        style="margin-left: 10px;" type="submit">Создать новую статью
+                </button></form>
+
             </div>
         </div>
     </div>

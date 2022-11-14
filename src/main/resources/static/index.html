@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html ng-app="HabrApp">
-
 <head>
     <meta charset="UTF-8">
     <title>Хабр</title>
@@ -12,36 +11,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
 
 </head>
 <body>
-
-
 <div class="container" ng-controller="indexController">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#!">Хабр</a>
+                    <a class="nav-link" ng-click="resetCategory()" href="#!">Хабр</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#!">Все потоки</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/design">Дизайн</a>
+                    <a class="nav-link" ng-click="resetCategory()" href="#!">Все потоки</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/web_dev">Веб-разработка</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/mobile_dev">Мобильная разработка</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/marketing">Маркетинг</a>
+                <li ng-repeat="category in categories">
+                    <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.name}}</a>
                 </li>
 
                 <li class="nav-item">
@@ -51,28 +37,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#!/profile">Личный кабинет</a>
                 </li>
-
             </ul>
         </div>
     </nav>
 
-
     <ng-view></ng-view>
 
-
-
-
-
     <script src="index.js"></script>
+    <script src="create-article/create-article.js"></script>
+    <script src="edit-article/edit-article.js"></script>
     <script src="profile/profile.js"></script>
-    <script src="main/main.js"></script>
-    <script src="design/design.js"></script>
-    <script src="marketing/marketing.js"></script>
-    <script src="mobile_dev/mobile_dev.js"></script>
-    <script src="web_dev/web_dev.js"></script>
+    <script src="articles/articles.js"></script>
     <script src="authorization/authorization.js"></script>
-
 </div>
-
 </body>
 </html>
