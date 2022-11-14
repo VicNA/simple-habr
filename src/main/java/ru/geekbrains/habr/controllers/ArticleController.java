@@ -73,4 +73,9 @@ public class ArticleController {
         articleService.createArticleFromDto(articleDto);
     }
 
+    @GetMapping("/status/moderating")
+    public List<ArticleDto> findAllByStatus() {
+        return articleService.findAllByStatus("moderating").stream()
+                .map(articleConverter::entityToDto).collect(Collectors.toList());
+    }
 }

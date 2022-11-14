@@ -63,7 +63,7 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-
+    public List<Article> findAllByStatus(String status) {
+        return articleRepository.findAllByStatusName(status);
+    };
 }
-
-

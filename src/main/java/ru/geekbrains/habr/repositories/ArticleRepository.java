@@ -19,4 +19,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT a,s FROM Article a JOIN a.user u JOIN a.status s WHERE u.username = :username")
     List<Article> findAllByUsername(@Param("username") String username, Sort sort);
 
+    @Query("SELECT a FROM Article a JOIN a.status s WHERE s.name = :statusName")
+    List<Article> findAllByStatusName(@Param("statusName") String statusName);
 }
