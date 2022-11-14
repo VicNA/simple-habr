@@ -11,28 +11,6 @@
             .config(config)
             .run(run);
 
-    function config($routeProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: 'main/main.html',
-                controller: 'mainController'
-            })
-            .when('/profile', {
-                templateUrl: 'profile/profile.html',
-                controller: 'profileController'
-            })
-            .when('/authorization', {
-                            templateUrl: 'authorization/authorization.html',
-                            controller: 'authorizationController'
-                        })
-            .when('/registration', {
-                            templateUrl: 'authorization/registration.html',
-                            controller: 'registrationController'
-                        })
-                        .otherwise({
-                redirectTo: '/'
-            });
-    }
         function config($routeProvider) {
             $routeProvider
                 .when(
