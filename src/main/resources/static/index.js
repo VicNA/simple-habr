@@ -21,6 +21,13 @@
                     }
                 )
                 .when(
+                    '/article',
+                    {
+                        templateUrl: 'article/article.html',
+                        controller: 'articleController'
+                    }
+                )
+                .when(
                     '/profile',
                     {
                         templateUrl: 'profile/profile.html',
