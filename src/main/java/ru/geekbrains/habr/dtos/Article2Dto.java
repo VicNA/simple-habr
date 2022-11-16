@@ -12,5 +12,4 @@ public class Article2Dto {
     private String username;
     private String status;
     private String dtCreated;
-    private String dtPublished;
 }

@@ -28,7 +28,6 @@ public class ArticleConverter {
                 article.getText(),
                 article.getUser().getUsername(),
                 article.getStatus().getName(),
-                article.getDtCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
-                article.getDtPublished().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                article.getDtCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
 }

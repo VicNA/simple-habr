@@ -1,0 +1,14 @@
+<div class="container">
+    <table class="table">
+        <thead>
+            Ожидающие статьи:
+        </thead>
+        <tbody>
+            <tr ng-repeat="article in articlesModeration">
+                <td>{{article.title}}</td>
+                <td>{{article.username}}</td>
+                <td>{{article.dtCreated}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
