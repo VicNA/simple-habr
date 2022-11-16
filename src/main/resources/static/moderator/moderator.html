@@ -5,9 +5,13 @@
         </thead>
         <tbody>
             <tr ng-repeat="article in articlesModeration">
-                <td>{{article.title}}</td>
+                <td><a href="" ng-click="setArticle($index)">{{article.title}}</a></td>
                 <td>{{article.username}}</td>
                 <td>{{article.dtCreated}}</td>
+                <td>
+                    <button type="button" class="btn btn-success" ng-click="updateStatus(article.id)">Утвердить</button>
+                    <button type="button" class="btn btn-danger" ng-click="updateStatus(article.id)">Отклонить</button>
+                </td>
             </tr>
         </tbody>
     </table>

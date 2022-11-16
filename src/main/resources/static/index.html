@@ -10,9 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" href="favicon.png" type="image/png">
-
 </head>
 <body>
 <div class="container" ng-controller="indexController">
@@ -34,8 +32,11 @@
                     <a class="nav-link" href="#!/authorization">Авторизация</a>
                 </li>
 
-                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">
-                    <a class="nav-link" href="#!/profile">Личный кабинет</a>
+<!--                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">-->
+<!--                    <a class="nav-link" href="#!/profile">Личный кабинет</a>-->
+<!--                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/moderator">Личный кабинет</a>
                 </li>
             </ul>
         </div>
@@ -47,11 +48,8 @@
     <script src="create-article/create-article.js"></script>
     <script src="edit-article/edit-article.js"></script>
     <script src="profile/profile.js"></script>
-    <script src="article/article.js"></script>
     <script src="articles/articles.js"></script>
     <script src="authorization/authorization.js"></script>
-    <script src="authorization/registration.js"></script>
-
 </div>
 </body>
 </html>
