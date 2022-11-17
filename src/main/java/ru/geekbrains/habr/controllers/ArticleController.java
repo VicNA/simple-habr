@@ -74,9 +74,15 @@ public class ArticleController {
         articleService.createArticleFromDto(articleDto);
     }
 
-    @GetMapping("/status/moderating")
+    @GetMapping("/moderation")
     public List<Article2Dto> findAllByStatus() {
         return articleService.findAllByStatus("moderating").stream()
                 .map(articleConverter::entityTo2Dto).collect(Collectors.toList());
+    }
+
+    @PutMapping("/moderation/{id}/updateStatus")
+    public void updateStatus(@PathVariable(name = "id") Long articleId,
+                             @RequestParam(name = "status") String statusName) {
+        articleService.updateStatus(articleId, statusName);
     }
 }
