@@ -32,12 +32,14 @@
                     <a class="nav-link" href="#!/authorization">Авторизация</a>
                 </li>
 
-<!--                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">-->
-<!--                    <a class="nav-link" href="#!/profile">Личный кабинет</a>-->
-<!--                </li>-->
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/moderator">Личный кабинет</a>
+                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">
+                    <a class="nav-link" href="#!/profile">Личный кабинет</a>
                 </li>
+
+<!--                TODO Надо объединить личный кабинет-->
+<!--                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">-->
+<!--                    <a class="nav-link" href="#!/moderator">Личный кабинет</a>-->
+<!--                </li>-->
             </ul>
         </div>
     </nav>
@@ -48,6 +50,7 @@
     <script src="create-article/create-article.js"></script>
     <script src="edit-article/edit-article.js"></script>
     <script src="profile/profile.js"></script>
+    <script src="moderator/moderator.js"></script>
     <script src="articles/articles.js"></script>
     <script src="authorization/authorization.js"></script>
 </div>

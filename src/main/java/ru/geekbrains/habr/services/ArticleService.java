@@ -21,14 +21,30 @@ public class ArticleService {
     private final UserService userService;
     private final StatusService statusService;
 
+    /**
+     * Получает список опубликованных статей отсортированных
+     * по дате публикации в обратном порядке (сначала последние)
+     *
+     * @return Список статей
+     *
+     * @author Николаев Виктор
+     */
     public List<Article> findAllSortDesc() {
-        return articleRepository.findByOrderByDtPublishedDesc();
+        return articleRepository.findAllByStatusName("published", Sort.by("dtPublished").descending());
     }
 
     public Optional<Article> findById(Long id) {
         return articleRepository.findById(id);
     }
 
+    /**
+     * Получает список статей указанной категории
+     *
+     * @param id идентификатор категории
+     * @return Список статей
+     *
+     * @author Николаев Виктор
+     */
     public List<Article> findAllByCategory(Long id) {
         return articleRepository.findAllByCategory(id, Sort.by("dtPublished").descending());
     }
@@ -66,10 +82,26 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    /**
+     * Получает список статей указанного статуса
+     *
+     * @param status имя статуса
+     * @return Список статей
+     *
+     * @author Николаев Виктор
+     */
     public List<Article> findAllByStatus(String status) {
         return articleRepository.findAllByStatusName(status);
     }
 
+    /**
+     * Обновляет статус статьи
+     *
+     * @param articleId     id статьи
+     * @param statusName    имя статуса
+     *
+     * @author Николаев Виктор
+     */
     @Transactional
     public void updateStatus(Long articleId, String statusName) {
         Optional<Article> article = articleRepository.findById(articleId);
