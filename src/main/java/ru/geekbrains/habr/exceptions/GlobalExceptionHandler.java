@@ -11,4 +11,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<AppError> catchResourceNotFoundException(ResourceNotFoundException e) {
         return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ValidationError> catchResourceNotFoundException(ValidationException e) {
+        return new ResponseEntity<>(new ValidationError(e.getFields(), e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }

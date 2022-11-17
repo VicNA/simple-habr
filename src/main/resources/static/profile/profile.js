@@ -1,4 +1,4 @@
-angular.module('HabrApp').controller('profileController', function ($scope, $http, $localStorage) {
+angular.module('HabrApp').controller('profileController', function ($rootScope,$scope, $http, $localStorage, $location) {
     const contextPath = 'http://localhost:8189/habr/';
     const user1 = 'bob';
 
@@ -25,7 +25,9 @@ angular.module('HabrApp').controller('profileController', function ($scope, $htt
           .then(function successCallback (response) {
               alert('Данные о пользователе сохранены');
           }, function failureCallback (response) {
+             console.log(response);
              alert(response.data.message);
+             location.reload();
           });
     }
 
@@ -40,9 +42,10 @@ angular.module('HabrApp').controller('profileController', function ($scope, $htt
                });
     }
 
-    $scope.setArticle = function (index) {
-           $scope.userArticles = $scope.userArticles[index];
-    }
+
+     $scope.setArticle = function (index) {
+         $rootScope.article = $scope.userArticles[index];
+     }
 
     $scope.getUserInfo();
     $scope.getUserArticles();
