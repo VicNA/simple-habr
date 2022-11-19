@@ -1,9 +1,7 @@
 package ru.geekbrains.habr.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.UserConverter;
 import ru.geekbrains.habr.dtos.ModeratorDto;
 import ru.geekbrains.habr.entities.enums.BaseRole;
@@ -37,5 +35,11 @@ public class AdminController {
         return userService.findAllByRole(BaseRole.ROLE_MODERATOR).stream()
                 .map(userConverter::toModeratorDto)
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/update/role")
+    public void updateRoleModerator(@RequestParam("username") String username,
+                                @RequestParam(value = "revoke", required = false, defaultValue = "false") String revoke) {
+        userService.updateUserRole(username, Boolean.parseBoolean(revoke));
     }
 }

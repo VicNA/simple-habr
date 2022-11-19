@@ -68,4 +68,21 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll(role.name());
     }
 
+    @Transactional
+    public void updateUserRole(String username, Boolean revoke) {
+        userRepository.findByUsername(username).ifPresent(user -> {
+            List<Role> roles = user.getRoles();
+            Optional<Role> role = roleService.findByName(BaseRole.ROLE_MODERATOR.name());
+
+            if (revoke) {
+                role.ifPresent(roles::remove);
+            } else {
+                role.ifPresent(roles::add);
+            }
+
+            user.setRoles(roles);
+            userRepository.save(user);
+        });
+    }
+
 }
