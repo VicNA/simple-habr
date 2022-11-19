@@ -84,17 +84,19 @@
                     console.log("Token is expired!!!");
                     delete $localStorage.localUser;
                     $http.defaults.headers.common.Authorization = '';
-                } else {
-                    $http.post('http://localhost:8189/habr/api/v1/refreshToken', $localStorage.localUser.token).then(function (response) {
-                         $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                         $localStorage.localUser = {username: $scope.jwtResp.username, token: response.data.token};
-                    });
                 }
-
+                else {
+                    $http.post('http://localhost:8189/habr/api/v1/refreshToken', $localStorage.localUser.token)
+                    .then(function (response) {
+                        $localStorage.localUser.token = response.data.token;
+                    });
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.localUser.token;
+                }
             } catch (e) {
+               console.log('Ошибка обновления токена' + e);
             }
-           }
         }
+    }
 })();
 angular
     .module('HabrApp')
