@@ -11,6 +11,13 @@ import ru.geekbrains.habr.services.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Контроллер REST API личного кабинета админа
+ *
+ * @author Николаев Виктор
+ * @version 1.0
+ */
+
 @RestController
 @RequestMapping("/api/v1/admin")
 @AllArgsConstructor
@@ -18,6 +25,12 @@ public class AdminController {
     private final UserService userService;
     private final UserConverter userConverter;
 
+    /**
+     * Возвращает список пользователей с ролью {@code ROLE_MODERATOR}
+     * @return Список dto модераторов
+     *
+     * @author Николаев Виктор
+     */
     @GetMapping("/view/moderators")
     public List<ModeratorDto> getModerators() {
         return userService.findModerators().stream()
