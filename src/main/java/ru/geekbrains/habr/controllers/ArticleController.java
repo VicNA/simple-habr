@@ -3,6 +3,7 @@ package ru.geekbrains.habr.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.ArticleConverter;
+import ru.geekbrains.habr.dtos.Article2Dto;
 import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
@@ -73,4 +74,15 @@ public class ArticleController {
         articleService.createArticleFromDto(articleDto);
     }
 
+    @GetMapping("/moderation")
+    public List<Article2Dto> findAllByStatus() {
+        return articleService.findAllByStatus("moderating").stream()
+                .map(articleConverter::entityTo2Dto).collect(Collectors.toList());
+    }
+
+    @PutMapping("/moderation/{id}/updateStatus")
+    public void updateStatus(@PathVariable(name = "id") Long articleId,
+                             @RequestParam(name = "status") String statusName) {
+        articleService.updateStatus(articleId, statusName);
+    }
 }

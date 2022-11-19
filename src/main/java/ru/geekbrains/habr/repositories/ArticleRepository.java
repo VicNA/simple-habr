@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    List<Article> findByOrderByDtPublishedDesc();
 
     @Query("SELECT a FROM Article a JOIN a.categories c WHERE c.id = :categoryId")
     List<Article> findAllByCategory(@Param("categoryId") Long categoryId, Sort sort);
@@ -19,4 +18,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT a,s FROM Article a JOIN a.user u JOIN a.status s WHERE u.username = :username")
     List<Article> findAllByUsername(@Param("username") String username, Sort sort);
 
+    @Query("SELECT a FROM Article a JOIN a.status s WHERE s.name = :statusName")
+    List<Article> findAllByStatusName(@Param("statusName") String statusName);
+
+    @Query("SELECT a FROM Article a JOIN a.status s WHERE s.name = :statusName")
+    List<Article> findAllByStatusName(@Param("statusName") String statusName,  Sort sort);
 }

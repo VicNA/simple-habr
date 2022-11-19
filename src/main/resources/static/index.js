@@ -34,6 +34,10 @@
                         controller: 'profileController'
                     }
                 )
+                .when('/moderator', {
+                    templateUrl: 'moderator/moderator.html',
+                    controller: 'moderatorController'
+                    })
                 .when(
                     '/edit-article/:articleId',
                     {

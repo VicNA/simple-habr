@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.entities.Article;
+import ru.geekbrains.habr.entities.Status;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
 
@@ -18,14 +19,32 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final UserService userService;
+    private final StatusService statusService;
+
+    /**
+     * Получает список опубликованных статей отсортированных
+     * по дате публикации в обратном порядке (сначала последние)
+     *
+     * @return Список статей
+     *
+     * @author Николаев Виктор
+     */
     public List<Article> findAllSortDesc() {
-        return articleRepository.findByOrderByDtPublishedDesc();
+        return articleRepository.findAllByStatusName("published", Sort.by("dtPublished").descending());
     }
 
     public Optional<Article> findById(Long id) {
         return articleRepository.findById(id);
     }
 
+    /**
+     * Получает список статей указанной категории
+     *
+     * @param id идентификатор категории
+     * @return Список статей
+     *
+     * @author Николаев Виктор
+     */
     public List<Article> findAllByCategory(Long id) {
         return articleRepository.findAllByCategory(id, Sort.by("dtPublished").descending());
     }
@@ -41,9 +60,9 @@ public class ArticleService {
                         articleDto.getTitle())));
 
         //Если нет изменений - выходим
-        if ( article.getTitle().equals(articleDto.getTitle())
-             && article.getText().equals(articleDto.getText())
-             && article.getStatus().equals(articleDto.getStatus()))
+        if (article.getTitle().equals(articleDto.getTitle())
+                && article.getText().equals(articleDto.getText())
+                && article.getStatus().equals(articleDto.getStatus()))
             return;
 
         article.setText(articleDto.getText());
@@ -63,7 +82,37 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    /**
+     * Получает список статей указанного статуса
+     *
+     * @param status имя статуса
+     * @return Список статей
+     *
+     * @author Николаев Виктор
+     */
+    public List<Article> findAllByStatus(String status) {
+        return articleRepository.findAllByStatusName(status);
+    }
 
+    /**
+     * Обновляет статус статьи
+     *
+     * @param articleId     id статьи
+     * @param statusName    имя статуса
+     *
+     * @author Николаев Виктор
+     */
+    @Transactional
+    public void updateStatus(Long articleId, String statusName) {
+        Optional<Article> article = articleRepository.findById(articleId);
+        Optional<Status> status = statusService.findByName(statusName);
+        if (article.isPresent() && status.isPresent()) {
+            articleRepository.save(
+                    article.map(art -> {
+                        art.setStatus(status.get());
+                        art.setDtPublished(LocalDateTime.now());
+                        return art;
+                    }).get());
+        }
+    }
 }
-
-
