@@ -56,8 +56,16 @@ public class UserService implements UserDetailsService {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
-    public List<User> findModerators() {
-        return userRepository.findAll(BaseRole.ROLE_MODERATOR.name());
+    /**
+     * Возвращает список пользователей с определенной ролью
+     *
+     * @param role Роль пользователя
+     * @return Список пользователей
+     *
+     * @author Николаев Виктор
+     */
+    public List<User> findAllByRole(BaseRole role) {
+        return userRepository.findAll(role.name());
     }
 
 }

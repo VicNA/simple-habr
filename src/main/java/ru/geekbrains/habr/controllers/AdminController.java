@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.geekbrains.habr.converters.UserConverter;
 import ru.geekbrains.habr.dtos.ModeratorDto;
+import ru.geekbrains.habr.entities.enums.BaseRole;
 import ru.geekbrains.habr.services.UserService;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class AdminController {
      */
     @GetMapping("/view/moderators")
     public List<ModeratorDto> getModerators() {
-        return userService.findModerators().stream()
+        return userService.findAllByRole(BaseRole.ROLE_MODERATOR).stream()
                 .map(userConverter::toModeratorDto)
                 .collect(Collectors.toList());
     }
