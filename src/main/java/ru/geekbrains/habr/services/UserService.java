@@ -1,17 +1,15 @@
 package ru.geekbrains.habr.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.entities.User;
+import ru.geekbrains.habr.entities.enums.BaseRole;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.UserRepository;
 
@@ -56,6 +54,10 @@ public class UserService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    }
+
+    public List<User> findModerators() {
+        return userRepository.findAll(BaseRole.ROLE_MODERATOR.name());
     }
 
 }
