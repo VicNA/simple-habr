@@ -2,7 +2,7 @@ insert into roles(role_name)
 values ('ROLE_USER'), ('ROLE_MODERATOR'), ('ROLE_ADMIN');
 
 insert into users(user_name, real_name, dt_birth, description)
-values ('First user', null, null,null),
+values ('First user', null, CAST(CAST('1990-10-12' AS date) as DATE),null),
        ('bob', 'Петр Смирнов', CAST(CAST('1994-10-12' AS date) as DATE), 'Веселый, общительный'),
        ('ali', null, null, null),
        ('nil', 'Николай Петрович', null, null);
