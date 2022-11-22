@@ -11,6 +11,7 @@
 	<groupId>ru.geekbrains</groupId>
 	<artifactId>habr</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>habr</name>
 	<description>Java development course project work</description>
 	<properties>
