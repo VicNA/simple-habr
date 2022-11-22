@@ -101,7 +101,7 @@ public class ArticleControllerTest {
         Mockito.doReturn(Optional.of(article)).when(articleService).findById(22L);
         Mockito.doReturn(articleDto).when(articleConverter).entityToDto(article);
         Mockito.doReturn(articleDto2).when(articleConverter).entityToDto(article2);
-        Mockito.doReturn(articleList).when(articleService).findAllSortDesc();
+        Mockito.doReturn(articleList).when(articleService).findAllSortDescPage(1);
 
     }
 

@@ -1,6 +1,9 @@
 package ru.geekbrains.habr.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.ArticleDto;
@@ -17,20 +20,22 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
+    private final int SIZE_PAGE = 3;
+
     private final ArticleRepository articleRepository;
     private final UserService userService;
     private final StatusService statusService;
 
     /**
-     * Получает список опубликованных статей отсортированных
+     * Получает страницу опубликованных статей, отсортированных
      * по дате публикации в обратном порядке (сначала последние)
      *
-     * @return Список статей
-     *
-     * @author Николаев Виктор
+     * @return Страница статей
+     * @author Миронова Ирина
      */
-    public List<Article> findAllSortDesc() {
-        return articleRepository.findAllByStatusName("published", Sort.by("dtPublished").descending());
+    public Page<Article> findAllSortDescPage(int page) {
+        return articleRepository.findAllByStatusNamePage("published",
+                PageRequest.of(page, SIZE_PAGE, Sort.by("dtPublished").descending()));
     }
 
     public Optional<Article> findById(Long id) {
@@ -38,15 +43,16 @@ public class ArticleService {
     }
 
     /**
-     * Получает список статей указанной категории
+     * Получает страницу статей, указанной категории
      *
-     * @param id идентификатор категории
-     * @return Список статей
-     *
-     * @author Николаев Виктор
+     * @param id   - идентификатор категории
+     * @param page - идентификатор страницы
+     * @return Страница статей
+     * @author Миронова Ирина
      */
-    public List<Article> findAllByCategory(Long id) {
-        return articleRepository.findAllByCategory(id, Sort.by("dtPublished").descending());
+    public Page<Article> findAllByCategoryPage(Long id, int page) {
+        return articleRepository.findAllByCategoryPage(id,
+                PageRequest.of(page, SIZE_PAGE, Sort.by("dtPublished").descending()));
     }
 
     public List<Article> findAllByUsername(String username) {
@@ -87,7 +93,6 @@ public class ArticleService {
      *
      * @param status имя статуса
      * @return Список статей
-     *
      * @author Николаев Виктор
      */
     public List<Article> findAllByStatus(String status) {
@@ -97,9 +102,8 @@ public class ArticleService {
     /**
      * Обновляет статус статьи
      *
-     * @param articleId     id статьи
-     * @param statusName    имя статуса
-     *
+     * @param articleId  id статьи
+     * @param statusName имя статуса
      * @author Николаев Виктор
      */
     @Transactional
