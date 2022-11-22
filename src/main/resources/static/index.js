@@ -11,7 +11,7 @@
             .config(config)
             .run(run);
 
-        function config($routeProvider, $rootScope) {
+        function config($routeProvider) {
             $routeProvider
                 .when(
                     '/',
@@ -57,9 +57,6 @@
                     {
                         templateUrl: 'authorization/authorization.html',
                         controller: 'authorizationController',
-                        resolve: {
-                            factory: !!$rootScope.checkUserRole()
-                        }
                     }
                 )
                 .when(
@@ -67,6 +64,13 @@
                     {
                         templateUrl: 'authorization/registration.html',
                         controller: 'registrationController'
+                    }
+                )
+                .when(
+                    '/admin',
+                    {
+                        templateUrl: 'admin/admin.html',
+                        controller: 'adminController'
                     }
                 )
                 .otherwise(
@@ -164,34 +168,45 @@ angular
                 }
             };
 
-            $scope.checkUserRole() = function () {
+            $scope.isModeratorLoggedIn = function () {
+                if ($scope.isUserLoggedIn) {
                 let roles = getRoles();
-                 for (let i = 0; i < roles.lenght; i++){
-                     if(roles[i].equals('ROLE_USER')){
-                     console.log(true);
-                         $location.path('/');
-                     return true;
-                     }
-                 }
-                          console.log(false);
-
-                 return false;
-            }
-
-            function getRoles($localStorage) {
-            let roles = ['guest'];
-            if ($localStorage?.localUser) {
-                            try {
-                                let jwt = $localStorage.localUser.token;
-                                let payload = JSON.parse(atob(jwt.split('.')[1]));
-                                console.log(payload.roles)
-                                roles.push(payload.roles);
-                            } catch (e) {
-                               console.log('Ошибка чтения токена' + e);
-                            }
+                    for (var i = 0; i < roles.length; i++) {
+                        if (roles[i] === 'ROLE_MODERATOR') {
+                    return true;
                         }
-            console.log(roles);
-             return roles;
+                    }
+                }
+
+                return false;
+            };
+
+            $scope.isAdminLoggedIn = function () {
+                if ($scope.isUserLoggedIn) {
+                    let roles = getRoles();
+                    for (var i = 0; i < roles.length; i++) {
+                        if (roles[i] === 'ROLE_ADMIN') {
+
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            };
+
+            function getRoles() {
+            let roles = {};
+            if ($localStorage.localUser) {
+                    try {
+                        let jwt = $localStorage.localUser.token;
+                        let payload = JSON.parse(atob(jwt.split('.')[1]));
+                        roles = payload.roles;
+                    } catch (e) {
+                       console.log('Ошибка чтения токена' + e);
+                    }
+                        }
+            return roles;
             }
         }
     )
