@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="authorization/auth.css">
+<div>
+    <div class="center mx-auto">
+        <form ng-submit="functionRegistration()">
+            <div class="mx-auto py-3">
+                <label for="inputUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="inputUsername" placeholder="Username" ng-model="newUser.username">
+            </div>
+            <div class="mx-auto py-3">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="newUser.password">
+            </div>
+            <div class="mx-auto py-3">
+                <label for="inputConfirmPassword" class="form-label">Confirm password</label>
+                <input type="password" class="form-control" id="inputConfirmPassword" placeholder="Confirm Password" ng-model="newUser.confirmPassword">
+            </div>
+            <div class="mx-auto py-3">
+                <label for="inputRealname" class="form-label">Real name</label>
+                <input type="text" class="form-control" id="inputRealname" placeholder="Your real name" ng-model="newUser.realname">
+            </div>
+            <div class="mx-auto py-1">
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </div>
+        </form>
+    </div>
+</div>

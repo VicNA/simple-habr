@@ -1,0 +1,49 @@
+<div class="container">
+    <div>
+        <a>Блок управления модераторами</a>
+        <div class="row">
+            <div class="col-4">
+                <div class="table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th scope="col">Список модераторов</th>
+                            <th scope="col" ng-show="checked"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="m in moderators">
+                            <td>{{m.username}}</td>
+                            <td ng-show="checked">
+                                <button type="button" class="btn btn-success"
+                                        ng-click="deleteModerator(m.username)">
+                                    Удалить
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" ng-model="checked" role="switch" id="switchCheck"
+                           aria-label="Toggle ngShow">
+                    <label class="form-check-label" for="switchCheck">Редактирование</label>
+                </div>
+                <div ng-show="checked">
+                    <a>Назначить модератором:</a>
+                    <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">@</span>
+                        <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                               aria-describedby="addon-wrapping" ng-model="newModerator">
+                        <button class="btn btn-outline-secondary" type="button" id="button" ng-show="newModerator"
+                                ng-click="addModerator(newModerator)">
+                            +
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

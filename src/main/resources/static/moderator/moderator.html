@@ -1,0 +1,20 @@
+<div class="container">
+    <table class="table">
+        <thead>
+            Ожидающие статьи:
+        </thead>
+        <tbody>
+            <tr ng-repeat="article in articlesModeration">
+                <td><a href="#!/article" ng-click="setArticle($index)">{{article.title}}</a></td>
+                <td>{{article.username}}</td>
+                <td>{{article.dtCreated}}</td>
+                <td>
+                    <button type="button" class="btn btn-success" ng-click="updateStatus(article.id, 'published')">Утвердить</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" ng-click="updateStatus(article.id, 'hidden')">Отклонить</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

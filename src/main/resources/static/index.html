@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="HabrApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Хабр</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+</head>
+<body>
+<div class="container" ng-controller="indexController">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" ng-click="resetCategory()" href="#!">Хабр</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" ng-click="resetCategory()" href="#!">Все потоки</a>
+                </li>
+
+                <li ng-repeat="category in categories">
+                    <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.name}}</a>
+                </li>
+
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
+                    <a class="nav-link" href="#!/authorization">Авторизация</a>
+                </li>
+
+                <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <a class="nav-link" href="#!/profile">Личный кабинет</a>
+                </li>
+
+                <li class="nav-item" ng-show="isModeratorLoggedIn()">
+                    <a class="nav-link" href="#!/moderator">Модератор</a>
+                </li>
+
+                <li class="nav-item" ng-show="isAdminLoggedIn()">
+                    <a class="nav-link" href="#!/admin">Админ</a>
+                </li>
+
+                <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <a class="nav-link" ng-click="tryToLogout()">Выход</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <ng-view></ng-view>
+
+    <script src="index.js"></script>
+    <script src="create-article/create-article.js"></script>
+    <script src="edit-article/edit-article.js"></script>
+    <script src="profile/profile.js"></script>
+    <script src="moderator/moderator.js"></script>
+    <script src="article/article.js"></script>
+    <script src="articles/articles.js"></script>
+    <script src="authorization/authorization.js"></script>
+    <script src="authorization/registration.js"></script>
+    <script src="admin/admin.js"></script>
+
+</div>
+</body>
+</html>
