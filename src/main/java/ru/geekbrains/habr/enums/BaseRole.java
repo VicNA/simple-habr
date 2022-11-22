@@ -1,4 +1,4 @@
-package ru.geekbrains.habr.entities.enums;
+package ru.geekbrains.habr.enums;
 
 public enum BaseRole {
     ROLE_USER, ROLE_MODERATOR, ROLE_ADMIN;

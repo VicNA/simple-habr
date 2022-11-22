@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.entities.User;
-import ru.geekbrains.habr.entities.enums.BaseRole;
+import ru.geekbrains.habr.enums.BaseRole;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.UserRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class UserService implements UserDetailsService {
         user.setDescription(userDto.getDescription());
     }
 
-    public void createUser(User user){
+    public void createUser(User user) {
         user.setRoles(List.of(roleService.getUserRole()));
         userRepository.save(user);
     }
@@ -61,23 +62,39 @@ public class UserService implements UserDetailsService {
      *
      * @param role Роль пользователя
      * @return Список пользователей
-     *
      * @author Николаев Виктор
      */
     public List<User> findAllByRole(BaseRole role) {
         return userRepository.findAll(role.name());
     }
 
+    /**
+     * Обновляет список ролей у пользователя
+     *
+     * @param username Имя пользователя
+     * @param baseRole Присваемая роль
+     * @author Николаев Виктор
+     */
     @Transactional
-    public void updateUserRole(String username, Boolean revoke) {
+    public void updateUserRole(String username, BaseRole baseRole) {
         userRepository.findByUsername(username).ifPresent(user -> {
-            List<Role> roles = user.getRoles();
-            Optional<Role> role = roleService.findByName(BaseRole.ROLE_MODERATOR.name());
 
-            if (revoke) {
-                role.ifPresent(roles::remove);
-            } else {
-                role.ifPresent(roles::add);
+            // Каждая последующая роль включает в себя предыдущие роли
+            if (baseRole.ordinal() + 1 == user.getRoles().size()) return;
+
+            List<Role> roles = new ArrayList<>();
+
+            switch (baseRole) {
+                case ROLE_USER:
+                    roleService.findByName(baseRole.name()).ifPresent(roles::add);
+                    break;
+                case ROLE_MODERATOR:
+                    roles.addAll(roleService.findByNameIn(
+                            List.of(BaseRole.ROLE_USER.name(), BaseRole.ROLE_MODERATOR.name())));
+                    break;
+                case ROLE_ADMIN:
+                    roles.addAll(roleService.findAll());
+                    break;
             }
 
             user.setRoles(roles);
