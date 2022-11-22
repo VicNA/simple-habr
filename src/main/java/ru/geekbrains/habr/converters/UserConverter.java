@@ -35,7 +35,6 @@ public class UserConverter {
         return new ModeratorDto(
                 user.getUsername(),
                 user.getRealname(),
-                user.getDtBirth().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
                 user.getDescription());
     }
 }

@@ -8,6 +8,7 @@ angular.module('HabrApp').controller('adminController', function($rootScope, $sc
            }, function failureCallback (response) {
                console.log(response);
                alert(response.data.message);
+               }
            );
     }
 
@@ -17,7 +18,7 @@ angular.module('HabrApp').controller('adminController', function($rootScope, $sc
         updateRole(username, 'ROLE_USER')
     }
 
-    $scope.deleteModerator = function(username) {
+    $scope.addModerator = function(username) {
         updateRole(username, 'ROLE_MODERATOR')
     }
 

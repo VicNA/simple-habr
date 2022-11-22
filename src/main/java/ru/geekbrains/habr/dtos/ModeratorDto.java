@@ -14,6 +14,5 @@ import lombok.Data;
 public class ModeratorDto {
     private String username;
     private String realname;
-    private String dtBirth;
     private String description;
 }
