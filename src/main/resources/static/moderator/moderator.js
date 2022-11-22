@@ -1,5 +1,5 @@
 angular.module('HabrApp').controller('moderatorController', function($rootScope, $scope, $http, $localStorage) {
-    const contextPath = 'http://localhost:8189/habr/api/v1/articles';
+    const contextPath = 'http://' + window.location.host + '/habr/api/v1/articles';
 
     $scope.getArticlesModeration = function() {
        $http.get(contextPath + '/moderation')

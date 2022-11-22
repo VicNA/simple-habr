@@ -2,7 +2,7 @@ angular
     .module('HabrApp')
     .controller('editArticleController', function ($scope, $routeParams, $http, $localStorage) {
         var articleId = $routeParams.articleId;
-        const contextPath = 'http://localhost:8189/habr/';
+        const contextPath = 'http://' + window.location.host + '/habr/';
 
 
      $scope.getArticle = function (){

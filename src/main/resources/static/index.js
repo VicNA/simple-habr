@@ -11,7 +11,7 @@
             .config(config)
             .run(run);
 
-        function config($routeProvider) {
+        function config($routeProvider, $rootScope) {
             $routeProvider
                 .when(
                     '/',
@@ -56,7 +56,10 @@
                     '/authorization',
                     {
                         templateUrl: 'authorization/authorization.html',
-                        controller: 'authorizationController'
+                        controller: 'authorizationController',
+                        resolve: {
+                            factory: !!$rootScope.checkUserRole()
+                        }
                     }
                 )
                 .when(
@@ -86,7 +89,7 @@
                     $http.defaults.headers.common.Authorization = '';
                 }
                 else {
-                    $http.post('http://localhost:8189/habr/api/v1/refreshToken', $localStorage.localUser.token)
+                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken', $localStorage.localUser.token)
                     .then(function (response) {
                         $localStorage.localUser.token = response.data.token;
                     });
@@ -109,7 +112,7 @@ angular
             $location,
             $localStorage
         ) {
-            const rootPath = 'http://localhost:8189/habr/';
+            const rootPath = 'http://' + window.location.host + '/habr/';
             const categoriesPath = 'api/v1/categories';
             const defaultCategory =
                 {
@@ -160,6 +163,37 @@ angular
                     return false;
                 }
             };
+
+            $scope.checkUserRole() = function () {
+                let roles = getRoles();
+                 for (let i = 0; i < roles.lenght; i++){
+                     if(roles[i].equals('ROLE_USER')){
+                     console.log(true);
+                         $location.path('/');
+                     return true;
+                     }
+                 }
+                          console.log(false);
+
+                 return false;
+            }
+
+            function getRoles($localStorage) {
+            let roles = ['guest'];
+            if ($localStorage?.localUser) {
+                            try {
+                                let jwt = $localStorage.localUser.token;
+                                let payload = JSON.parse(atob(jwt.split('.')[1]));
+                                console.log(payload.roles)
+                                roles.push(payload.roles);
+                            } catch (e) {
+                               console.log('Ошибка чтения токена' + e);
+                            }
+                        }
+            console.log(roles);
+             return roles;
+            }
         }
     )
 ;
+
