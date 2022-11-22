@@ -1,6 +1,7 @@
 package ru.geekbrains.habr.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.ArticleConverter;
 import ru.geekbrains.habr.dtos.Article2Dto;
@@ -22,23 +23,29 @@ public class ArticleController {
     private final StatusService statusService;
 
     @GetMapping
-    public List<ArticleDto> findAll() {
-        return articleService.findAllSortDesc().stream()
-                .map(articleConverter::entityToDto).collect(Collectors.toList());
+    public Page<ArticleDto> findAll(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+        if (page < 1) {
+            page = 1;
+        }
+
+        return articleService.findAllSortDescPage(page - 1).map(articleConverter::entityToDto);
     }
 
     @GetMapping("/view/{id}")
     public ArticleDto findById(@PathVariable Long id) {
         Article article = articleService.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Статья с id = " + id + " не найдена"));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
 
         return articleConverter.entityToDto(article);
     }
 
-    @GetMapping("/category/{id}")
-    public List<ArticleDto> findAllByCategory(@PathVariable Long id) {
-        return articleService.findAllByCategory(id).stream()
-                .map(articleConverter::entityToDto).collect(Collectors.toList());
+    @GetMapping("/category")
+    public Page<ArticleDto> findAllByCategoryPage(@RequestParam(value = "id", required = true) Long id,
+                                                  @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+        if (page < 1) {
+            page = 1;
+        }
+        return articleService.findAllByCategoryPage(id, page - 1).map(articleConverter::entityToDto);
     }
 
     @GetMapping("/username/{username}")
@@ -51,7 +58,7 @@ public class ArticleController {
 
     @PutMapping("/updatePublicFields")
     public void updatePublicFields(@RequestBody ArticleDto articleDto) {
-        articleDto.setStatus(statusService.findByName("hidden").orElseThrow());// Статусы: 1-hidden, 2-moderating, 3-published
+        articleDto.setStatus(statusService.findByName("hidden").orElseThrow());
         articleService.updateArticlePublicFieldsFromDto(articleDto);
     }
 

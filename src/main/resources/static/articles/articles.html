@@ -1,8 +1,38 @@
 <div class="s3">
-    <ul>Категория: {{category.name}}</ul>
-    <ul style="list-style: none;"> Статьи:
-        <li style="padding-left: 10px" ng-repeat="article in articles">
-            <a ng-click="setArticle($index)" href="#!/article">{{article.title}}</a>
-        </li>
+    <br>
+    <ul style="padding-left: 10px" ng-repeat="article in articles">
+        <div class="row">
+            <h4>
+                <a ng-click="setArticle($index)" href="#!/article" data-article-link=""
+                   data-test-id="article-snippet-title-link" class="tm-article-snippet__title-link">
+                    <span>{{article.title}}</span>
+                </a>
+            </h4>
+
+            <div>
+                <p>{{article.text}}</p>
+                <p><a class="btn" ng-click="setArticle($index)" href="#!/article">Дальше &raquo;</a></p>
+            </div>
+        </div>
+        <hr>
     </ul>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" ng-show="isPreviousPage()">
+                <button class="page-link" ng-click="setArticles(currentPage-1)">Предыдущая стр</button>
+            </li>
+            <li class="page-item" ng-repeat="pageIndex in paginationArray">
+                <button class="page-link" ng-click="setArticles(pageIndex)">{{pageIndex}}</button>
+            </li>
+            <li class="page-item" ng-show="isNextPage()">
+                <button class="page-link" ng-click="setArticles(currentPage + 1)">Следующая стр</button>
+            </li>
+        </ul>
+    </nav>
+
+    <hr>
+    <footer>
+        <p>&copy; Хабр 2022</p>
+    </footer>
 </div>
