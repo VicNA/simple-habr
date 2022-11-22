@@ -23,13 +23,16 @@ public class LikeService {
 
         if (user == null || article == null) return;
 
-        Like like = new Like();
-        like.setUser(user);
-        like.setArticle(article);
+        Like like = likeRepository.findByUserAndArticle(user, article).orElse(null);
 
-        if (likeRepository.findByUserAndArticle(like.getUser(), like.getArticle()).isEmpty()) {
+        if (like == null) {
+            like = new Like();
+            like.setUser(user);
+            like.setArticle(article);
+
             likeRepository.save(like);
+        } else {
+            likeRepository.delete(like);
         }
     }
 }
-
