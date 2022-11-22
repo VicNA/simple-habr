@@ -9,7 +9,7 @@ angular
             $location,
             $localStorage
         ) {
-            const rootPath = 'http://localhost:8189/habr/';
+            const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
             const categoryPath = '/category';
             var path;

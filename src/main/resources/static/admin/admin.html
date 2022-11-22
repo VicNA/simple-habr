@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="HabrApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Хабр</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.js"></script>
+    <link rel="shortcut icon" href="favicon.png" type="image/png">
+</head>
+<body>
+<div class="container" ng-controller="adminController">
+    <div class="row">
+        <div class="col-4">
+            <div class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Список модераторов</th>
+                    <th scope="col" ng-show="checked"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="moderator in moderators">
+                    <td>{{moderator.username}}</td>
+                    <td ng-show="checked">
+                        <button type="button" class="btn btn-success" ng-click="deleteModerator(moderator.username)">
+                            Удалить
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" ng-model="checked" role="switch"
+                       id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Редактирование</label>
+            </div>
+            <input type="checkbox" ng-model="checked">
+            <div class="input-group flex-nowrap" ng-show="checked">
+                <span class="input-group-text" id="addon-wrapping">@</span>
+                <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                       aria-describedby="addon-wrapping" ng-model="newModerator">
+                <button class="btn btn-outline-secondary" type="button" id="button" ng-show="newModerator"
+                        ng-click="addModerator(newModerator)">
+                    Назначить модератором
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
