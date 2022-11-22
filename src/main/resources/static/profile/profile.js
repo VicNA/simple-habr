@@ -1,5 +1,5 @@
 angular.module('HabrApp').controller('profileController', function ($rootScope,$scope, $http, $localStorage, $location) {
-    const contextPath = 'http://localhost:8189/habr/';
+    const contextPath = 'http://' + window.location.host + '/habr/';
     const user1 = 'bob';
 
     $scope.getUserInfo = function (){

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Хабр</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
@@ -28,18 +28,25 @@
                     <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.name}}</a>
                 </li>
 
-                <li class="nav-item" ng-show="{{!isUserLoggedIn()}}">
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <a class="nav-link" href="#!/authorization">Авторизация</a>
                 </li>
 
-                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">
+                <li class="nav-item" ng-show="isUserLoggedIn()">
                     <a class="nav-link" href="#!/profile">Личный кабинет</a>
                 </li>
 
-<!--                TODO Надо объединить личный кабинет-->
-<!--                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">-->
-<!--                    <a class="nav-link" href="#!/moderator">Личный кабинет</a>-->
-<!--                </li>-->
+                <li class="nav-item" ng-show="isModeratorLoggedIn()">
+                    <a class="nav-link" href="#!/moderator">Модератор</a>
+                </li>
+
+                <li class="nav-item" ng-show="isAdminLoggedIn()">
+                    <a class="nav-link" href="#!/admin">Админ</a>
+                </li>
+
+                <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <a class="nav-link" ng-click="tryToLogout()">Выход</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -51,10 +58,12 @@
     <script src="edit-article/edit-article.js"></script>
     <script src="profile/profile.js"></script>
     <script src="moderator/moderator.js"></script>
+    <script src="article/article.js"></script>
     <script src="articles/articles.js"></script>
     <script src="authorization/authorization.js"></script>
-    <script src="article/article.js"></script>
     <script src="authorization/registration.js"></script>
+    <script src="admin/admin.js"></script>
+
 </div>
 </body>
 </html>

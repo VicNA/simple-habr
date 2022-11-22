@@ -56,7 +56,7 @@
                     '/authorization',
                     {
                         templateUrl: 'authorization/authorization.html',
-                        controller: 'authorizationController'
+                        controller: 'authorizationController',
                     }
                 )
                 .when(
@@ -64,6 +64,13 @@
                     {
                         templateUrl: 'authorization/registration.html',
                         controller: 'registrationController'
+                    }
+                )
+                .when(
+                    '/admin',
+                    {
+                        templateUrl: 'admin/admin.html',
+                        controller: 'adminController'
                     }
                 )
                 .otherwise(
@@ -86,7 +93,7 @@
                     $http.defaults.headers.common.Authorization = '';
                 }
                 else {
-                    $http.post('http://localhost:8189/habr/api/v1/refreshToken', $localStorage.localUser.token)
+                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken', $localStorage.localUser.token)
                     .then(function (response) {
                         $localStorage.localUser.token = response.data.token;
                     });
@@ -109,7 +116,7 @@ angular
             $location,
             $localStorage
         ) {
-            const rootPath = 'http://localhost:8189/habr/';
+            const rootPath = 'http://' + window.location.host + '/habr/';
             const categoriesPath = 'api/v1/categories';
             const defaultCategory =
                 {
@@ -160,6 +167,48 @@ angular
                     return false;
                 }
             };
+
+            $scope.isModeratorLoggedIn = function () {
+                if ($scope.isUserLoggedIn) {
+                let roles = getRoles();
+                    for (var i = 0; i < roles.length; i++) {
+                        if (roles[i] === 'ROLE_MODERATOR') {
+                    return true;
+                        }
+                    }
+                }
+
+                return false;
+            };
+
+            $scope.isAdminLoggedIn = function () {
+                if ($scope.isUserLoggedIn) {
+                    let roles = getRoles();
+                    for (var i = 0; i < roles.length; i++) {
+                        if (roles[i] === 'ROLE_ADMIN') {
+
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            };
+
+            function getRoles() {
+            let roles = {};
+            if ($localStorage.localUser) {
+                    try {
+                        let jwt = $localStorage.localUser.token;
+                        let payload = JSON.parse(atob(jwt.split('.')[1]));
+                        roles = payload.roles;
+                    } catch (e) {
+                       console.log('Ошибка чтения токена' + e);
+                    }
+                        }
+            return roles;
+            }
         }
     )
 ;
+
