@@ -28,11 +28,11 @@
                     <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.name}}</a>
                 </li>
 
-                <li class="nav-item" ng-show="{{!isUserLoggedIn()}}">
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <a class="nav-link" href="#!/authorization">Авторизация</a>
                 </li>
 
-                <li class="nav-item" ng-show="{{isUserLoggedIn()}}">
+                <li class="nav-item" ng-show="isUserLoggedIn()">
                     <a class="nav-link" href="#!/profile">Личный кабинет</a>
                 </li>
 
@@ -62,7 +62,6 @@
     <script src="articles/articles.js"></script>
     <script src="authorization/authorization.js"></script>
     <script src="authorization/registration.js"></script>
-
 </div>
 </body>
 </html>
