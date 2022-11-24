@@ -1,6 +1,6 @@
 angular.module('HabrApp').controller('profileController', function ($rootScope,$scope, $http, $localStorage, $location) {
     const contextPath = 'http://' + window.location.host + '/habr/';
-    user1 =$localStorage.localUser.username;
+    const user1 =$localStorage.localUser.username;
     $scope.curPage = 1;
     totalPages = 1;
 
@@ -80,7 +80,7 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
         if (articleId != null) {
                $http.delete(contextPath + 'api/v1/articles/' + articleId)
                    .then(function successCallback (response) {
-                       setTimeout(() => $("#exampleModal [data-dismiss=modal]").trigger({ type: "click" }), 0);
+                       setTimeout(() => $("#exampleModal [data-bs-dismiss=modal]").trigger({ type: "click" }), 0);
                        $scope.getUserArticles($scope.curPage);
                    }, function failureCallback (response) {
                        console.log(response);
