@@ -1,5 +1,5 @@
 angular.module('HabrApp').controller('authorizationController', function ($scope, $http, $location, $localStorage, $rootScope) {
-    const contextPath = 'http://localhost:8189/habr/';
+    const contextPath = 'http://' + window.location.host + '/habr/';
 
      $scope.functionAuthorization = function () {
             $http.post(contextPath + 'api/v1/authorization', $scope.jwtResp).then(function successCallback (response) {
@@ -9,9 +9,9 @@ angular.module('HabrApp').controller('authorizationController', function ($scope
 
                     $scope.jwtResp.username = null;
                     $scope.jwtResp.password = null;
-
+                    $location.replace();
                     $location.path('/');
-                    window.location.reload();
+
 
                 }, function failureCallback (response) {
                                 console.log(response);

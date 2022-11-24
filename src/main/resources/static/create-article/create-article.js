@@ -1,7 +1,7 @@
 angular
     .module('HabrApp')
     .controller('createArticleController', function ($scope, $http, $localStorage) {
-        const contextPath = 'http://localhost:8189/habr/';
+        const contextPath = 'http://' + window.location.host + '/habr/';
 
 
         $scope.createArticle = function (){
