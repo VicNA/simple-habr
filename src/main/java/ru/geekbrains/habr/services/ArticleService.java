@@ -3,7 +3,6 @@ package ru.geekbrains.habr.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.ArticleDto;
@@ -51,12 +50,22 @@ public class ArticleService {
      * @author Миронова Ирина
      */
     public Page<Article> findAllByCategoryPage(Long id, int page) {
-        return articleRepository.findAllByCategoryPage(id,
+        return articleRepository.findAllByCategoryPage("published", id,
                 PageRequest.of(page, SIZE_PAGE, Sort.by("dtPublished").descending()));
     }
 
-    public List<Article> findAllByUsername(String username) {
-        return articleRepository.findAllByUsername(username, Sort.by("dtCreated").descending());
+
+    /**
+     * Получает страницу статей определенного пользователя
+     *
+     * @param username - ник пользователя
+     * @param page     - идентификатор страницы
+     * @return Страница статей определенного пользователя
+     * @author Миронова Ирина
+     */
+    public Page<Article> findAllByUsernamePage(String username, int page) {
+        return articleRepository.findAllByUsernamePage(username,
+                PageRequest.of(page, SIZE_PAGE, Sort.by("dtCreated").descending()));
     }
 
     @Transactional
@@ -118,5 +127,15 @@ public class ArticleService {
                         return art;
                     }).get());
         }
+    }
+
+    /**
+     * Удаляет статью
+     *
+     * @author Миронова Ирина
+     */
+    @Transactional
+    public void deleteArticle(Article article) {
+        articleRepository.delete(article);
     }
 }

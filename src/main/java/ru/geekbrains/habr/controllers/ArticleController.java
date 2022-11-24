@@ -45,15 +45,18 @@ public class ArticleController {
         if (page < 1) {
             page = 1;
         }
+
         return articleService.findAllByCategoryPage(id, page - 1).map(articleConverter::entityToDto);
     }
 
-    @GetMapping("/username/{username}")
-    public List<ArticleDto> findAllByUsername(@PathVariable String username) {
-        return articleService.findAllByUsername(username)
-                .stream()
-                .map(articleConverter::entityToDto)
-                .collect(Collectors.toList());
+    @GetMapping("/user")
+    public Page<ArticleDto> findAllByUsernamePage(@RequestParam(value = "username", required = true) String username,
+                                                  @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+        if (page < 1) {
+            page = 1;
+        }
+
+        return articleService.findAllByUsernamePage(username, page - 1).map(articleConverter::entityToDto);
     }
 
     @PutMapping("/updatePublicFields")
@@ -91,5 +94,12 @@ public class ArticleController {
     public void updateStatus(@PathVariable(name = "id") Long articleId,
                              @RequestParam(name = "status") String statusName) {
         articleService.updateStatus(articleId, statusName);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteArticle(@PathVariable Long id) {
+        Article article = articleService.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
+        articleService.deleteArticle(article);
     }
 }
