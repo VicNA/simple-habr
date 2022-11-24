@@ -1,11 +1,11 @@
 insert into roles(role_name)
 values ('ROLE_USER'), ('ROLE_MODERATOR'), ('ROLE_ADMIN');
 
-insert into users(user_name, real_name, dt_birth, description)
-values ('First user', null, CAST(CAST('1990-10-12' AS date) as DATE),null),
-       ('bob', 'Петр Смирнов', CAST(CAST('1994-10-12' AS date) as DATE), 'Веселый, общительный'),
-       ('ali', null, null, null),
-       ('nil', 'Николай Петрович', null, null);
+insert into users(user_name, real_name, dt_birth, description, password)
+values ('First user', null, CAST(CAST('1990-10-12' AS date) as DATE),null,'$2a$10$3YLEE6BaSFyGE6jJWdu9zuh1GmgC4QgaUSN2NXGGkyiATh.SQvR5y'),
+       ('bob', 'Петр Смирнов', CAST(CAST('1994-10-12' AS date) as DATE), 'Веселый, общительный','$2a$10$3YLEE6BaSFyGE6jJWdu9zuh1GmgC4QgaUSN2NXGGkyiATh.SQvR5y'),
+       ('ali', null, null, null,null),
+       ('nil', 'Николай Петрович', null, null,null);
 
 insert into users_roles (user_id, role_id)
 values  (1, 2),
