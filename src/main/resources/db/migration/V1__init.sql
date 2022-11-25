@@ -60,7 +60,7 @@ create table comments(
      article_id int not null,
      dt_created timestamp not null default now(),
      CONSTRAINT comments_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id),
-     CONSTRAINT comments_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id) ON DELETE CASCADE
+     CONSTRAINT comments_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id)
 );
 
 
@@ -70,5 +70,5 @@ create table likes(
     article_id int not null,
     dt_created timestamp not null default now(),
     CONSTRAINT likes_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id),
-    CONSTRAINT likes_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id) ON DELETE CASCADE
+    CONSTRAINT likes_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id)
 );
