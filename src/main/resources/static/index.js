@@ -105,6 +105,7 @@
         }
     }
 })();
+
 angular
     .module('HabrApp')
     .controller(
@@ -122,7 +123,8 @@ angular
                 {
                     id: -1,
                     name: "Все категории"
-                };
+                }
+            ;
             var path;
 
             $rootScope.category = defaultCategory;

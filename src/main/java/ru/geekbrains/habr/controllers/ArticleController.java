@@ -31,8 +31,15 @@ public class ArticleController {
         return articleService.findAllSortDescPage(page - 1).map(articleConverter::entityToDto);
     }
 
-    @GetMapping("/view/{id}")
-    public ArticleDto findById(@PathVariable Long id) {
+//    @GetMapping("/view/{id}")
+//    public ArticleDto findById(@PathVariable Long id) {
+//        Article article = articleService.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
+//
+//        return articleConverter.entityToDto(article);
+//    }
+    @GetMapping("/view")
+    public ArticleDto findById(@RequestParam Long id) {
         Article article = articleService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
 
