@@ -3,7 +3,7 @@
     <ul style="padding-left: 10px" ng-repeat="article in articles">
         <div class="row">
             <h4>
-                <a ng-click="setArticle($index)" href="#!/article" data-article-link=""
+                <a ng-click="setArticle(article.id)" href="#!/article" data-article-link=""
                    data-test-id="article-snippet-title-link" class="tm-article-snippet__title-link">
                     <span>{{article.title}}</span>
                 </a>
@@ -11,7 +11,7 @@
 
             <div>
                 <p>{{article.text}}</p>
-                <p><a class="btn" ng-click="setArticle($index)" href="#!/article">Дальше &raquo;</a></p>
+                <p><a class="btn" ng-click="setArticle(article.id)" href="#!/article">Дальше &raquo;</a></p>
             </div>
         </div>
         <hr>

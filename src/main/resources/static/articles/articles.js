@@ -12,42 +12,57 @@ angular
             const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
             const categoryPath = '/category';
-            var path;
+            var path = rootPath + articlesPath;
+
             $scope.currentPage = 1;
             totalPages = 1;
 
-            $rootScope.article = {
-                id: -1,
-                title: "Все статьи"
-            };
+            $rootScope.articleId = -1;
 
             $scope.setArticles = function (pageIndex) {
+                var urlParamData;
+
                 if (pageIndex != $scope.currentPage) {
-                                   $scope.currentPage = pageIndex;
+                    $scope.currentPage = pageIndex;
                 }
 
                 if($rootScope.category.id == -1) {
-                   path = rootPath + articlesPath + '?page=' + pageIndex;
+                    urlParamData =
+                        {
+                            "page": pageIndex
+                        }
+                    ;
                 } else {
-                   path = rootPath + articlesPath + categoryPath + '?id='+ $rootScope.category.id + '&page=' + pageIndex;
+                   path = path + categoryPath;
+                   urlParamData =
+                       {
+                            "id": $rootScope.category.id,
+                            "page": pageIndex
+                       }
+                   ;
                 }
 
                 $http
-                     .get(path)
-                     .then(
-                           function (response) {
-                           $scope.articles = response.data.content;
-                           totalPages = response.data.totalPages;
-                           $scope.paginationArray = $scope.generatePagesIndexes(1, totalPages);
-                           console.log(response);
-                           console.log($scope.articles);
-                }
-                     )
-                     ;
+                    .get(
+                        path,
+                        {
+                            params: urlParamData
+                        }
+                    )
+                    .then(
+                        function (response) {
+                            $scope.articles = response.data.content;
+                            totalPages = response.data.totalPages;
+                            $scope.paginationArray = $scope.generatePagesIndexes(1, totalPages);
+                            console.log(response);
+                            console.log($scope.articles);
+                        }
+                    )
+                ;
             }
 
             $scope.setArticle = function (index) {
-                 $rootScope.article = $scope.articles[index];
+                $rootScope.articleId = index;
             }
 
             $scope.generatePagesIndexes = function (startPage, endPage) {
