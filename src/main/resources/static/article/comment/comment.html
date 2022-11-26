@@ -1,0 +1,20 @@
+<div class="card border-top-0 border-bottom-0 border-end-0 rounded-0" style="width: 20rem;">
+    <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">{{comm.username}}</h6>
+        <p class="card-text">{{comm.text}}</p>
+        <small>{{comm.date}}</small>
+        <a ng-click="viewAnswer(comm.id)" class="card-link"
+           ng-show="viewAnswerPanel != comm.id" >Ответить</a>
+
+    <div class="form-floating" ng-show="viewAnswerPanel == comm.id">
+            <textarea class="form-control"  id="textarea"
+                      ng-model="comm.cont"></textarea>
+        <label for="textarea">Комментарий</label>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary" type="button"
+                    ng-click="addComment(article.id, comm.id, comm.cont)">Отправить</button>
+        </div>
+    </div>
+    <div ng-repeat="comm in comm.comments" ng-include="'article/comment/comment.html'"></div>
+    </div>
+</div>
