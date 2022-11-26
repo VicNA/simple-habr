@@ -31,10 +31,13 @@ public class AuthenticationController {
     @PostMapping("/authorization")
     public ResponseEntity<?> authentication(@RequestBody JwtRequest jwtRequest) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
         } catch (BadCredentialsException e) {
 
-            return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Некорректный логин или пароль"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(
+                    new AppError(HttpStatus.UNAUTHORIZED.value(), "Некорректный логин или пароль"),
+                    HttpStatus.UNAUTHORIZED);
         }
         UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
@@ -46,11 +49,15 @@ public class AuthenticationController {
     public ResponseEntity<?> registration(@RequestBody NewUserDto newUserDto) {
 
         if (!newUserDto.getPassword().equals(newUserDto.getConfirmPassword())) {
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(
+                    new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"),
+                    HttpStatus.BAD_REQUEST);
         }
 
         if (userService.findByUsername(newUserDto.getUsername()).isPresent()) {
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с таким именем уже существует"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(
+                    new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с таким именем уже существует"),
+                    HttpStatus.BAD_REQUEST);
         }
 
         User user = new User();
@@ -66,7 +73,9 @@ public class AuthenticationController {
 
     @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshToken(@RequestBody String tokenRequest) {
-        String tokenResponse = jwtTokenUtil.generateToken(tokenRequest);
+        UserDetails userDetails = userService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(tokenRequest));
+        String tokenResponse = jwtTokenUtil.generateToken(userDetails);
+        System.out.println(tokenRequest);
 
         return ResponseEntity.ok(new JwtResponse(tokenResponse));
     }

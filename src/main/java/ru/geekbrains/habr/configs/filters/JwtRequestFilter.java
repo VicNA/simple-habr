@@ -37,16 +37,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if(authHeader != null && authHeader.startsWith("Bearer ")){
             jwt = authHeader.substring(7);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(jwt);
-            }
-            catch (Exception ex){
-                System.out.println("Token is invalid: " + ex.getMessage());
-            }
+            username = jwtTokenUtil.getUsernameFromToken(jwt);
         }
 
         if((username != null) && (SecurityContextHolder.getContext().getAuthentication() == null)){
             UserDetails userDetails = userService.loadUserByUsername(username);
+
             if(jwtTokenUtil.validateToken(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());

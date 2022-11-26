@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ru.geekbrains.habr.entities.Role;
 
 
 import java.util.*;
@@ -40,19 +41,6 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public String generateToken(String token) {
-        getUsernameFromToken(token);
-        Date issuedDate = new Date();
-        Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);
-
-        return Jwts.builder()
-                .setClaims(getClaimsFromToken(token))
-                .setSubject(getUsernameFromToken(token))
-                .setIssuedAt(issuedDate)
-                .setExpiration(expiredDate)
-                .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret)))
-                .compact();
-    }
 
     public String getUsernameFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
@@ -68,6 +56,7 @@ public class JwtTokenUtil {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = getUsernameFromToken(token);
+
         if(username.isEmpty() || !username.equals(userDetails.getUsername())){
 
             return false;
@@ -78,7 +67,7 @@ public class JwtTokenUtil {
 
             return false;
         }
-
+        System.out.println(userDetails.getAuthorities().toString());
         return true;
     }
 

@@ -24,11 +24,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/api/v1/refreshToken").hasRole("USER")
-            .antMatchers("/api/v1/admin","/api/v1/admin/**").hasRole("ADMIN")
-            .antMatchers("/api/v1/articles/moderation","/api/v1/articles/moderation/**").hasRole("MODERATOR")
-            .antMatchers("/api/v1/**").permitAll();
+                .authorizeRequests()
+                .antMatchers("/api/v1/refreshToken").authenticated()
+                .antMatchers("/api/v1/admin","/api/v1/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/v1/articles/moderation","/api/v1/articles/moderation/**").hasRole("MODERATOR")
+                .antMatchers("/api/v1/**").permitAll();
 
         // для работы h2-console
         http.headers().frameOptions().disable();

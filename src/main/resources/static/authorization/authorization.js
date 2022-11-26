@@ -9,14 +9,13 @@ angular.module('HabrApp').controller('authorizationController', function ($scope
 
                     $scope.jwtResp.username = null;
                     $scope.jwtResp.password = null;
-                    $location.replace();
+
                     $location.path('/');
 
-
                 }, function failureCallback (response) {
-                                console.log(response);
-                                alert(response.data.message);
-                            });
+                    console.log(response);
+                    alert(response.data.message);
+                });
            }
         $scope.clearUser = function () {
             delete $localStorage.localUser;

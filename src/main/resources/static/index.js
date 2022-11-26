@@ -93,7 +93,9 @@
                     $http.defaults.headers.common.Authorization = '';
                 }
                 else {
-                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken', $localStorage.localUser.token)
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.localUser.token;
+                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken',
+                                                                        $localStorage.localUser.token)
                     .then(function (response) {
                         $localStorage.localUser.token = response.data.token;
                     });
@@ -172,7 +174,7 @@ angular
                 if ($scope.isUserLoggedIn) {
                 let roles = getRoles();
                     for (var i = 0; i < roles.length; i++) {
-                        if (roles[i] === 'ROLE_MODERATOR') {
+                        if (roles[i] == 'ROLE_MODERATOR') {
                     return true;
                         }
                     }
@@ -185,7 +187,7 @@ angular
                 if ($scope.isUserLoggedIn) {
                     let roles = getRoles();
                     for (var i = 0; i < roles.length; i++) {
-                        if (roles[i] === 'ROLE_ADMIN') {
+                        if (roles[i] == 'ROLE_ADMIN') {
 
                             return true;
                         }
