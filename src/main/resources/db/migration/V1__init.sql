@@ -49,8 +49,8 @@ create table article_to_category(
     article_id int,
     category_id int,
     primary key(article_id, category_id ),
-    CONSTRAINT ac_fk_category_id FOREIGN KEY(category_id) REFERENCES categories(category_id),
-    CONSTRAINT ac_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id)
+    CONSTRAINT ac_fk_category_id FOREIGN KEY(category_id) REFERENCES categories(category_id) on delete cascade,
+    CONSTRAINT ac_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id) on delete cascade
 );
 
 create table comments(
@@ -60,8 +60,8 @@ create table comments(
      article_id int not null,
      parent_comment_id int,
      dt_created timestamp not null default now(),
-     CONSTRAINT comments_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id),
-     CONSTRAINT comments_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id)
+     CONSTRAINT comments_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) on delete cascade,
+     CONSTRAINT comments_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id) on delete cascade
 );
 
 
@@ -70,6 +70,17 @@ create table likes(
     user_id int not null,
     article_id int not null,
     dt_created timestamp not null default now(),
-    CONSTRAINT likes_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id),
-    CONSTRAINT likes_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id)
+    CONSTRAINT likes_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) on delete cascade,
+    CONSTRAINT likes_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id) on delete cascade
 );
+
+create view article_total_likes_comments
+as
+select
+    a.article_id,
+    count(distinct l.like_id) as likes_total,
+    count(distinct c.comment_id) as comments_total
+from articles a
+         left join likes l on l.article_id = a.article_id
+         left join comments c on a.article_id = c.article_id
+group by a.article_id;

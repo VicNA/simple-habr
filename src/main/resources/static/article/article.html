@@ -3,6 +3,7 @@
         <a href="#!">К списку статей</a>
         <p>Статья: {{article.title}}</p>
         <p>{{article.text}}</p>
+        <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
         <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
     </ul>
 </div>
