@@ -21,8 +21,8 @@ public class ArticleConverter {
                 article.getStatus(),
                 article.getDtCreated(),
                 article.getDtPublished(),
-                null,
-                null);
+                article.getArticleTotal().getLikesTotal(),
+                article.getArticleTotal().getCommentsTotal());
     }
 
     // TODO Может стоит переименовать метод?
