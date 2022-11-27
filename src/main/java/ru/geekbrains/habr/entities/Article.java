@@ -48,4 +48,8 @@ public class Article {
     )
     private Collection<Category> categories;
 
+    @OneToOne
+    @JoinColumn(name = "article_id")
+    private ArticleTotal articleTotal;
+
 }
