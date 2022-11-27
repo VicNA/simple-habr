@@ -35,6 +35,4 @@ public class ArticleConverter {
                 article.getStatus().getName(),
                 article.getDtCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
-
-
 }
