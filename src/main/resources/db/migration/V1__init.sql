@@ -73,3 +73,16 @@ create table likes(
     CONSTRAINT likes_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) on delete cascade,
     CONSTRAINT likes_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id) on delete cascade
 );
+
+
+create view article_total_likes_comments
+as
+select
+    a.article_id,
+    count(distinct l.like_id) as likes_total,
+    count(distinct c.comment_id) as comments_total
+from articles a
+         left join likes l on l.article_id = a.article_id
+         left join comments c on a.article_id = c.article_id
+group by a.article_id;
+

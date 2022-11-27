@@ -82,11 +82,15 @@
                     </tr>
                     <tbody>
                     <tr ng-repeat="article in userArticles">
-                        <td><a ng-click="setArticle($index)" href="#!/article">{{article.title}}</a></td>
+                        <td>
+                            <a ng-click="setArticle($index)" href="#!/article">{{article.title}}</a>
+                            <br><span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
+                        </td>
                         <td>
                             <span>
                                 <div>
-                                    <a href="#!/edit-article/{{article.id}}" title="Редактирование статьи">✎</a>
+                                    <a href="#!/edit-article/{{article.id}}" title="Редактирование статьи"
+                                       style="text-decoration:none">✎</a>
                                 </div>
                                 <div>
                                     <a data-bs-toggle="modal" data-bs-target="#exampleModal" title="Удаление статьи"

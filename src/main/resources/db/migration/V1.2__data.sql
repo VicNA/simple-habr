@@ -30,6 +30,7 @@ insert into likes (user_id, article_id)
 values (1,1),
        (1,2),
        (2,1),
+       (3,1),
        (2,3),
        (2,4);
 
@@ -37,8 +38,9 @@ values (1,1),
 insert into comments (text, user_id, article_id)
 values ('Отличная статья', 1, 1),
        ('Статья не понравилась. Совсем', 1, 2),
-       ('татья не очень', 1 , 3),
-       ('Статья супер', 2 , 4);
+       ('Статья не очень', 1 , 3),
+       ('Статья супер', 2 , 4),
+       ('Потрясающе!!!', 1, 4);
 
 
 insert into article_to_category (article_id, category_id)
