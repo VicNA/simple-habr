@@ -3,7 +3,6 @@ package ru.geekbrains.habr.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.ArticleDto;
@@ -118,5 +117,13 @@ public class ArticleService {
                         return art;
                     }).get());
         }
+    }
+
+    public Long findTotalCommentsById(Long id) {
+        return articleRepository.countCommentsById(id);
+    }
+
+    public Long findTotalLikesById(Long id) {
+        return articleRepository.countLikesById(id);
     }
 }

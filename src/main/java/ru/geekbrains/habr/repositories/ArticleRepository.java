@@ -25,4 +25,10 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query("SELECT a FROM Article a JOIN a.status s WHERE s.name = :statusName")
     Page<Article> findAllByStatusNamePage(@Param("statusName") String statusName, Pageable pageRequest);
+
+    @Query(value="select count(1) from likes where article_id = :id", nativeQuery = true)
+    Long countLikesById(Long id);
+
+    @Query(value="select count(1) from comments where article_id = :id", nativeQuery = true)
+    Long countCommentsById(Long id);
 }

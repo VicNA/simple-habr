@@ -1,5 +1,6 @@
 package ru.geekbrains.habr.converters;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.geekbrains.habr.dtos.Article2Dto;
 import ru.geekbrains.habr.dtos.ArticleDto;
@@ -8,6 +9,7 @@ import ru.geekbrains.habr.entities.Article;
 import java.time.format.DateTimeFormatter;
 
 @Component
+@RequiredArgsConstructor
 public class ArticleConverter {
 
     public ArticleDto entityToDto(Article article){
@@ -18,7 +20,9 @@ public class ArticleConverter {
                 article.getUser(),
                 article.getStatus(),
                 article.getDtCreated(),
-                article.getDtPublished());
+                article.getDtPublished(),
+                null,
+                null);
     }
 
     // TODO Может стоит переименовать метод?
@@ -31,4 +35,6 @@ public class ArticleConverter {
                 article.getStatus().getName(),
                 article.getDtCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
+
+
 }

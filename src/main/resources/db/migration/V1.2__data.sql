@@ -29,12 +29,18 @@ values (2, 'Security Week 2243: кража паролей с помощью те
 insert into likes (user_id, article_id)
 values (1,1),
        (1,2),
-       (2,1);
+       (2,1),
+       (2,3),
+       (1,3),
+       (3,4);
 
 
 insert into comments (text, user_id, article_id)
 values ('Отличная статья', 1, 1),
-       ('Статья не понравилась. Совсем', 1, 2);
+       ('Статья не понравилась. Совсем', 1, 2),
+       ('Ерунда какая-то!', 1, 3),
+       ('Аффтар жжот!', 2, 4),
+       ('Потрясающе!!!', 1, 4);
 
 
 insert into article_to_category (article_id, category_id)

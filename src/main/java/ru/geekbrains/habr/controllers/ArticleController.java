@@ -50,11 +50,15 @@ public class ArticleController {
 
     @GetMapping("/username/{username}")
     public List<ArticleDto> findAllByUsername(@PathVariable String username) {
-        return articleService.findAllByUsername(username)
+      return articleService.findAllByUsername(username)
                 .stream()
                 .map(articleConverter::entityToDto)
+                .peek(i -> { i.setLikesTotal(articleService.findTotalLikesById(i.getId()));
+                            i.setCommentsTotal(articleService.findTotalCommentsById(i.getId()));
+                            })
                 .collect(Collectors.toList());
     }
+
 
     @PutMapping("/updatePublicFields")
     public void updatePublicFields(@RequestBody ArticleDto articleDto) {
@@ -91,5 +95,15 @@ public class ArticleController {
     public void updateStatus(@PathVariable(name = "id") Long articleId,
                              @RequestParam(name = "status") String statusName) {
         articleService.updateStatus(articleId, statusName);
+    }
+
+    @GetMapping("/likes/total/{id}")
+    public Long findTotalLikesById(@PathVariable Long id) {
+        return articleService.findTotalLikesById(id);
+    }
+
+    @GetMapping("/comments/total/{id}")
+    public Long findTotalCommentsById(@PathVariable Long id) {
+        return articleService.findTotalCommentsById(id);
     }
 }
