@@ -6,3 +6,19 @@
         <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
     </ul>
 </div>
+
+<div>
+    <p class="h4">Комментарии:</p>
+    <a ng-click="viewAnswer(0)" class="card-link" ng-show="viewAnswerPanel != 0">Написать свой комментарий</a>
+    <div class="form-floating" ng-show="viewAnswerPanel == 0">
+            <textarea class="form-control"  id="textarea"
+                      ng-model="comm.cont"></textarea>
+        <label for="textarea">Комментарий</label>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary" type="button"
+                    ng-click="addComment(article.id, null, comm.cont)">Отправить</button>
+        </div>
+    </div>
+</div>
+<div ng-repeat="comm in comments" ng-include="'article/comment/comment.html'"></div>
+

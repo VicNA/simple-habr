@@ -58,6 +58,7 @@ create table comments(
      text varchar(1000) not null,
      user_id int not null,
      article_id int not null,
+     parent_comment_id int,
      dt_created timestamp not null default now(),
      CONSTRAINT comments_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id),
      CONSTRAINT comments_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id)

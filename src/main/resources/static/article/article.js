@@ -12,6 +12,7 @@ angular
             const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
             const likesPath = 'api/v1/likes';
+            const commentsPath = 'api/v1/comments';
             const defaultArticle =
                 {
                     "id": -1,
@@ -27,7 +28,7 @@ angular
                     $scope.article = defaultArticle;
                 }
 
-                path = rootPath + articlesPath + "/view" + "/" +articleId;
+                path = rootPath + articlesPath + "/view" + "/" + articleId;
                 $http
                     .get(
                         path
@@ -35,6 +36,7 @@ angular
                     .then(
                         function (response) {
                             $scope.article = response.data;
+                            $scope.getListComments(articleId);
                         }
                     )
                 ;
@@ -57,6 +59,34 @@ angular
             }
 
             $scope.getArticle($rootScope.articleId);
+
+            $scope.getListComments = function(articleId) {
+               $http.get(rootPath + commentsPath + '/' + articleId)
+                   .then(function (response) {
+                       $scope.comments = response.data;
+                   });
+            }
+            $scope.addComment = function (articleId, commentId, text) {
+                let newComment = {};
+                newComment.text = text;
+                newComment.username = $localStorage.localUser.username;
+                newComment.articleId = articleId;
+
+                if(commentId != null){
+                    newComment.parentCommentId = commentId;
+                }
+
+                $http.post(rootPath + commentsPath + '/' + 'add', newComment)
+                .then(function successCallback (response) {
+
+                   $scope.getListComments(articleId);
+                   delete $scope.viewAnswerPanel;
+               });
+            }
+
+            $scope.viewAnswer = function(id){
+                $scope.viewAnswerPanel = id;
+            }
         }
     )
 ;
