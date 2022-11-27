@@ -138,4 +138,12 @@ public class ArticleService {
     public void deleteArticle(Article article) {
         articleRepository.delete(article);
     }
+
+    public Long findTotalCommentsById(Long id) {
+        return articleRepository.countCommentsById(id);
+    }
+
+    public Long findTotalLikesById(Long id) {
+        return articleRepository.countLikesById(id);
+    }
 }

@@ -17,4 +17,6 @@ public class ArticleDto {
     private Status status;
     private LocalDateTime dtCreated;
     private LocalDateTime dtPublished;
+    private Long likesTotal;
+    private Long commentsTotal;
 }

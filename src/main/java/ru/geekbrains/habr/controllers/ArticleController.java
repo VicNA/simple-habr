@@ -102,4 +102,14 @@ public class ArticleController {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
         articleService.deleteArticle(article);
     }
+
+    @GetMapping("/likes/total/{id}")
+    public Long findTotalLikesById(@PathVariable Long id) {
+        return articleService.findTotalLikesById(id);
+    }
+
+    @GetMapping("/comments/total/{id}")
+    public Long findTotalCommentsById(@PathVariable Long id) {
+        return articleService.findTotalCommentsById(id);
+    }
 }
