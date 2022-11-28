@@ -43,11 +43,11 @@ public class ArticleService {
         Specification<Article> spec = Specification.where(null);
 
         if (status != null) {
-            spec.and(ArticleSpecifcation.statusEquals(status));
+            spec = spec.and(ArticleSpecifcation.statusEquals(status));
         }
 
         if (titlePart != null) {
-            spec.and(ArticleSpecifcation.titleLike(titlePart));
+            spec = spec.and(ArticleSpecifcation.titleLike(titlePart));
         }
 
         return spec;
