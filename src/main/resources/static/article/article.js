@@ -76,7 +76,7 @@ angular
                     newComment.parentCommentId = commentId;
                 }
 
-                $http.post(rootPath + commentsPath + '/' + 'add', newComment)
+                $http.post(rootPath + commentsPath + '/add', newComment)
                 .then(function successCallback (response) {
 
                    $scope.getListComments(articleId);
@@ -85,7 +85,12 @@ angular
             }
 
             $scope.viewAnswer = function(id){
-                $scope.viewAnswerPanel = id;
+                if($localStorage.localUser){
+                    $scope.viewAnswerPanel = id;
+                } else {
+                    alert("Необходимо авторизоваться");
+                }
+
             }
         }
     )

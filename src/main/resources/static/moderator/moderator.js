@@ -1,5 +1,6 @@
 angular.module('HabrApp').controller('moderatorController', function($rootScope, $scope, $http, $localStorage) {
-    const contextPath = 'http://' + window.location.host + '/habr/api/v1/articles';
+    const contextPathArticle = 'http://' + window.location.host + '/habr/api/v1/articles';
+    const contextPathUser = 'http://' + window.location.host + '/habr/api/v1/user';
     $scope.curPageM = 1;
     totalPages = 1;
 
@@ -8,7 +9,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
            $scope.curPageM = pageIndex;
        }
 
-       $http.get(contextPath + '/moderation?page=' + pageIndex)
+       $http.get(contextPathArticle + '/moderation?page=' + pageIndex)
            .then(function successCallback (response) {
                $scope.articlesModeration = response.data.content;
                totalPages = response.data.totalPages;
@@ -20,7 +21,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
 
     $scope.updateStatus = function(articleId, statusName) {
         $http({
-            url: contextPath + '/moderation/' + articleId +  '/updateStatus',
+            url: contextPathArticle + '/moderation/' + articleId +  '/updateStatus',
             method: 'PUT',
             params: {
                 status: statusName
@@ -35,7 +36,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
         $rootScope.article = $scope.articlesModeration[index];
     }
 
-     $scope.generatePagesIndexesM = function (startPage, endPage) {
+    $scope.generatePagesIndexesM = function (startPage, endPage) {
          let arr = [];
          for (let i = startPage; i < endPage + 1; i++) {
              arr.push(i);
@@ -52,5 +53,16 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
          return ($scope.curPageM == totalPages) ? false : true;
      }
 
-    $scope.getArticlesModeration($scope.curPageM);
+    $scope.getArticlesModeration();
+
+    $scope.addBanUser = function(banUser) {
+        $http.post(contextPathUser + '/moderation/ban', banUser)
+               .then(function successCallback (response) {
+                  alert("Пользователь " + banUser.username + " забанен. Количество дней: " + banUser.daysBan    );
+                  delete $scope.banUser;
+              }, function failureCallback (response) {
+                      console.log(response);
+                      alert(response.data.message);
+              });
+    }
 });

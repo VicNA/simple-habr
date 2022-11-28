@@ -1,9 +1,11 @@
 package ru.geekbrains.habr.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,6 +31,10 @@ public class User {
 
     @Column(name = "description")
     private String description;
+
+    @CreationTimestamp
+    @Column(name = "date_ban")
+    private LocalDateTime dateBan;
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
