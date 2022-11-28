@@ -98,14 +98,14 @@ public class ArticleService {
     }
 
     /**
-     * Получает список статей указанного статуса
+     * Получает страницу статей указанного статуса
      *
      * @param status имя статуса
-     * @return Список статей
-     * @author Николаев Виктор
+     * @return Страницу статей
+     * @author Миронова Ирина
      */
-    public List<Article> findAllByStatus(String status) {
-        return articleRepository.findAllByStatusName(status);
+    public Page<Article> findAllByStatusPage(String status, int page) {
+        return articleRepository.findAllByStatusNamePage(status, PageRequest.of(page, SIZE_PAGE));
     }
 
     /**
@@ -132,6 +132,7 @@ public class ArticleService {
     /**
      * Удаляет статью
      *
+     * @param article - статья
      * @author Миронова Ирина
      */
     @Transactional

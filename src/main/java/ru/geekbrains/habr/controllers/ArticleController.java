@@ -11,9 +11,6 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.ArticleService;
 import ru.geekbrains.habr.services.StatusService;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
 @RequestMapping("/api/v1/articles")
 @RequiredArgsConstructor
@@ -85,9 +82,12 @@ public class ArticleController {
     }
 
     @GetMapping("/moderation")
-    public List<Article2Dto> findAllByStatus() {
-        return articleService.findAllByStatus("moderating").stream()
-                .map(articleConverter::entityTo2Dto).collect(Collectors.toList());
+    public Page<Article2Dto> findAllByStatusPage(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+        if (page < 1) {
+            page = 1;
+        }
+
+        return articleService.findAllByStatusPage("moderating", page - 1).map(articleConverter::entityTo2Dto);
     }
 
     @PutMapping("/moderation/{id}/updateStatus")
