@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.entities.Status;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
+import ru.geekbrains.habr.repositories.specifications.ArticleSpecifcation;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -32,9 +34,23 @@ public class ArticleService {
      * @return Страница статей
      * @author Миронова Ирина
      */
-    public Page<Article> findAllSortDescPage(int page) {
-        return articleRepository.findAllByStatusNamePage("published",
-                PageRequest.of(page, SIZE_PAGE, Sort.by("dtPublished").descending()));
+    public Page<Article> findAllPage(int page, String status, String titlePart, Sort sort) {
+        return articleRepository.findAll(createSpecByFilters(status, titlePart),
+                PageRequest.of(page, SIZE_PAGE, sort));
+    }
+
+    private Specification<Article> createSpecByFilters(String status, String titlePart) {
+        Specification<Article> spec = Specification.where(null);
+
+        if (status != null) {
+            spec.and(ArticleSpecifcation.statusEquals(status));
+        }
+
+        if (titlePart != null) {
+            spec.and(ArticleSpecifcation.titleLike(titlePart));
+        }
+
+        return spec;
     }
 
     public Optional<Article> findById(Long id) {

@@ -2,6 +2,8 @@ package ru.geekbrains.habr.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.ArticleConverter;
 import ru.geekbrains.habr.dtos.Article2Dto;
@@ -20,13 +22,17 @@ public class ArticleController {
     private final StatusService statusService;
 
     @GetMapping
-    public Page<ArticleDto> findAll(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
-
+    public Page<ArticleDto> findAll(
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
+            @RequestParam(required = false, name = "title") String title,
+            Sort sort
+    ) {
         if (page < 1) {
             page = 1;
         }
 
-        return articleService.findAllSortDescPage(page - 1).map(articleConverter::entityToDto);
+        return articleService.findAllPage(page - 1, "published", title, sort)
+                .map(articleConverter::entityToDto);
     }
 
     @GetMapping("/view/{id}")
