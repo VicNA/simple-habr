@@ -10,7 +10,7 @@ import ru.geekbrains.habr.dtos.UserBannedDto;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.entities.User;
-import ru.geekbrains.habr.enums.BaseRole;
+import ru.geekbrains.habr.services.enums.BaseRole;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.UserRepository;
 
@@ -71,7 +71,6 @@ public class UserService implements UserDetailsService {
      *
      * @param role Роль пользователя
      * @return Список пользователей
-     * @author Николаев Виктор
      */
     public List<User> findAllByRole(BaseRole role) {
         return userRepository.findAll(role.name());
@@ -82,7 +81,6 @@ public class UserService implements UserDetailsService {
      *
      * @param username Имя пользователя
      * @param baseRole Присваемая роль
-     * @author Николаев Виктор
      */
     @Transactional
     public void updateUserRole(String username, BaseRole baseRole) {

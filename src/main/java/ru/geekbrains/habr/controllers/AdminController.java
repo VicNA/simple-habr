@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.UserConverter;
 import ru.geekbrains.habr.dtos.ModeratorDto;
-import ru.geekbrains.habr.enums.BaseRole;
+import ru.geekbrains.habr.services.enums.BaseRole;
 import ru.geekbrains.habr.services.UserService;
 
 import java.util.List;
