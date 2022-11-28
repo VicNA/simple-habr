@@ -17,7 +17,6 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
                };
 
            }, function failureCallback (response) {
-               console.log(response);
                alert(response.data.message);
            });
     }
@@ -27,7 +26,6 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
           .then(function successCallback (response) {
               alert('Данные о пользователе сохранены');
           }, function failureCallback (response) {
-             console.log(response);
              alert(response.data.message);
              location.reload();
           });
@@ -43,9 +41,7 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
                    $scope.userArticles = response.data.content;
                    totalPages = response.data.totalPages;
                    $scope.paginationArrayLK = $scope.generatePagesIndexesLK(1, totalPages);
-                   console.log(response);
                }, function failureCallback (response) {
-                   console.log(response);
                    alert(response.data.message);
                });
     }

@@ -1,8 +1,22 @@
 <div class="container">
     <table class="table">
+        <br>
         <thead>
             Ожидающие статьи:
         </thead>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" ng-show="isPreviousPageM()">
+                    <button class="page-link" ng-click="getArticlesModeration(curPageM-1)"><<</button>
+                </li>
+                <li class="page-item" ng-repeat="pageIndex in paginationArrayM">
+                    <button class="page-link" ng-click="getArticlesModeration(pageIndex)">{{pageIndex}}</button>
+                </li>
+                <li class="page-item" ng-show="isNextPageM()">
+                    <button class="page-link" ng-click="getArticlesModeration(curPageM + 1)">>></button>
+                </li>
+            </ul>
+        </nav>
         <tbody>
             <tr ng-repeat="article in articlesModeration">
                 <td><a href="#!/article" ng-click="setArticle($index)">{{article.title}}</a></td>
