@@ -53,7 +53,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
          return ($scope.curPageM == totalPages) ? false : true;
      }
 
-    $scope.getArticlesModeration();
+    $scope.getArticlesModeration($scope.curPageM);
 
     $scope.addBanUser = function(banUser) {
         $http.post(contextPathUser + '/moderation/ban', banUser)

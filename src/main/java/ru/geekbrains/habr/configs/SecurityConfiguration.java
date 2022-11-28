@@ -36,8 +36,7 @@ public class SecurityConfiguration {
                 .antMatchers("/api/v1/comments/add").authenticated()
                 .antMatchers("/api/v1/refreshToken").authenticated()
                 .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/v1/user/moderation/**").hasRole("MODERATOR")
-                .antMatchers("/api/v1/article/moderation/**").hasRole("MODERATOR")
+                .antMatchers("/**/moderation/**").hasRole("MODERATOR")
                 .antMatchers("/api/v1/authorization").not().authenticated()
                 .antMatchers("/api/v1/**").permitAll()
 
