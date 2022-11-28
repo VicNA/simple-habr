@@ -73,7 +73,9 @@ public class ArticleControllerTest {
                 article.getUser(),
                 article.getStatus(),
                 article.getDtCreated(),
-                article.getDtPublished()
+                article.getDtPublished(),
+                article.getArticleTotal().getLikesTotal(),
+                article.getArticleTotal().getCommentsTotal()
         );
 
         Article article2 = new Article();
@@ -93,7 +95,9 @@ public class ArticleControllerTest {
                 article2.getUser(),
                 article2.getStatus(),
                 article2.getDtCreated(),
-                article2.getDtPublished()
+                article2.getDtPublished(),
+                article.getArticleTotal().getLikesTotal(),
+                article.getArticleTotal().getCommentsTotal()
         );
 
         List<Article> articleList = new ArrayList<>(List.of(article, article2));
