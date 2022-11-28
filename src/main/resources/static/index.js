@@ -81,8 +81,9 @@
             ;
         }
 
-    function run($rootScope, $http, $localStorage) {
+    function run($http, $localStorage) {
         if ($localStorage.localUser) {
+            $http.defaults.headers.common.Authorization = '';
             try {
                 let jwt = $localStorage.localUser.token;
                 let payload = JSON.parse(atob(jwt.split('.')[1]));
@@ -90,20 +91,24 @@
                 if (currentTime > payload.exp) {
                     console.log("Token is expired!!!");
                     delete $localStorage.localUser;
-                    $http.defaults.headers.common.Authorization = '';
                 }
                 else {
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.localUser.token;
-                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken',
-                                                                        $localStorage.localUser.token)
-                    .then(function (response) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + jwt;
+                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken', jwt)
+                    .then(function successCallback (response) {
                         $localStorage.localUser.token = response.data.token;
+                        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.localUser.token;
+                    }, function failureCallback (response) {
+                         console.log(response);
+                         alert(response.data.message);
+                        delete $localStorage.localUser;
+                        $http.defaults.headers.common.Authorization = '';
                     });
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.localUser.token;
                 }
             } catch (e) {
                console.log('Ошибка обновления токена' + e);
             }
+
         }
     }
 })();

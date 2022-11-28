@@ -75,7 +75,6 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshToken(@RequestBody String tokenRequest) {
         UserDetails userDetails = userService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(tokenRequest));
         String tokenResponse = jwtTokenUtil.generateToken(userDetails);
-        System.out.println(tokenRequest);
 
         return ResponseEntity.ok(new JwtResponse(tokenResponse));
     }

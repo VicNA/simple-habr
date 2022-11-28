@@ -1,8 +1,9 @@
 angular.module('HabrApp').controller('moderatorController', function($rootScope, $scope, $http, $localStorage) {
-    const contextPath = 'http://' + window.location.host + '/habr/api/v1/articles';
+    const contextPathArticle = 'http://' + window.location.host + '/habr/api/v1/articles';
+    const contextPathUser = 'http://' + window.location.host + '/habr/api/v1/user';
 
     $scope.getArticlesModeration = function() {
-       $http.get(contextPath + '/moderation')
+       $http.get(contextPathArticle + '/moderation')
            .then(function(response) {
                $scope.articlesModeration = response.data;
            });
@@ -10,7 +11,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
 
     $scope.updateStatus = function(articleId, statusName) {
         $http({
-            url: contextPath + '/moderation/' + articleId +  '/updateStatus',
+            url: contextPathArticle + '/moderation/' + articleId +  '/updateStatus',
             method: 'PUT',
             params: {
                 status: statusName
@@ -26,4 +27,15 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
     }
 
     $scope.getArticlesModeration();
+
+    $scope.addBanUser = function(banUser) {
+        $http.post(contextPathUser + '/moderation/ban', banUser)
+               .then(function successCallback (response) {
+                  alert("Пользователь " + banUser.username + " забанен. Количество дней: " + banUser.daysBan    );
+                  delete $scope.banUser;
+              }, function failureCallback (response) {
+                      console.log(response);
+                      alert(response.data.message);
+              });
+    }
 });

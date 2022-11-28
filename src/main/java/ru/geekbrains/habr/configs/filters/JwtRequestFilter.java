@@ -15,8 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +24,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -35,22 +32,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        if(authHeader != null && authHeader.startsWith("Bearer ")){
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             username = jwtTokenUtil.getUsernameFromToken(jwt);
         }
 
-        if((username != null) && (SecurityContextHolder.getContext().getAuthentication() == null)){
+        if ((username != null) && (SecurityContextHolder.getContext().getAuthentication() == null)) {
             UserDetails userDetails = userService.loadUserByUsername(username);
-
-            if(jwtTokenUtil.validateToken(jwt, userDetails)){
+            if (jwtTokenUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                        userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+                        userDetails, null, userDetails.getAuthorities());
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(token);
             }
         }
-
         filterChain.doFilter(request, response);
     }
 

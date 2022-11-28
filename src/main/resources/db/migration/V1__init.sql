@@ -9,7 +9,8 @@ create table users(
     real_name varchar(40),
     password varchar(150),
     dt_birth timestamp null,
-    description varchar(150)
+    description varchar(150),
+    date_ban timestamp null
 );
 
 create table users_roles

@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.habr.dtos.UserBannedDto;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.entities.User;
@@ -14,10 +15,11 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,9 +50,16 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUsername(String username) {
-        User user = findByUsername(username).orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден",
-                username)));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        User user = findByUsername(username).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден", username)));
+
+        if(user.getDateBan()!=null && user.getDateBan().isAfter(LocalDateTime.now())){
+            String dateBan = user.getDateBan().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm"));
+
+            throw new ResourceNotFoundException(String.format("Пользователь '%s' забанен до %s", username,dateBan));
+        }
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
@@ -102,4 +111,13 @@ public class UserService implements UserDetailsService {
         });
     }
 
+    public void banUser(UserBannedDto userBannedDto) {
+        User user = findByUsername(userBannedDto.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден",
+                        userBannedDto.getUsername())));
+
+        user.setDateBan(LocalDateTime.now().plusDays(userBannedDto.daysBan));
+
+        userRepository.save(user);
+    }
 }

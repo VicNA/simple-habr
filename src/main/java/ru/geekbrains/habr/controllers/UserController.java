@@ -3,6 +3,7 @@ package ru.geekbrains.habr.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.UserConverter;
+import ru.geekbrains.habr.dtos.UserBannedDto;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
@@ -31,4 +32,10 @@ public class UserController {
         userService.updateUserInfoFromDto(userDto);
     }
 
+    @PostMapping("/moderation/ban")
+    public void banUser(@RequestBody UserBannedDto userBannedDto) {
+        System.out.println(userBannedDto);
+        userService.banUser(userBannedDto);
+
+    }
 }
