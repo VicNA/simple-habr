@@ -73,6 +73,12 @@
                         controller: 'adminController'
                     }
                 )
+                .when(
+                    '/help',
+                    {
+                        templateUrl: 'help/help.html'
+                    }
+                )
                 .otherwise(
                     {
                         redirectTo: '/'
