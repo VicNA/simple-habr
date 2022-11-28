@@ -76,8 +76,7 @@
                 .when(
                     '/help',
                     {
-                        templateUrl: 'help/help.html'//,
-//                        controller: 'registrationController'
+                        templateUrl: 'help/help.html'
                     }
                 )
                 .otherwise(
