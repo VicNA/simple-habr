@@ -86,8 +86,7 @@ public class UserService implements UserDetailsService {
     public void updateUserRole(String username, UserRole userRole) {
         userRepository.findByUsername(username).ifPresent(user -> {
 
-            // Каждая последующая роль включает в себя предыдущие роли
-            if (userRole.ordinal() + 1 == user.getRoles().size()) return;
+            if (userRole.getRoles().size() == user.getRoles().size()) return;
 
             List<Role> roles = new ArrayList<>();
 
