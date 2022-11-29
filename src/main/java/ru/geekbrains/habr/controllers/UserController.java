@@ -34,7 +34,6 @@ public class UserController {
 
     @PostMapping("/moderation/ban")
     public void banUser(@RequestBody UserBannedDto userBannedDto) {
-        System.out.println(userBannedDto);
         userService.banUser(userBannedDto);
 
     }
