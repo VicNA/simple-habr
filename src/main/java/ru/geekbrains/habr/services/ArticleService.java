@@ -12,6 +12,7 @@ import ru.geekbrains.habr.entities.Status;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
 import ru.geekbrains.habr.repositories.specifications.ArticleSpecifcation;
+import ru.geekbrains.habr.services.enums.ArticleStatus;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -34,16 +35,17 @@ public class ArticleService {
      * @return Страница статей
      * @author Миронова Ирина
      */
-    public Page<Article> findAllPage(int page, String status, String titlePart, Sort sort) {
-        return articleRepository.findAll(createSpecByFilters(status, titlePart),
+    public Page<Article> findAllPage(int page, ArticleStatus status, String titlePart, Sort sort) {
+        return articleRepository.findAll(
+                createSpecByFilters(status, titlePart),
                 PageRequest.of(page, SIZE_PAGE, sort));
     }
 
-    private Specification<Article> createSpecByFilters(String status, String titlePart) {
+    private Specification<Article> createSpecByFilters(ArticleStatus status, String titlePart) {
         Specification<Article> spec = Specification.where(null);
 
         if (status != null) {
-            spec = spec.and(ArticleSpecifcation.statusEquals(status));
+            spec = spec.and(ArticleSpecifcation.statusEquals(status.toString()));
         }
 
         if (titlePart != null) {

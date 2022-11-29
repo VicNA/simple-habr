@@ -12,6 +12,7 @@ import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.ArticleService;
 import ru.geekbrains.habr.services.StatusService;
+import ru.geekbrains.habr.services.enums.ArticleStatus;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -31,7 +32,7 @@ public class ArticleController {
             page = 1;
         }
 
-        return articleService.findAllPage(page - 1, "published", title, sort)
+        return articleService.findAllPage(page - 1, ArticleStatus.PUBLISHED, title, sort)
                 .map(articleConverter::entityToDto);
     }
 
