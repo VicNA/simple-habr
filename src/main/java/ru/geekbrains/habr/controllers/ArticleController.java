@@ -21,6 +21,7 @@ public class ArticleController {
 
     @GetMapping
     public Page<ArticleDto> findAll(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+
         if (page < 1) {
             page = 1;
         }
@@ -37,8 +38,10 @@ public class ArticleController {
     }
 
     @GetMapping("/category")
-    public Page<ArticleDto> findAllByCategoryPage(@RequestParam(value = "id", required = true) Long id,
-                                                  @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+    public Page<ArticleDto> findAllByCategoryPage(
+            @RequestParam(value = "id", required = true) Long id,
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+
         if (page < 1) {
             page = 1;
         }
@@ -47,8 +50,10 @@ public class ArticleController {
     }
 
     @GetMapping("/user")
-    public Page<ArticleDto> findAllByUsernamePage(@RequestParam(value = "username", required = true) String username,
-                                                  @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+    public Page<ArticleDto> findAllByUsernamePage(
+            @RequestParam(value = "username", required = true) String username,
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+
         if (page < 1) {
             page = 1;
         }
@@ -82,12 +87,15 @@ public class ArticleController {
     }
 
     @GetMapping("/moderation")
-    public Page<Article2Dto> findAllByStatusPage(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+    public Page<Article2Dto> findAllByStatusPage(
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+
         if (page < 1) {
             page = 1;
         }
 
-        return articleService.findAllByStatusPage("moderating", page - 1).map(articleConverter::entityTo2Dto);
+        return articleService.findAllByStatusPage("moderating", page - 1)
+                .map(articleConverter::entityTo2Dto);
     }
 
     @PutMapping("/moderation/{id}/updateStatus")

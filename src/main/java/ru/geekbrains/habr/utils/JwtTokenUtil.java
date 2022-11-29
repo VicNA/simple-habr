@@ -67,7 +67,6 @@ public class JwtTokenUtil {
 
             return false;
         }
-        System.out.println(userDetails.getAuthorities().toString());
         return true;
     }
 

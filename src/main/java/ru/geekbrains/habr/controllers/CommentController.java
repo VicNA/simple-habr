@@ -13,6 +13,12 @@ import ru.geekbrains.habr.services.CommentService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Контроллер REST API комметариев
+ *
+ * @author Рожко Алексей
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api/v1/comments")
 @RequiredArgsConstructor
@@ -20,6 +26,12 @@ import java.util.stream.Collectors;
 public class CommentController {
     private final CommentService commentService;
 
+    /**
+     * Возвращает комментарии статьи
+     *
+     * @param  articleId - id статьи
+     * @return Список dto комментариев статьи
+     */
     @GetMapping("/{articleId}")
     public List<CommentDto> findAllByArticle(@PathVariable Long articleId) {
         List<Comment> comments = commentService.findByArticleIdOnlyParentComments(articleId);
@@ -28,9 +40,14 @@ public class CommentController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Добавляет новый комментарий к статье
+     *
+     * @param newCommentDto Данные нового комметария
+     * @return ResponseEntity с статусом 200
+     */
     @PostMapping("/add")
     public ResponseEntity<?> addComment(@RequestBody NewCommentDto newCommentDto) {
-        System.out.println(newCommentDto.toString());
         commentService.add(newCommentDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
