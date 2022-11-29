@@ -1,7 +1,9 @@
 angular.module('HabrApp').controller('moderatorController', function($rootScope, $scope, $http, $localStorage) {
     const contextPath = 'http://' + window.location.host + '/habr/api/v1/articles';
+    const contextPathNotification = 'http://' + window.location.host + '/habr/api/v1/notifications';
     $scope.curPageM = 1;
     totalPages = 1;
+    var notification;
 
     $scope.getArticlesModeration = function(pageIndex) {
        if (pageIndex != $scope.curPageM) {
@@ -18,7 +20,19 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
            });
     }
 
-    $scope.updateStatus = function(articleId, statusName) {
+    $scope.updateStatus = function(articleId, recipient, statusName) {
+        notification = {
+                        "recipient": recipient,
+                        "sender": $localStorage.localUser.username,
+                        "text": "Ваша статья опубликована"
+                       };
+
+        $http
+            .post(contextPathNotification + "/create", notification)
+            .then(
+            function (response) {}
+        )
+
         $http({
             url: contextPath + '/moderation/' + articleId +  '/updateStatus',
             method: 'PUT',
@@ -51,6 +65,8 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
      $scope.isNextPageM = function () {
          return ($scope.curPageM == totalPages) ? false : true;
      }
+
+
 
     $scope.getArticlesModeration($scope.curPageM);
 });
