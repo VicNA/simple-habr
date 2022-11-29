@@ -29,12 +29,18 @@ public class ArticleService {
     private final StatusService statusService;
 
     /**
-     * Получает страницу опубликованных статей, отсортированных
-     * по дате публикации в обратном порядке (сначала последние)
+     * Получает страницу опубликованных статей с указанной сортировкой
      *
+     * @param page Номер старницы
+     * @param status Статус статей
      * @return Страница статей
-     * @author Миронова Ирина
      */
+    public Page<Article> findAllPage(int page, ArticleStatus status, Sort sort) {
+        return articleRepository.findAll(
+                ArticleSpecifcation.statusEquals(status.toString()),
+                PageRequest.of(page, SIZE_PAGE, sort));
+    }
+
     public Page<Article> findAllPage(int page, ArticleStatus status, String titlePart, Sort sort) {
         return articleRepository.findAll(
                 createSpecByFilters(status, titlePart),

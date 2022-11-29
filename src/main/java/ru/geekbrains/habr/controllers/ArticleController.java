@@ -22,17 +22,26 @@ public class ArticleController {
     private final ArticleConverter articleConverter;
     private final StatusService statusService;
 
-    @GetMapping
+    private Integer getPage(Integer value) {
+        return (value < 1 ? 1 : value) - 1;
+    }
+
+    @GetMapping(params = {"page", "sort"})
+    public Page<ArticleDto> findAll(
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
+            Sort sort
+    ) {
+        return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED, sort)
+                .map(articleConverter::entityToDto);
+    }
+
+    @GetMapping(params = {"page", "title", "sort"})
     public Page<ArticleDto> findAll(
             @RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
             @RequestParam(required = false, name = "title") String title,
             Sort sort
     ) {
-        if (page < 1) {
-            page = 1;
-        }
-
-        return articleService.findAllPage(page - 1, ArticleStatus.PUBLISHED, title, sort)
+        return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED, title, sort)
                 .map(articleConverter::entityToDto);
     }
 
