@@ -28,6 +28,10 @@
                     <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.cyrillicName}}</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/search">Поиск</a>
+                </li>
+
                 <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <a class="nav-link" href="#!/authorization">Авторизация</a>
                 </li>
@@ -62,6 +66,7 @@
     <script src="edit-article/edit-article.js"></script>
     <script src="profile/profile.js"></script>
     <script src="moderator/moderator.js"></script>
+    <script src="search/search.js"></script>
     <script src="article/article.js"></script>
     <script src="articles/articles.js"></script>
     <script src="authorization/authorization.js"></script>

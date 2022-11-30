@@ -1,0 +1,59 @@
+<div class="container">
+
+  <div class="row">
+    <form class="d-flex my-3">
+      <input id="inputTitleSearch" class="form-control" type="search" placeholder="Поиск" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit" ng-click="loadArticles()">Найти</button>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <select id="selectSearchSort" class="form-select" aria-label="Default select example">
+        <option value="dtPublished">по дате</option>
+        <option>по популярности</option>
+      </select>
+    </div>
+    <div class="col">
+      <div class="form-check form-check-inline">
+        <input id="radioDesc" name="radioSort" type="radio" class="form-check-input" value="desc" checked>
+        <label class="form-check-label" for="radioDesc">сначала свежие</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input id="radioAsc" name="radioSort" type="radio" class="form-check-input" value="asc">
+        <label class="form-check-label" for="radioAsc">сначала старые</label>
+      </div>
+    </div>
+  </div>
+
+  <ul style="padding-left: 10px" ng-repeat="article in articles">
+    <div class="row">
+      <h4>
+        <a ng-click="setArticle($index)" href="#!/article" data-article-link=""
+           data-test-id="article-snippet-title-link" class="tm-article-snippet__title-link">
+          <span>{{article.title}}</span>
+        </a>
+      </h4>
+
+      <div>
+        <p>{{article.text}}</p>
+        <p><a class="btn" ng-click="setArticle($index)" href="#!/article">Дальше &raquo;</a></p>
+      </div>
+    </div>
+    <hr>
+  </ul>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item" ng-show="isPreviousPage()">
+        <button class="page-link" ng-click="setArticles(currentPage-1)">Предыдущая стр</button>
+      </li>
+      <li class="page-item" ng-repeat="pageIndex in paginationArray">
+        <button class="page-link" ng-click="setArticles(pageIndex)">{{pageIndex}}</button>
+      </li>
+      <li class="page-item" ng-show="isNextPage()">
+        <button class="page-link" ng-click="setArticles(currentPage + 1)">Следующая стр</button>
+      </li>
+    </ul>
+  </nav>
+</div>
