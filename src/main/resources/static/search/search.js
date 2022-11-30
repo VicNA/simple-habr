@@ -6,21 +6,26 @@ angular.module('HabrApp').controller('searchController', function($rootScope, $s
 //            $scope.currentPage = pageIndex;
 //        }
 
-        var title = document.getElementById('inputTitleSearch').value
-        var sort = document.getElementById('selectSearchSort').value +
-            ',' + document.querySelector('input[name="radioSort"]:checked').value
+        var title = document.getElementById('inputTitleSearch').value;
 
-        $http({
-            url: contextPath,
-            method: 'GET',
-            params: {
-                page: pageIndex,
-                title: title,
-                sort: sort
-            }
-        }).then(function(response) {
-               $scope.articles = response.data;
-           });
+        if (title.length > 0) {
+            var sort = document.getElementById('selectSearchSort').value +
+                ',' + document.querySelector('input[name="radioSort"]:checked').value;
+
+            $http({
+                url: contextPath,
+                method: 'GET',
+                params: {
+                    page: pageIndex,
+                    title: title,
+                    sort: sort
+                }
+            }).then(function(response) {
+                   $scope.articles = response.data;
+            });
+        } else {
+            $scope.articles = []
+        }
     }
 
 //    $scope.updateStatus = function(articleId, statusName) {

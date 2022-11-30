@@ -13,6 +13,6 @@ public class ArticleSpecifcation {
     public static Specification<Article> titleLike(String titlePart) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("title")), String.format("%%%s%%", titlePart.toLowerCase()));
+                        criteriaBuilder.lower(root.get("title")), String.format("%%%s%%", titlePart).toLowerCase());
     }
 }
