@@ -7,7 +7,8 @@ angular
             $scope,
             $http,
             $location,
-            $localStorage
+            $localStorage,
+            $sessionStorage
         ) {
             const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
@@ -17,7 +18,9 @@ angular
             $scope.currentPage = 1;
             totalPages = 1;
 
-            $rootScope.articleId = -1;
+            if(!$sessionStorage.articleId) {
+                $sessionStorage.articleId = -1;
+            }
 
             $scope.setArticles = function (pageIndex) {
                 var urlParamData;
@@ -62,7 +65,7 @@ angular
             }
 
             $scope.setArticle = function (index) {
-                $rootScope.articleId = index;
+                $sessionStorage.articleId = index;
             }
 
             $scope.generatePagesIndexes = function (startPage, endPage) {
