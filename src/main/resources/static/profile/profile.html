@@ -11,9 +11,15 @@
             </div>
             <div class="col-sm" align="middle">
                 <form action="#!/create-article/">
-                    <button id="orderSubmit777" class="btn btn-outline-info btn-sm"
-                            style="margin-left: 10px;" type="submit">Создать новую статью
-                    </button>
+                    <span>
+                        <button id="orderSubmit777" class="btn btn-outline-info btn-sm"
+                                style="margin-left: 10px;" type="submit">Создать новую статью
+                        </button>
+                        <span ng-if="isNotifications()" data-bs-toggle="modal" data-bs-target="#notificationModal"
+                              title="Уведомления"
+                              ng-click="">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp🔔{{countNotifications}}</span>
+                        <span ng-if="!isNotifications()">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp🔕</span>
+                    </span>
                 </form>
             </div>
         </div>
@@ -31,14 +37,18 @@
                 <strong>Статьи:</strong>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item" ng-show="isPreviousPageLK()">
-                            <button class="page-link" ng-click="getUserArticless(curPage-1)"><<</button>
+                        <li class="page-item">
+                            <button class="page-link" id="previewBtnLK" ng-disabled="!isPreviousPageLK()"
+                                    ng-click="getUserArticles(curPage-1)"><<
+                            </button>
                         </li>
                         <li class="page-item" ng-repeat="pageIndex in paginationArrayLK">
                             <button class="page-link" ng-click="getUserArticles(pageIndex)">{{pageIndex}}</button>
                         </li>
-                        <li class="page-item" ng-show="isNextPageLK()">
-                            <button class="page-link" ng-click="getUserArticles(curPage + 1)">>></button>
+                        <li class="page-item">
+                            <button class="page-link" id="nextBtnLK" ng-disabled="!isNextPageLK()"
+                                    ng-click="getUserArticles(curPage + 1)">>>
+                            </button>
                         </li>
                     </ul>
                 </nav>
@@ -109,7 +119,7 @@
         </div>
     </div>
 
-    <!-- Модальное окно -->
+    <!-- Модальное окно для удаления статьи-->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -127,6 +137,35 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно для вывода оповещений-->
+    <div class="modal fade" id="notificationModal" tabindex="-1" width="70" aria-labelledby="notificationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Уведомления</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-success table-striped">
+                        <tr ng-repeat="n in notifications">
+                            <td>🔔</td>
+                            <td>{{n.text}}</td>
+                            <td>{{n.dtCreated}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="deleteNotifications()">Удалить все
+                        уведомления
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <br>
     <br>
     <br>
