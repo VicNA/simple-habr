@@ -101,6 +101,7 @@ public class ArticleController {
     @PutMapping("/moderation/{id}/updateStatus")
     public void updateStatus(@PathVariable(name = "id") Long articleId,
                              @RequestParam(name = "status") String statusName) {
+
         articleService.updateStatus(articleId, statusName);
     }
 

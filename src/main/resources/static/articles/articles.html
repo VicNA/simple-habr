@@ -10,7 +10,8 @@
             </h4>
 
             <h6>
-                <span>Автор: </span> <span><strong> <em>{{article.user.username}}</em></strong></span>&nbsp;&nbsp;&nbsp;   <span></span>
+                <span>Автор: </span> <span><strong> <em>{{article.user.username}}</em></strong></span>&nbsp;&nbsp;&nbsp;
+                <span></span>
             </h6>
 
             <div>
@@ -24,14 +25,16 @@
 
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item" ng-show="isPreviousPage()">
-                <button class="page-link" ng-click="setArticles(currentPage-1)"><<</button>
+            <li class="page-item">
+                <button class="page-link" ng-disabled="!isPreviousPage()" ng-click="setArticles(currentPage-1)"><<
+                </button>
             </li>
             <li class="page-item" ng-repeat="pageIndex in paginationArray">
                 <button class="page-link" ng-click="setArticles(pageIndex)">{{pageIndex}}</button>
             </li>
-            <li class="page-item" ng-show="isNextPage()">
-                <button class="page-link" ng-click="setArticles(currentPage + 1)">>></button>
+            <li class="page-item">
+                <button class="page-link" ng-disabled="!isNextPage()" ng-click="setArticles(currentPage + 1)">>>
+                </button>
             </li>
         </ul>
     </nav>

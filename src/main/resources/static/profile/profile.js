@@ -1,8 +1,9 @@
 angular.module('HabrApp').controller('profileController', function ($rootScope,$scope, $http, $localStorage, $location) {
     const contextPath = 'http://' + window.location.host + '/habr/';
-    const user1 =$localStorage.localUser.username;
+    const user1 = $localStorage.localUser.username;
     $scope.curPage = 1;
     totalPages = 1;
+    $scope.countNotifications = 0;
 
     $scope.getUserInfo = function (){
        $http.get(contextPath + 'api/v1/user/' + user1)
@@ -36,11 +37,21 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
                 $scope.curPage = pageIndex;
             }
 
+            if (pageIndex > totalPages) {
+                pageIndex = totalPages;
+                curPage = totalPages;
+            }
+
            $http.get(contextPath + 'api/v1/articles/user?username=' + user1 + '&page=' + pageIndex)
                .then(function successCallback (response) {
                    $scope.userArticles = response.data.content;
                    totalPages = response.data.totalPages;
                    $scope.paginationArrayLK = $scope.generatePagesIndexesLK(1, totalPages);
+
+                   if ($scope.paginationArrayLK.length == 0){
+                       document.getElementById("previewBtnLK").hidden = "true";
+                       document.getElementById("nextBtnLK").hidden = "true";
+                   }
                }, function failureCallback (response) {
                    alert(response.data.message);
                });
@@ -60,7 +71,7 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
     }
 
     $scope.isNextPageLK = function () {
-        return ($scope.curPage == totalPages) ? false : true;
+        return ($scope.curPage >= totalPages) ? false : true;
     }
 
 
@@ -85,7 +96,35 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
         }
     }
 
+    $scope.getCountNotifications = function (){
+        $http.get(contextPath + 'api/v1/notifications/count?username=' + user1)
+             .then(function successCallback (response) {
+                 $scope.countNotifications = response.data;
+             }, function failureCallback (response) {
+                 console.log(response);
+        });
+    }
+
+    $scope.getNotifications = function () {
+            $http.get(contextPath + 'api/v1/notifications?username=' + user1).then(function (response) {
+                $scope.notifications = response.data;
+            });
+    }
+
+    $scope.deleteNotifications = function (){
+        $http.delete(contextPath + 'api/v1/notifications?username=' + user1)
+            .then(function successCallback (response) {
+                setTimeout(() => $("#notificationModal [data-bs-dismiss=modal]").trigger({ type: "click" }), 0);
+                $scope.getCountNotifications();
+        });
+    }
+
+    $scope.isNotifications = function () {
+        return ($scope.countNotifications == 0) ? false : true;
+    }
 
     $scope.getUserInfo();
     $scope.getUserArticles($scope.curPage);
+    $scope.getCountNotifications();
+    $scope.getNotifications();
 });
