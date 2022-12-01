@@ -46,13 +46,13 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination">
       <li class="page-item" ng-show="isPreviousPage()">
-        <button class="page-link" ng-click="setArticles(currentPage-1)">Предыдущая стр</button>
+        <button class="page-link" ng-click="loadArticles(currentPage - 1)">Предыдущая стр</button>
       </li>
       <li class="page-item" ng-repeat="pageIndex in paginationArray">
-        <button class="page-link" ng-click="setArticles(pageIndex)">{{pageIndex}}</button>
+        <button class="page-link" ng-click="loadArticles(pageIndex)">{{pageIndex}}</button>
       </li>
       <li class="page-item" ng-show="isNextPage()">
-        <button class="page-link" ng-click="setArticles(currentPage + 1)">Следующая стр</button>
+        <button class="page-link" ng-click="loadArticles(currentPage + 1)">Следующая стр</button>
       </li>
     </ul>
   </nav>
