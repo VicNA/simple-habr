@@ -7,7 +7,8 @@ angular
             $scope,
             $http,
             $location,
-            $localStorage
+            $localStorage,
+            $sessionStorage
         ) {
             const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
@@ -23,12 +24,15 @@ angular
             var path;
             var like;
 
-            $scope.getArticle = function (articleId) {
-                if (articleId == -1) {
+            $scope.getArticle = function () {
+                $rootScope.articleId = $sessionStorage.articleId;
+
+                if ($rootScope.articleId == -1) {
                     $scope.article = defaultArticle;
+                    return;
                 }
 
-                path = rootPath + articlesPath + "/view" + "/" + articleId;
+                path = rootPath + articlesPath + "/view" + "/" + $rootScope.articleId;
                 $http
                     .get(
                         path
@@ -36,7 +40,7 @@ angular
                     .then(
                         function (response) {
                             $scope.article = response.data;
-                            $scope.getListComments(articleId);
+                            $scope.getListComments($rootScope.articleId);
                         }
                     )
                 ;
