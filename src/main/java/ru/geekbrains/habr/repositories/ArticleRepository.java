@@ -27,9 +27,20 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
     @Query("SELECT a FROM Article a WHERE a.status.name = :statusName")
     Page<Article> findAllByStatusNamePage(@Param("statusName") String statusName, Pageable pageRequest);
 
+    // Почему эти запросы в репозитории Article, а не в своих собственных?
     @Query(value = "select count(1) from likes where article_id = :id", nativeQuery = true)
     Long countLikesById(Long id);
 
     @Query(value = "select count(1) from comments where article_id = :id", nativeQuery = true)
     Long countCommentsById(Long id);
+
+    /*
+        TODO Предпологаемый нативный запрос для выборки статей и сортировки по популярности (по количесту лайков)
+        SELECT DISTINCT a.*, COUNT(l.LIKE_ID)
+        FROM ARTICLES a
+          JOIN LIKES l ON l.ARTICLE_ID = a.ARTICLE_ID
+        GROUP BY l.LIKE_ID
+        ORDER BY COUNT(l.LIKE_ID) DESC
+        TODO Как это преобразовать в виде кода Java непонятно
+     */
 }

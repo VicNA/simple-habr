@@ -27,18 +27,15 @@ public class ArticleController {
     }
 
     @GetMapping(params = {"page", "sort"})
-    public Page<ArticleDto> findAll(
-            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
-            Sort sort
-    ) {
+    public Page<ArticleDto> findAll(@RequestParam(name = "page") Integer page, Sort sort) {
         return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED, sort)
                 .map(articleConverter::entityToDto);
     }
 
     @GetMapping(params = {"page", "title", "sort"})
     public Page<ArticleDto> findAll(
-            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
-            @RequestParam(required = false, name = "title") String title,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "title") String title,
             Sort sort
     ) {
         return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED, title, sort)

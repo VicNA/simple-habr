@@ -31,8 +31,9 @@ public class ArticleService {
     /**
      * Получает страницу опубликованных статей с указанной сортировкой
      *
-     * @param page Номер старницы
+     * @param page   Номер старницы
      * @param status Статус статей
+     * @param sort   Сортировка
      * @return Страница статей
      */
     public Page<Article> findAllPage(int page, ArticleStatus status, Sort sort) {
@@ -41,6 +42,16 @@ public class ArticleService {
                 PageRequest.of(page, SIZE_PAGE, sort));
     }
 
+    /**
+     * Получает страницу опубликованных статей с указанной сортировкой
+     * по искомому слову в загаловке статей
+     *
+     * @param page      Номер старницы
+     * @param status    Статус статей
+     * @param titlePart Искомое слово
+     * @param sort      Сортировка
+     * @return Страница статей
+     */
     public Page<Article> findAllPage(int page, ArticleStatus status, String titlePart, Sort sort) {
         return articleRepository.findAll(
                 createSpecByFilters(status, titlePart),
