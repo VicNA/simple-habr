@@ -34,6 +34,7 @@ angular
                 }
 
                 if($rootScope.category.id > -1) {
+                    path = path + categoryPath
                     params.id = $rootScope.category.id;
                 }
 

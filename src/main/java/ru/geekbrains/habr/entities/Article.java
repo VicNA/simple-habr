@@ -3,6 +3,8 @@ package ru.geekbrains.habr.entities;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.geekbrains.habr.entities.view.ArticleRating;
+import ru.geekbrains.habr.entities.view.ArticleTotal;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -52,4 +54,7 @@ public class Article {
     @JoinColumn(name = "article_id")
     private ArticleTotal articleTotal;
 
+    @OneToOne
+    @JoinColumn(name = "article_id")
+    private ArticleRating articleRating;
 }

@@ -53,13 +53,14 @@ public class ArticleController {
     @GetMapping("/category")
     public Page<ArticleDto> findAllByCategoryPage(
             @RequestParam(value = "id", required = true) Long id,
-            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
+            Sort sort) {
 
         if (page < 1) {
             page = 1;
         }
 
-        return articleService.findAllByCategoryPage(id, page - 1).map(articleConverter::entityToDto);
+        return articleService.findAllByCategoryPage(id, page - 1, sort).map(articleConverter::entityToDto);
     }
 
     @GetMapping("/user")

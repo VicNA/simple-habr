@@ -17,6 +17,7 @@ import ru.geekbrains.habr.services.enums.ArticleStatus;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -38,7 +39,7 @@ public class ArticleService {
      */
     public Page<Article> findAllPage(int page, ArticleStatus status, Sort sort) {
         return articleRepository.findAll(
-                ArticleSpecifcation.statusEquals(status.toString()),
+                createSpecByFilters(Map.of("status", status.toString())),
                 PageRequest.of(page, SIZE_PAGE, sort));
     }
 
@@ -54,19 +55,21 @@ public class ArticleService {
      */
     public Page<Article> findAllPage(int page, ArticleStatus status, String titlePart, Sort sort) {
         return articleRepository.findAll(
-                createSpecByFilters(status, titlePart),
+                createSpecByFilters(Map.of("status", status.toString(), "titlePart", titlePart)),
                 PageRequest.of(page, SIZE_PAGE, sort));
     }
 
-    private Specification<Article> createSpecByFilters(ArticleStatus status, String titlePart) {
+    private Specification<Article> createSpecByFilters(Map<String, String> props) {
         Specification<Article> spec = Specification.where(null);
 
-        if (status != null) {
-            spec = spec.and(ArticleSpecifcation.statusEquals(status.toString()));
+        if (props.isEmpty()) return spec;
+
+        if (props.containsKey("status")) {
+            spec = spec.and(ArticleSpecifcation.statusEquals(props.get("status")));
         }
 
-        if (titlePart != null) {
-            spec = spec.and(ArticleSpecifcation.titleLike(titlePart));
+        if (props.containsKey("titlePart")) {
+            spec = spec.and(ArticleSpecifcation.titleLike(props.get("titlePart")));
         }
 
         return spec;
@@ -84,11 +87,10 @@ public class ArticleService {
      * @return Страница статей
      * @author Миронова Ирина
      */
-    public Page<Article> findAllByCategoryPage(Long id, int page) {
+    public Page<Article> findAllByCategoryPage(Long id, int page, Sort sort) {
         return articleRepository.findAllByCategoryPage("published", id,
-                PageRequest.of(page, SIZE_PAGE, Sort.by("dtPublished").descending()));
+                PageRequest.of(page, SIZE_PAGE, sort));
     }
-
 
     /**
      * Получает страницу статей определенного пользователя
