@@ -26,14 +26,14 @@ public class ArticleController {
         return (value < 1 ? 1 : value) - 1;
     }
 
-    @GetMapping(params = {"page", "sort"})
-    public Page<ArticleDto> findAll(@RequestParam(name = "page") Integer page, Sort sort) {
-        return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED, sort)
+    @GetMapping
+    public Page<ArticleDto> findAll(@RequestParam(name = "page") Integer page) {
+        return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED)
                 .map(articleConverter::entityToDto);
     }
 
-    @GetMapping(params = {"page", "title", "sort"})
-    public Page<ArticleDto> findAll(
+    @GetMapping("/findByFilter")
+    public Page<ArticleDto> findByFilter(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "title") String title,
             Sort sort

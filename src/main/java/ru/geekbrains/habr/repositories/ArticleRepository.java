@@ -32,16 +32,4 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
 
     @Query(value = "select count(1) from comments where article_id = :id", nativeQuery = true)
     Long countCommentsById(Long id);
-
-    /*
-        TODO Предпологаемый нативный запрос для выборки статей и сортировки по популярности (по количесту лайков)
-        SELECT a.*,
-          COALESCE((SELECT COUNT(l.ARTICLE_ID)
-            FROM LIKES l
-            WHERE l.ARTICLE_ID = a.ARTICLE_ID
-            GROUP BY l.ARTICLE_ID
-          ), 0) AS countLikes
-        FROM ARTICLES a
-        TODO Как это преобразовать в виде кода Java непонятно
-     */
 }

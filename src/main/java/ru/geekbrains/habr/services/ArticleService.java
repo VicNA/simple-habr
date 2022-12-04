@@ -13,10 +13,10 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
 import ru.geekbrains.habr.repositories.specifications.ArticleSpecifcation;
 import ru.geekbrains.habr.services.enums.ArticleStatus;
+import ru.geekbrains.habr.services.enums.Filter;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,13 +34,12 @@ public class ArticleService {
      *
      * @param page   Номер старницы
      * @param status Статус статей
-     * @param sort   Сортировка
      * @return Страница статей
      */
-    public Page<Article> findAllPage(int page, ArticleStatus status, Sort sort) {
+    public Page<Article> findAllPage(int page, ArticleStatus status) {
         return articleRepository.findAll(
-                createSpecByFilters(Map.of("status", status.toString())),
-                PageRequest.of(page, SIZE_PAGE, sort));
+                createSpecByFilters(Map.of(Filter.STATUS.getField(), status.toString())),
+                PageRequest.of(page, SIZE_PAGE, Sort.by(Filter.DT_PUBLISHED.getField()).descending()));
     }
 
     /**
@@ -55,7 +54,8 @@ public class ArticleService {
      */
     public Page<Article> findAllPage(int page, ArticleStatus status, String titlePart, Sort sort) {
         return articleRepository.findAll(
-                createSpecByFilters(Map.of("status", status.toString(), "titlePart", titlePart)),
+                createSpecByFilters(Map.of(
+                        Filter.STATUS.getField(), status.toString(), Filter.TITLE.getField(), titlePart)),
                 PageRequest.of(page, SIZE_PAGE, sort));
     }
 
@@ -64,12 +64,12 @@ public class ArticleService {
 
         if (props.isEmpty()) return spec;
 
-        if (props.containsKey("status")) {
-            spec = spec.and(ArticleSpecifcation.statusEquals(props.get("status")));
+        if (props.containsKey(Filter.STATUS.getField())) {
+            spec = spec.and(ArticleSpecifcation.statusEquals(props.get(Filter.STATUS.getField())));
         }
 
-        if (props.containsKey("titlePart")) {
-            spec = spec.and(ArticleSpecifcation.titleLike(props.get("titlePart")));
+        if (props.containsKey(Filter.TITLE.getField())) {
+            spec = spec.and(ArticleSpecifcation.titleLike(props.get(Filter.TITLE.getField())));
         }
 
         return spec;

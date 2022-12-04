@@ -1,8 +1,19 @@
 angular.module('HabrApp').controller('searchController', function($rootScope, $scope, $http, $localStorage) {
-    const contextPath = 'http://' + window.location.host + '/habr/api/v1/articles';
+    const rootPath = 'http://' + window.location.host + '/habr/api/v1';
+    const contextPath = rootPath + '/articles';
+    const constantPath = rootPath + '/constants';
 
+    $scope.filters = [];
     $scope.currentPage = 1;
     totalPages = 1;
+
+    $scope.getFilterDtPublished = function () {
+        if ($scope.filters.length == 0) {
+            $http.get(constantPath + '/publishedDate').then(function(response) {
+                $scope.filters = response.data
+            });
+        }
+    }
 
     $scope.loadArticles = function (pageIndex = 1) {
         if (pageIndex != $scope.currentPage) {
@@ -18,7 +29,7 @@ angular.module('HabrApp').controller('searchController', function($rootScope, $s
             ].join(',');
 
             $http({
-                url: contextPath,
+                url: contextPath + '/findByFilter',
                 method: 'GET',
                 params: {
                     page: pageIndex,
@@ -39,5 +50,6 @@ angular.module('HabrApp').controller('searchController', function($rootScope, $s
 
     $scope.isNextPage = () => ($scope.currentPage == totalPages) ? false : true;
 
+    $scope.getFilterDtPublished();
     $scope.loadArticles($scope.currentPage);
 });

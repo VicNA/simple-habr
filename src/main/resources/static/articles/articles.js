@@ -22,33 +22,46 @@ angular
                 $sessionStorage.articleId = -1;
             }
 
-            // TODO Конфликтная функция, необходимо проверить
             $scope.setArticles = function (pageIndex) {
-                var params = {
-                    page: pageIndex,
-                    sort: "dtPublished,desc"
-                };
+                var urlParamData;
 
                 if (pageIndex != $scope.currentPage) {
                     $scope.currentPage = pageIndex;
                 }
 
-                if($rootScope.category.id > -1) {
-                    path = path + categoryPath
-                    params.id = $rootScope.category.id;
+                if($rootScope.category.id == -1) {
+                    urlParamData =
+                        {
+                            "page": pageIndex
+                        }
+                    ;
+                } else {
+                   path = path + categoryPath;
+                   urlParamData =
+                       {
+                            "id": $rootScope.category.id,
+                            "page": pageIndex
+                       }
+                   ;
                 }
 
-                $http({
-                    url: path,
-                    method: 'GET',
-                    params: params
-                }).then(function (response) {
-                       $scope.articles = response.data.content;
-                       totalPages = response.data.totalPages;
-                       $scope.paginationArray = $scope.generatePagesIndexes(1, totalPages);
-                       console.log(response);
-                       console.log($scope.articles);
-                });
+                $http
+                    .get(
+                        path,
+                        {
+                            params: urlParamData
+                        }
+                    )
+                    .then(
+                        function (response) {
+                            $scope.articles = response.data.content;
+                            totalPages = response.data.totalPages;
+                            $scope.paginationArray = $scope.generatePagesIndexes(1, totalPages);
+                            console.log(response);
+                            console.log($scope.articles);
+                        }
+                    )
+                ;
             }
 
             $scope.setArticle = function (index) {
