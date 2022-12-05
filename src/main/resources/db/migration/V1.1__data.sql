@@ -5,7 +5,7 @@ insert into users(user_name, real_name, dt_birth, description, password)
 values ('First user', null, CAST(CAST('1990-10-12' AS date) as DATE),null,'$2a$10$3YLEE6BaSFyGE6jJWdu9zuh1GmgC4QgaUSN2NXGGkyiATh.SQvR5y'),
        ('bob', 'Петр Смирнов', CAST(CAST('1994-10-12' AS date) as DATE), 'Веселый, общительный','$2a$10$3YLEE6BaSFyGE6jJWdu9zuh1GmgC4QgaUSN2NXGGkyiATh.SQvR5y'),
        ('ali', null, null, null,null),
-       ('nil', 'Николай Петрович', null, null,null);
+       ('nil', 'Николай Петрович', null, null,'$2a$10$3YLEE6BaSFyGE6jJWdu9zuh1GmgC4QgaUSN2NXGGkyiATh.SQvR5y');
 
 insert into users_roles (user_id, role_id)
 values  (1, 2),
@@ -36,12 +36,12 @@ select
     'Aenean sit amet feugiat urna, ac luctus sapien. Etiam scelerisque ultricies sapien varius faucibus. Proin consectetur scelerisque nulla, ut efficitur felis rutrum eget. Nulla hendrerit sagittis egestas. Etiam rutrum fringilla orci, et dapibus ipsum mollis vel. Vestibulum hendrerit massa eget massa sollicitudin, egestas convallis tortor fermentum. Mauris at mauris vitae libero ultrices consequat. Ut blandit nisi felis, sed maximus mauris hendrerit sit amet. Curabitur facilisis neque et rutrum semper. Fusce id laoreet tortor. Nullam ornare, mauris iaculis feugiat laoreet, elit sem gravida urna, ut ullamcorper mauris dui eget justo. Aliquam consequat augue ut pellentesque hendrerit. Proin imperdiet dolor eget interdum posuere. Curabitur mi augue, interdum vitae fermentum sed, tristique a ligula. Donec lorem eros, cursus sit amet leo at, commodo vestibulum neque.' as text,
     (select status_id from statuses where status_name = 'published') as status_id;
 
-insert into categories(category_name)
+insert into categories(category_name, category_name_cyr)
 values
-    ('Marketing'),
-    ('Design'),
-    ('Mobile dev'),
-    ('Web dev');
+    ('Marketing', 'Маркетинг'),
+    ('Design', 'Дизайн'),
+    ('Mobile dev', 'Мобильная разработка'),
+    ('Web dev', 'Web разработка');
 
 insert into article_to_category(category_id, article_id)
 select
