@@ -8,7 +8,8 @@ angular
             $http,
             $location,
             $localStorage,
-            $sessionStorage
+            $sessionStorage,
+            $timeout
         ) {
             const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
@@ -40,6 +41,7 @@ angular
                         function (response) {
                             $scope.article = response.data;
                             $scope.getListComments($rootScope.articleId);
+
                         }
                     )
                 ;
@@ -94,6 +96,13 @@ angular
                 }
 
             }
+            $scope.getSourceImage = function(imagePath){
+                while(!$scope.article){
+                   $timeout($scope.getSourceImage(),1000);
+                }
+
+                return rootPath.concat('files/',$scope.article.imagePath);
+            };
         }
     )
 ;

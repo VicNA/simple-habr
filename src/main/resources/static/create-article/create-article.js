@@ -46,7 +46,7 @@ angular
                 }, function failureCallback (response) {
                     alert(response.message);
                 });
-    }
+    };
 });
 angular.module("HabrApp").directive("selectNgFiles", function() {
   return {
