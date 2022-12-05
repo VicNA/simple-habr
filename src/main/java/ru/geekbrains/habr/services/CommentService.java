@@ -19,34 +19,39 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final ArticleService articleService;
+    private final NotificationService notificationService;
 
-    public List<Comment> findByArticleIdOnlyParentComments(Long articleId){
+
+    public List<Comment> findByArticleIdOnlyParentComments(Long articleId) {
         return commentRepository.findByArticleIdAndParentCommentId(articleId, null);
     }
 
     @Transactional
-    public void add(NewCommentDto newCommentDto){
+    public void add(NewCommentDto newCommentDto) {
         Comment comment = new Comment();
         User user = userService.findByUsername(newCommentDto.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Пользователь '%s' не найден", newCommentDto.getUsername())));
         Article article = articleService.findById(newCommentDto.getArticleId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Статья с id '%s' не найдена", newCommentDto.getArticleId())));
+                        String.format("Статья с id '%d' не найдена", newCommentDto.getArticleId())));
 
         comment.setText(newCommentDto.getText());
         comment.setUser(user);
         comment.setArticle(article);
 
-        if(newCommentDto.getParentCommentId()!=null) {
+        if (newCommentDto.getParentCommentId() != null) {
             Optional<Comment> parentComment = findById(newCommentDto.getParentCommentId());
             parentComment.ifPresent(comment::setParentComment);
         }
 
         commentRepository.save(comment);
+
+        String textNotif = "Пользователь " + user.getUsername() + " добавил комментарий к Вашей статье <<" + article.getTitle() + ">>";
+        notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif);
     }
 
-    public Optional<Comment> findById(Long id){
+    public Optional<Comment> findById(Long id) {
         return commentRepository.findById(id);
     }
 }

@@ -49,12 +49,12 @@ public class NotificationController {
     /**
      * Создание нового уведомления
      *
-     * @param notificationDto - уведомление
+     * @param notifDto - уведомление
      */
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createNotification(@RequestBody NotificationDto notificationDto) {
-        notificationService.createNotification(notificationDto);
+    public void createNotification(@RequestBody NotificationDto notifDto) {
+        notificationService.createNotification(notifDto.getRecipient(), notifDto.getSender(), notifDto.getText());
     }
 
 

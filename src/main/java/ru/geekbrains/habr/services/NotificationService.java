@@ -8,7 +8,6 @@ package ru.geekbrains.habr.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.habr.dtos.NotificationDto;
 import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
@@ -16,6 +15,7 @@ import ru.geekbrains.habr.repositories.NotificationRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,24 +36,26 @@ public class NotificationService {
     /**
      * Создание нового уведомления
      *
-     * @param notificationDto - уведомление
+     * @param recipient - получатель уведомления
+     * @param sender    - отправитель уведомления
+     * @param text      - текст уведомления
      */
     @Transactional
-    public void createNotification(NotificationDto notificationDto) {
-        User recipient = userService.findByUsername(notificationDto.getRecipient())
+    public void createNotification(String recipient, String sender, String text) {
+        User newRecipient = userService.findByUsername(recipient)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Получатель '%s' не найден", notificationDto.getRecipient()))
+                        String.format("Получатель '%s' не найден", recipient))
                 );
 
-        User sender = userService.findByUsername(notificationDto.getSender())
+        User newSender = userService.findByUsername(sender)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Отправитель '%s' не найден", notificationDto.getSender()))
+                        String.format("Отправитель '%s' не найден", sender))
                 );
 
         Notification notification = new Notification();
-        notification.setRecipient(recipient);
-        notification.setSender(sender);
-        notification.setText(notificationDto.getText());
+        notification.setRecipient(newRecipient);
+        notification.setSender(newSender);
+        notification.setText(text);
         notificationRepository.save(notification);
     }
 
@@ -76,5 +78,26 @@ public class NotificationService {
     @Transactional
     public void deleteNotificationsByUser(User user) {
         notificationRepository.deleteAllByRecipient(user);
+    }
+
+
+    /**
+     * Возвращает уведомление по указанному отправителю и тексту
+     *
+     * @param sender - отправитель уведомления
+     * @param text   - техт уведомления
+     * @return Количество уведомлений
+     */
+    public Optional<Notification> findBySenderAndText(User sender, String text) {
+        return notificationRepository.findBySenderAndText(sender, text);
+    }
+
+    /**
+     * Удаление уведомления
+     *
+     * @param notification - уведомление
+     */
+    public void deleteNotification(Notification notification) {
+        notificationRepository.delete(notification);
     }
 }

@@ -20,7 +20,7 @@ public class NotificationConverter {
                 .recipient(notification.getRecipient().getUsername())
                 .sender(notification.getSender().getUsername())
                 .text(notification.getText())
-                .dtCreated(notification.getDtCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")))
+                .dtCreated(notification.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")))
                 .build();
 
         return notificationDto;

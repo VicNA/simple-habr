@@ -1,7 +1,7 @@
 angular.module('HabrApp').controller('moderatorController', function($rootScope, $scope, $http, $localStorage) {
     const contextPathArticle = 'http://' + window.location.host + '/habr/api/v1/articles';
     const contextPathUser = 'http://' + window.location.host + '/habr/api/v1/user';
-    const contextPathNotification = 'http://' + window.location.host + '/habr/api/v1/notifications';
+
 
     $scope.curPageM = 1; //текущая страница
     $scope.checkPr = 1; //код причины удаления статьи
@@ -37,17 +37,8 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
     }
 
     $scope.preparedForPublication = function(articleId, articleTitle, recipient) {
-        notification = {
-                        "recipient": recipient,
-                        "sender": $localStorage.localUser.username,
-                        "text": "Ваша статья <<" + articleTitle + ">> опубликована"
-                       };
-
-        $http
-            .post(contextPathNotification + "/create", notification)
-            .then(
-            function (response) {}
-        )
+        text = "Ваша статья <<" + articleTitle + ">> опубликована";
+        $scope.sendNotification(text,recipient);
 
         $scope.updateStatus(articleId, 'published');
     }
@@ -113,17 +104,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
             break;
         }
 
-        notification = {
-                        "recipient": recipient,
-                        "sender": $localStorage.localUser.username,
-                        "text": text
-                       };
-
-        $http
-            .post(contextPathNotification + "/create", notification)
-            .then(
-            function (response) {}
-        )
+        $scope.sendNotification(text,recipient);
 
         $scope.updateStatus(articleIdForDel, 'hidden');
 
