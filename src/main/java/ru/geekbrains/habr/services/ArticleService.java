@@ -4,16 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.entities.Status;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
+import ru.geekbrains.habr.repositories.specifications.ArticleSpecifcation;
+import ru.geekbrains.habr.services.enums.ArticleStatus;
+import ru.geekbrains.habr.services.enums.Filter;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -26,15 +30,49 @@ public class ArticleService {
     private final StatusService statusService;
 
     /**
-     * Получает страницу опубликованных статей, отсортированных
-     * по дате публикации в обратном порядке (сначала последние)
+     * Получает страницу опубликованных статей с указанной сортировкой
      *
+     * @param page   Номер старницы
+     * @param status Статус статей
      * @return Страница статей
-     * @author Миронова Ирина
      */
-    public Page<Article> findAllSortDescPage(int page) {
-        return articleRepository.findAllByStatusNamePage("published",
-                PageRequest.of(page, SIZE_PAGE, Sort.by("dtPublished").descending()));
+    public Page<Article> findAllPage(int page, ArticleStatus status) {
+        return articleRepository.findAll(
+                createSpecByFilters(Map.of(Filter.STATUS.getField(), status.toString())),
+                PageRequest.of(page, SIZE_PAGE, Sort.by(Filter.DT_PUBLISHED.getField()).descending()));
+    }
+
+    /**
+     * Получает страницу опубликованных статей с указанной сортировкой
+     * по искомому слову в загаловке статей
+     *
+     * @param page      Номер старницы
+     * @param status    Статус статей
+     * @param titlePart Искомое слово
+     * @param sort      Сортировка
+     * @return Страница статей
+     */
+    public Page<Article> findAllPage(int page, ArticleStatus status, String titlePart, Sort sort) {
+        return articleRepository.findAll(
+                createSpecByFilters(Map.of(
+                        Filter.STATUS.getField(), status.toString(), Filter.TITLE.getField(), titlePart)),
+                PageRequest.of(page, SIZE_PAGE, sort));
+    }
+
+    private Specification<Article> createSpecByFilters(Map<String, String> props) {
+        Specification<Article> spec = Specification.where(null);
+
+        if (props.isEmpty()) return spec;
+
+        if (props.containsKey(Filter.STATUS.getField())) {
+            spec = spec.and(ArticleSpecifcation.statusEquals(props.get(Filter.STATUS.getField())));
+        }
+
+        if (props.containsKey(Filter.TITLE.getField())) {
+            spec = spec.and(ArticleSpecifcation.titleLike(props.get(Filter.TITLE.getField())));
+        }
+
+        return spec;
     }
 
     public Optional<Article> findById(Long id) {
@@ -49,11 +87,10 @@ public class ArticleService {
      * @return Страница статей
      * @author Миронова Ирина
      */
-    public Page<Article> findAllByCategoryPage(Long id, int page) {
+    public Page<Article> findAllByCategoryPage(Long id, int page, Sort sort) {
         return articleRepository.findAllByCategoryPage("published", id,
-                PageRequest.of(page, SIZE_PAGE, Sort.by("dtPublished").descending()));
+                PageRequest.of(page, SIZE_PAGE, sort));
     }
-
 
     /**
      * Получает страницу статей определенного пользователя

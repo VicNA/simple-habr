@@ -34,10 +34,12 @@
                         controller: 'profileController'
                     }
                 )
-                .when('/moderator', {
-                    templateUrl: 'moderator/moderator.html',
-                    controller: 'moderatorController'
-                    })
+                .when('/moderator',
+                    {
+                        templateUrl: 'moderator/moderator.html',
+                        controller: 'moderatorController'
+                    }
+                )
                 .when(
                     '/edit-article/:articleId',
                     {
@@ -46,12 +48,12 @@
                     }
                 )
                 .when(
-                '/create-article',
-                {
-                    templateUrl: 'create-article/create-article.html',
-                    controller: 'createArticleController'
-                }
-            )
+                    '/create-article',
+                    {
+                        templateUrl: 'create-article/create-article.html',
+                        controller: 'createArticleController'
+                    }
+                )
                 .when(
                     '/authorization',
                     {
@@ -71,6 +73,13 @@
                     {
                         templateUrl: 'admin/admin.html',
                         controller: 'adminController'
+                    }
+                )
+                .when(
+                    '/search',
+                    {
+                        templateUrl: 'search/search.html',
+                        controller: 'searchController'
                     }
                 )
                 .when(

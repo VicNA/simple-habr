@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.UserConverter;
 import ru.geekbrains.habr.dtos.ModeratorDto;
-import ru.geekbrains.habr.enums.BaseRole;
+import ru.geekbrains.habr.services.enums.UserRole;
 import ru.geekbrains.habr.services.UserService;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class AdminController {
      */
     @GetMapping("/view/moderators")
     public List<ModeratorDto> getModerators() {
-        return userService.findAllByRole(BaseRole.ROLE_MODERATOR).stream()
+        return userService.findAllByRole(UserRole.ROLE_MODERATOR).stream()
                 .map(userConverter::toModeratorDto)
                 .collect(Collectors.toList());
     }
@@ -47,6 +47,6 @@ public class AdminController {
     @PutMapping("/update/role")
     public void updateRoleModerator(
             @RequestParam("username") String username, @RequestParam(value = "role") String role) {
-        userService.updateUserRole(username, BaseRole.valueOf(role.toUpperCase()));
+        userService.updateUserRole(username, UserRole.valueOf(role.toUpperCase()));
     }
 }

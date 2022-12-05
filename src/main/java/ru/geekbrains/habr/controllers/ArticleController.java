@@ -2,6 +2,8 @@ package ru.geekbrains.habr.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.ArticleConverter;
 import ru.geekbrains.habr.dtos.Article2Dto;
@@ -10,6 +12,7 @@ import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.ArticleService;
 import ru.geekbrains.habr.services.StatusService;
+import ru.geekbrains.habr.services.enums.ArticleStatus;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -19,14 +22,24 @@ public class ArticleController {
     private final ArticleConverter articleConverter;
     private final StatusService statusService;
 
+    private Integer getPage(Integer value) {
+        return (value < 1 ? 1 : value) - 1;
+    }
+
     @GetMapping
-    public Page<ArticleDto> findAll(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+    public Page<ArticleDto> findAll(@RequestParam(name = "page") Integer page) {
+        return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED)
+                .map(articleConverter::entityToDto);
+    }
 
-        if (page < 1) {
-            page = 1;
-        }
-
-        return articleService.findAllSortDescPage(page - 1).map(articleConverter::entityToDto);
+    @GetMapping("/findByFilter")
+    public Page<ArticleDto> findByFilter(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "title") String title,
+            Sort sort
+    ) {
+        return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED, title, sort)
+                .map(articleConverter::entityToDto);
     }
 
     @GetMapping("/view/{id}")
@@ -40,13 +53,14 @@ public class ArticleController {
     @GetMapping("/category")
     public Page<ArticleDto> findAllByCategoryPage(
             @RequestParam(value = "id", required = true) Long id,
-            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
+            Sort sort) {
 
         if (page < 1) {
             page = 1;
         }
 
-        return articleService.findAllByCategoryPage(id, page - 1).map(articleConverter::entityToDto);
+        return articleService.findAllByCategoryPage(id, page - 1, sort).map(articleConverter::entityToDto);
     }
 
     @GetMapping("/user")

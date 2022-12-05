@@ -1,4 +1,4 @@
-package ru.geekbrains.habr.entities;
+package ru.geekbrains.habr.entities.view;
 
 import lombok.Data;
 import org.hibernate.annotations.Immutable;

@@ -98,3 +98,12 @@ from articles a
          left join comments c on a.article_id = c.article_id
 group by a.article_id;
 
+create view rating_articles_likes
+as
+select a.article_id,
+    coalesce(
+        (select count(l.article_id) from likes l
+         where l.article_id = a.article_id
+         group by l.article_id), 0) as rating
+from articles a
+

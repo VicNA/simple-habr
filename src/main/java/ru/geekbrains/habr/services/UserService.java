@@ -10,7 +10,7 @@ import ru.geekbrains.habr.dtos.UserBannedDto;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.entities.User;
-import ru.geekbrains.habr.enums.BaseRole;
+import ru.geekbrains.habr.services.enums.UserRole;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.UserRepository;
 
@@ -71,9 +71,8 @@ public class UserService implements UserDetailsService {
      *
      * @param role Роль пользователя
      * @return Список пользователей
-     * @author Николаев Виктор
      */
-    public List<User> findAllByRole(BaseRole role) {
+    public List<User> findAllByRole(UserRole role) {
         return userRepository.findAll(role.name());
     }
 
@@ -81,25 +80,23 @@ public class UserService implements UserDetailsService {
      * Обновляет список ролей у пользователя
      *
      * @param username Имя пользователя
-     * @param baseRole Присваемая роль
-     * @author Николаев Виктор
+     * @param userRole Присваемая роль
      */
     @Transactional
-    public void updateUserRole(String username, BaseRole baseRole) {
+    public void updateUserRole(String username, UserRole userRole) {
         userRepository.findByUsername(username).ifPresent(user -> {
 
-            // Каждая последующая роль включает в себя предыдущие роли
-            if (baseRole.ordinal() + 1 == user.getRoles().size()) return;
+            if (userRole.getRoles().size() == user.getRoles().size()) return;
 
             List<Role> roles = new ArrayList<>();
 
-            switch (baseRole) {
+            switch (userRole) {
                 case ROLE_USER:
-                    roleService.findByName(baseRole.name()).ifPresent(roles::add);
+                    roleService.findByName(userRole.name()).ifPresent(roles::add);
                     break;
                 case ROLE_MODERATOR:
                     roles.addAll(roleService.findByNameIn(
-                            List.of(BaseRole.ROLE_USER.name(), BaseRole.ROLE_MODERATOR.name())));
+                            List.of(UserRole.ROLE_USER.name(), UserRole.ROLE_MODERATOR.name())));
                     break;
                 case ROLE_ADMIN:
                     roles.addAll(roleService.findAll());
