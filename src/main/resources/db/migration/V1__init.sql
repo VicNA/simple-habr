@@ -30,7 +30,8 @@ create table statuses (
 
 create table categories(
     category_id serial not null primary key,
-    category_name varchar(150) not null
+    category_name varchar(150) not null,
+    category_name_cyr varchar(255)
 );
 
 create table articles(
