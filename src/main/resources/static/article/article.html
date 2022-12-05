@@ -1,11 +1,21 @@
-<div class="s3">
-    <ul>
-        <a href="#!">К списку статей</a>
-        <p>Статья: {{article.title}}</p>
-        <p>{{article.text}}</p>
-        <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
-        <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
-    </ul>
+<div class="col-8">
+    <div class="row">
+        <h4>
+            <span>{{article.title}}</span>
+        </h4>
+
+        <h6>
+            <span>Автор: </span> <span><strong> <em>{{article.authorUsername}}</em></strong></span>&nbsp;&nbsp;&nbsp;       <span></span>
+        </h6>
+
+        <img ng-show="article.imagePath" ng-src="{{'/habr/files/'+ article.imagePath}}" onerror="this.style.display='none'"/>
+        <div>
+            <p>{{article.text}}</p>
+            <p><a class="btn" ng-click="setArticle(article.id)" href="#!/article">Дальше &raquo;</a></p>
+            <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
+            <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
+        </div>
+    </div>
 </div>
 
 <div>

@@ -19,6 +19,8 @@ spring:
       settings:
         web-allow-others: false
 
+upload:
+  path: src\main\resources\files
 
 jwt:
   secret: aCpJRmldQD0yTys0fVJgI3gjfjV+Sm1BRXRXMWI6TTF9X0k2JVJwY35JdWs1SG9zLG9edzlZW2Y6dSsrSDp4

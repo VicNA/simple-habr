@@ -36,6 +36,7 @@ angular
                     .then(
                         function (response) {
                             $scope.article = response.data;
+                            console.log(response);
                             $scope.getListComments(articleId);
                         }
                     )
