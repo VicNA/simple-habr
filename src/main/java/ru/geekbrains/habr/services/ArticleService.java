@@ -17,7 +17,6 @@ import ru.geekbrains.habr.services.enums.Filter;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -140,6 +139,7 @@ public class ArticleService {
         article.setTitle(articleDto.getTitle());
         article.setText(articleDto.getText());
         article.setStatus(articleDto.getStatus());
+        article.setImagePath(articleDto.getImagePath());
         articleRepository.save(article);
     }
 
