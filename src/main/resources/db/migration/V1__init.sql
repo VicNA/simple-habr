@@ -40,6 +40,7 @@ create table articles(
     dt_published timestamp null,
     title varchar(500) not null,
     text text not null,
+    image_path varchar(200),
     status_id smallint not null,
     url varchar(150) null UNIQUE,
     CONSTRAINT articles_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id),
