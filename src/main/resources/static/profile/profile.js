@@ -123,6 +123,10 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
         return ($scope.countNotifications == 0) ? false : true;
     }
 
+    $scope.isPublished = function (status) {
+        return (status == 3) ? true : false;
+    }
+
     $scope.getUserInfo();
     $scope.getUserArticles($scope.curPage);
     $scope.getCountNotifications();

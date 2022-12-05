@@ -82,7 +82,6 @@ angular
 
                 $http.post(rootPath + commentsPath + '/add', newComment)
                 .then(function successCallback (response) {
-
                    $scope.getListComments(articleId);
                    delete $scope.viewAnswerPanel;
                });

@@ -131,6 +131,7 @@ angular
         ) {
             const rootPath = 'http://' + window.location.host + '/habr/';
             const categoriesPath = 'api/v1/categories';
+            const contextPathNotification = 'http://' + window.location.host + '/habr/api/v1/notifications';
             const defaultCategory =
                 {
                     id: -1,
@@ -221,6 +222,24 @@ angular
                         }
             return roles;
             }
+
+            //функция для отправки уведомления
+            $scope.sendNotification = function (text, recipient) {
+                notification = {
+                                "recipient": recipient,
+                                "sender": $localStorage.localUser.username,
+                                "text": text
+                };
+
+                $http
+                     .post(contextPathNotification + "/create", notification)
+                     .then(
+                         function (response) {}
+                )
+            };
+
+
+
         }
     )
 ;

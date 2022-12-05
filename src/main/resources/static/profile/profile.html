@@ -29,7 +29,7 @@
     <br>
     <br>
 
-    <div class="container">
+    <span class="container">
         <div class="row">
             <div class="col">
             </div>
@@ -54,7 +54,7 @@
                 </nav>
             </div>
         </div>
-        <div class="row">
+        <span class="row">
             <div class="col-sm">
                 <form class="align-middle" ng-submit="updateUser()">
                     <div class="form-group row">
@@ -87,7 +87,7 @@
                 </form>
             </div>
 
-            <div class="col-sm" align="middle">
+            <span class="col-sm" align="middle">
                 <table class="table">
                     <tr class="table-primary">
                     </tr>
@@ -96,6 +96,8 @@
                         <td>
                             <a ng-click="setArticle($index)" href="#!/article">{{article.title}}</a>
                             <br><span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
+                            <span ng-if="!isPublished(article.status.id)">&nbsp&nbspДата_созд.:&nbsp{{article.dtCreated}}</span>
+                            <span ng-if="isPublished(article.status.id)">&nbsp&nbspДата_публ.:&nbsp{{article.dtPublished}}</span>
                         </td>
                         <td>
                             <span>
@@ -115,9 +117,9 @@
                     </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
+            </span>
+        </span>
+    </span>
 
     <!-- Модальное окно для удаления статьи-->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
