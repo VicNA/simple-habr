@@ -9,6 +9,7 @@ angular
             $http.get(contextPath + 'api/v1/articles/view/' + articleId)
                 .then(function successCallback (response) {
                     $scope.articleInf = response.data;
+                    $scope.getSourceImage($scope.articleInf.imagePath);
                 }, function failureCallback (response) {
                     console.log(response);
                     alert(response.data.message);
@@ -60,11 +61,10 @@ angular
         };
 
         $scope.getSourceImage = function(imagePath){
-              while(!$scope.articleInf){
-                $timeout($scope.getSourceImage(),200);
-              }
-              return contextPath.concat('files/',imagePath);
-        };
+                if($scope.articleInf.imagePath!=null){
+                    $scope.articleInf.imagePath = contextPath.concat('files/',imagePath);
+                }
+            };
 });
 angular.module("HabrApp").directive("selectNgFiles", function() {
   return {

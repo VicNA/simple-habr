@@ -8,10 +8,10 @@
             <span>Автор: </span> <span><strong> <em>{{article.authorUsername}}</em></strong></span>&nbsp;&nbsp;&nbsp;       <span></span>
         </h6>
 
-        <img  ng-bind="article.imagePath" src="{{getSourceImage(article.imagePath)}}"
-             onerror="this.style.display='none'"/>
+        <img  src="{{article.imagePath}}" onerror="this.style.display='none'"/>
         <div>
             <p>{{article.text}}</p>
+            <span>{{article.dtPublished}} </span>&nbsp;&nbsp;&nbsp;
             <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
             <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
         </div>

@@ -16,8 +16,8 @@ public class ArticleDto {
     private String imagePath;
     private String authorUsername;
     private Status status;
-    private LocalDateTime dtCreated;
-    private LocalDateTime dtPublished;
+    private String dtCreated;
+    private String dtPublished;
     private Long likesTotal;
     private Long commentsTotal;
 }

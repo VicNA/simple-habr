@@ -15,6 +15,7 @@ import ru.geekbrains.habr.entities.*;
 import ru.geekbrains.habr.services.ArticleService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,8 +74,8 @@ public class ArticleControllerTest {
                 article.getImagePath(),
                 article.getUser().getUsername(),
                 article.getStatus(),
-                article.getDtCreated(),
-                article.getDtPublished(),
+                article.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                article.getDtPublished().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
                 article.getArticleTotal().getLikesTotal(),
                 article.getArticleTotal().getCommentsTotal()
         );
@@ -96,8 +97,8 @@ public class ArticleControllerTest {
                 article2.getImagePath(),
                 article2.getUser().getUsername(),
                 article2.getStatus(),
-                article2.getDtCreated(),
-                article2.getDtPublished(),
+                article2.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
+                article2.getDtPublished().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")),
                 article.getArticleTotal().getLikesTotal(),
                 article.getArticleTotal().getCommentsTotal()
         );

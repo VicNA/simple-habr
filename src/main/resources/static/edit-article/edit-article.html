@@ -22,8 +22,7 @@
                     <div class="row-bg row-form-label">
                         <input type="file" select-ng-files name="file" ng-model="newFile"
                                accept="image/png, image/gif, image/jpeg">
-                        <img src="{{getSourceImage(articleInf.imagePath)}}"
-                             onerror="this.style.display='none'" class="img-thumbnail" >
+                        <img  src="{{articleInf.imagePath}}" onerror="this.style.display='none'" class="img-thumbnail"/>
                     </div>
                 </div>
                 <div class="col-lg-9">

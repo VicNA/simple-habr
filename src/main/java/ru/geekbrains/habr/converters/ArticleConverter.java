@@ -13,19 +13,33 @@ import java.time.format.DateTimeFormatter;
 public class ArticleConverter {
 
     public ArticleDto entityToDto(Article article){
-        return new ArticleDto(
+        ArticleDto articleDto = new ArticleDto(
                 article.getId(),
                 article.getTitle(),
                 article.getText(),
                 article.getImagePath(),
                 article.getUser().getUsername(),
                 article.getStatus(),
-                article.getDtCreated(),
-                article.getDtPublished(),
+                "",
+                "",
                 article.getArticleTotal().getLikesTotal(),
                 article.getArticleTotal().getCommentsTotal());
+        if(article.getDtPublished()!= null){
+            articleDto.setDtPublished(article.getDtPublished().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        }
+        if(article.getDtCreated()!= null){
+            articleDto.setDtCreated(article.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        }
+        return articleDto;
     }
 
+    public ArticleDto entityToDtoForPage(Article article){
+        ArticleDto articleDto = entityToDto(article);
+        if(articleDto.getText().length()>50){
+            articleDto.setText(article.getText().substring(0,50) + "...");
+        }
+        return articleDto;
+    }
     // TODO Может стоит переименовать метод?
     public Article2Dto entityTo2Dto(Article article) {
         return new Article2Dto(
@@ -34,6 +48,6 @@ public class ArticleConverter {
                 article.getText(),
                 article.getUser().getUsername(),
                 article.getStatus().getName(),
-                article.getDtCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                article.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
     }
 }

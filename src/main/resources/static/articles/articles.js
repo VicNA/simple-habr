@@ -86,5 +86,12 @@ angular
             }
 
             $scope.setArticles($scope.currentPage);
+
+            $scope.getSourceImage = function(imagePath){
+                if(imagePath!=null){
+                   return rootPath.concat('files/',imagePath);
+               }
+               return null;
+            };
   });
 ;

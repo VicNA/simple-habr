@@ -13,10 +13,11 @@
                 <span>Автор: </span> <span><strong> <em>{{article.authorUsername}}</em></strong></span>&nbsp;&nbsp;&nbsp;   <span></span>
             </h6>
 
-            <img ng-show="article.imagePath" ng-src="{{'/habr/files/'+article.imagePath}}" onerror="this.style.display='none'"/>
+            <img ng-src="{{getSourceImage(article.imagePath)}}" onerror="this.style.display='none'"/>
             <div>
                 <p>{{article.text}}</p>
                 <p><a class="btn" ng-click="setArticle(article.id)" href="#!/article">Дальше &raquo;</a></p>
+                <span>{{article.dtPublished}} </span>&nbsp;&nbsp;&nbsp;
                 <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
             </div>
         </div>
