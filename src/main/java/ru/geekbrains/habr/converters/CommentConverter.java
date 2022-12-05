@@ -17,7 +17,7 @@ public class CommentConverter {
                 .id(comment.getId())
                 .text(comment.getText())
                 .username(comment.getUser().getUsername())
-                .date(comment.getDtCreated().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")))
+                .date(comment.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")))
                 .build();
 
                 if(!comment.getComments().isEmpty()){

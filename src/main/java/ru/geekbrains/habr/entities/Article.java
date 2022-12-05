@@ -38,6 +38,9 @@ public class Article {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "image_path")
+    private String imagePath;
+
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;

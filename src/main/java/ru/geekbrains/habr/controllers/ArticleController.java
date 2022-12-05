@@ -29,7 +29,7 @@ public class ArticleController {
     @GetMapping
     public Page<ArticleDto> findAll(@RequestParam(name = "page") Integer page) {
         return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED)
-                .map(articleConverter::entityToDto);
+                .map(articleConverter::entityToDtoForPage);
     }
 
     @GetMapping("/findByFilter")
@@ -39,7 +39,7 @@ public class ArticleController {
             Sort sort
     ) {
         return articleService.findAllPage(getPage(page), ArticleStatus.PUBLISHED, title, sort)
-                .map(articleConverter::entityToDto);
+                .map(articleConverter::entityToDtoForPage);
     }
 
     @GetMapping("/view/{id}")
@@ -60,7 +60,7 @@ public class ArticleController {
             page = 1;
         }
 
-        return articleService.findAllByCategoryPage(id, page - 1, sort).map(articleConverter::entityToDto);
+        return articleService.findAllByCategoryPage(id, page - 1, sort).map(articleConverter::entityToDtoForPage);
     }
 
     @GetMapping("/user")
@@ -72,7 +72,7 @@ public class ArticleController {
             page = 1;
         }
 
-        return articleService.findAllByUsernamePage(username, page - 1).map(articleConverter::entityToDto);
+        return articleService.findAllByUsernamePage(username, page - 1).map(articleConverter::entityToDtoForPage);
     }
 
     @PutMapping("/updatePublicFields")

@@ -1,4 +1,4 @@
-<div class="s3">
+<div class="col-8">
     <br>
     <ul style="padding-left: 10px" ng-repeat="article in articles">
         <div class="row">
@@ -10,13 +10,14 @@
             </h4>
 
             <h6>
-                <span>Автор: </span> <span><strong> <em>{{article.user.username}}</em></strong></span>&nbsp;&nbsp;&nbsp;
-                <span></span>
+                <span>Автор: </span> <span><strong> <em>{{article.authorUsername}}</em></strong></span>&nbsp;&nbsp;&nbsp;   <span></span>
             </h6>
 
+            <img ng-src="{{getSourceImage(article.imagePath)}}" onerror="this.style.display='none'"/>
             <div>
                 <p>{{article.text}}</p>
                 <p><a class="btn" ng-click="setArticle(article.id)" href="#!/article">Дальше &raquo;</a></p>
+                <span>{{article.dtPublished}} </span>&nbsp;&nbsp;&nbsp;
                 <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
             </div>
         </div>

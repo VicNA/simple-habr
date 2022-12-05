@@ -29,7 +29,6 @@ angular
 
                 if ($rootScope.articleId == -1) {
                     $scope.article = defaultArticle;
-                    return;
                 }
 
                 path = rootPath + articlesPath + "/view" + "/" + $rootScope.articleId;
@@ -41,6 +40,7 @@ angular
                         function (response) {
                             $scope.article = response.data;
                             $scope.getListComments($rootScope.articleId);
+                            $scope.getSourceImage($scope.article.imagePath);
                         }
                     )
                 ;
@@ -95,6 +95,11 @@ angular
                 }
 
             }
+            $scope.getSourceImage = function(imagePath){
+                if($scope.article.imagePath!=null){
+                    $scope.article.imagePath = rootPath.concat('files/',imagePath);
+                }
+            };
         }
     )
 ;

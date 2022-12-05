@@ -29,6 +29,8 @@ public class ArticleService {
     private final UserService userService;
     private final StatusService statusService;
 
+    private final ImageService imageService;
+
     /**
      * Получает страницу опубликованных статей с указанной сортировкой
      *
@@ -92,6 +94,7 @@ public class ArticleService {
                 PageRequest.of(page, SIZE_PAGE, sort));
     }
 
+
     /**
      * Получает страницу статей определенного пользователя
      *
@@ -114,23 +117,30 @@ public class ArticleService {
         //Если нет изменений - выходим
         if (article.getTitle().equals(articleDto.getTitle())
                 && article.getText().equals(articleDto.getText())
-                && article.getStatus().equals(articleDto.getStatus()))
+                && article.getStatus().equals(articleDto.getStatus())
+                && article.getImagePath()!=null && article.getImagePath().equals(articleDto.getImagePath()))
             return;
 
         article.setText(articleDto.getText());
         article.setTitle(articleDto.getTitle());
         article.setStatus(articleDto.getStatus());
+
+        if(article.getImagePath()!=null){
+            imageService.deleteImage(article.getImagePath());
+        }
+        article.setImagePath(articleDto.getImagePath());
     }
 
 
     @Transactional
     public void createArticleFromDto(ArticleDto articleDto) {
         Article article = new Article();
-        article.setUser(userService.findByUsername("bob").orElseThrow());//здесь надо как-то получать авторизованного юзера
+        article.setUser(userService.findByUsername(articleDto.getAuthorUsername()).orElseThrow());
         article.setDtCreated(LocalDateTime.now());
         article.setTitle(articleDto.getTitle());
         article.setText(articleDto.getText());
         article.setStatus(articleDto.getStatus());
+        article.setImagePath(articleDto.getImagePath());
         articleRepository.save(article);
     }
 
