@@ -29,7 +29,6 @@ angular
 
                 if ($rootScope.articleId == -1) {
                     $scope.article = defaultArticle;
-                    return;
                 }
 
                 path = rootPath + articlesPath + "/view" + "/" + $rootScope.articleId;
