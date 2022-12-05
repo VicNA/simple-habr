@@ -79,7 +79,7 @@ public class ArticleService {
         if (article.getTitle().equals(articleDto.getTitle())
                 && article.getText().equals(articleDto.getText())
                 && article.getStatus().equals(articleDto.getStatus())
-                && article.getImagePath().equals(articleDto.getImagePath()))
+                && article.getImagePath()!=null && article.getImagePath().equals(articleDto.getImagePath()))
             return;
 
         article.setText(articleDto.getText());
