@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 @RequiredArgsConstructor
 public class ArticleConverter {
+    private static final int LENGTH = 200;
 
     public ArticleDto entityToDto(Article article){
         ArticleDto articleDto = new ArticleDto(
@@ -35,8 +36,8 @@ public class ArticleConverter {
 
     public ArticleDto entityToDtoForPage(Article article){
         ArticleDto articleDto = entityToDto(article);
-        if(articleDto.getText().length()>50){
-            articleDto.setText(article.getText().substring(0,50) + "...");
+        if(articleDto.getText().length()>LENGTH){
+            articleDto.setText(article.getText().substring(0,LENGTH) + "...");
         }
         return articleDto;
     }
