@@ -2,7 +2,7 @@
 <html ng-app="HabrApp">
 <head>
     <meta charset="UTF-8">
-    <title>Хабр</title>
+    <title>Хабр</title>ч
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
@@ -17,9 +17,6 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" ng-click="resetCategory()" href="#!">Хабр</a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" ng-click="resetCategory()" href="#!">Все потоки</a>
                 </li>
@@ -49,7 +46,7 @@
                 </li>
 
                 <li class="nav-item" ng-show="isUserLoggedIn()">
-                    <a class="nav-link" ng-click="tryToLogout()">Выход</a>
+                    <a class="nav-link" href="#!" ng-click="tryToLogout()">Выход</a>
                 </li>
 
                 <li class="nav-item">
