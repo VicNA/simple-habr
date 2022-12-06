@@ -29,6 +29,7 @@ public class ImageService {
                                 new FileOutputStream(fullName));
                 stream.write(bytes);
                 stream.close();
+                System.out.println("Мы загрузили файл   " + filename);
                 return fullName;
             } catch (Exception e) {
                 throw new RuntimeException("Ошибка загрузки файла");
@@ -42,7 +43,7 @@ public class ImageService {
         File file = new File(path);
 
         if(file.isFile() && file.exists()){
-
+            System.out.println("Мы удалили файл   " + file.getName());
             return file.delete();
         }
 

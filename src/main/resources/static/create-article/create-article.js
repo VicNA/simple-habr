@@ -43,6 +43,7 @@ angular
                 ).then(function successCallback (response) {
                     $scope.articleInf.imagePath = response.data.message;
                     nameFunction();
+                    delete $scope.newFile;
                 }, function failureCallback (response) {
                     alert(response.message);
                 });
