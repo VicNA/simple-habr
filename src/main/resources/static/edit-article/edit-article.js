@@ -1,6 +1,6 @@
 angular
     .module('HabrApp')
-    .controller('editArticleController', function ($scope, $routeParams, $http, $localStorage, $timeout) {
+    .controller('editArticleController', function ($scope, $routeParams, $http, $localStorage, $location) {
         var articleId = $routeParams.articleId;
         const contextPath = 'http://' + window.location.host + '/habr/';
 
@@ -25,6 +25,7 @@ angular
             $http.put(contextPath + 'api/v1/articles/updatePublicFields', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья сохранена как черновик');
+                    $location.path('/profile');
                 }, function failureCallback (response) {
                     alert(response.data.message);
                 });
@@ -39,6 +40,7 @@ angular
             $http.put(contextPath + 'api/v1/articles/updatePublicFieldsAndPublicate', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья отправлена на модерацию');
+                    $location.path('/profile');
                 }, function failureCallback (response) {
                     alert(response.data.message);
                 });

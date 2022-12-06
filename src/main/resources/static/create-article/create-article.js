@@ -1,6 +1,6 @@
 angular
     .module('HabrApp')
-    .controller('createArticleController', function ($scope, $http, $localStorage) {
+    .controller('createArticleController', function ($scope, $http, $localStorage, $location) {
         const contextPath = 'http://' + window.location.host + '/habr/';
 
 
@@ -13,7 +13,7 @@ angular
             $http.put(contextPath + 'api/v1/articles/create', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья сохранена как черновик');
-                                        console.log($scope.articleInf);
+                    $location.path('/profile');
 
                 }, function failureCallback (response) {
                     alert(response.data.message);
@@ -30,6 +30,7 @@ angular
             $http.put(contextPath + 'api/v1/articles/createAndPublicate', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья отправлена на публикацию');
+                    $location.path('/profile');
                 }, function failureCallback (response) {
                     alert(response.data.message);
                 });
