@@ -1,7 +1,9 @@
 package ru.geekbrains.habr.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,5 +50,13 @@ public class ImageService {
         }
 
         return false;
+    }
+
+    /**
+     * Создает каталог, для хранения изображений если его не существует
+     */
+    @Bean
+    private void checkPath(){
+        new File(uploadPath).getAbsoluteFile().mkdirs();
     }
 }

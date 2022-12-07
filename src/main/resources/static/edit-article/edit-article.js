@@ -26,7 +26,7 @@ angular
 
         $scope.updateArticle = function (){
             $scope.articleInf.authorUsername = $localStorage.localUser.username;
-            if($scope.newFile && !$scope.articleInf.imagePath){
+            if($scope.newFile!=null && !$scope.articleInf.imagePath){
                  uploadFile($scope.updateArticle);
                  return;
             }
@@ -41,7 +41,7 @@ angular
 
         $scope.updateArticleAndPublicate = function (){
             $scope.articleInf.authorUsername = $localStorage.localUser.username;
-            if($scope.newFile && !$scope.articleInf.imagePath){
+            if($scope.newFile!=null && !$scope.articleInf.imagePath){
                  uploadFile($scope.updateArticleAndPublicate);
                  return;
             }
@@ -73,7 +73,7 @@ angular
 
         $scope.getSourceImage = function(imagePath){
                 if($scope.articleInf.imagePath!=null){
-                    $scope.articleInf.imagePath = contextPath.concat('files/',imagePath);
+                    $scope.sourceImage = contextPath.concat('files/',imagePath);
                 }
             };
 });
