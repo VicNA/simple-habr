@@ -62,6 +62,7 @@ create table comments(
      user_id int not null,
      article_id int not null,
      parent_comment_id int,
+     banned boolean not null default false,
      dt_created timestamp not null default now(),
      CONSTRAINT comments_fk_user_id FOREIGN KEY(user_id) REFERENCES users(user_id) on delete cascade,
      CONSTRAINT comments_fk_article_id FOREIGN KEY(article_id) REFERENCES articles(article_id) on delete cascade
@@ -82,6 +83,8 @@ create table notifications(
     recipient_id int not null,
     sender_id int not null,
     text varchar(1000) not null,
+    content_id bigserial not null,
+    content_type varchar(15) not null,
     dt_created timestamp not null default now(),
     CONSTRAINT notifications_fk_recipient_id FOREIGN KEY(recipient_id) REFERENCES users(user_id) on delete cascade,
     CONSTRAINT notifications_fk_sender_id FOREIGN KEY(sender_id) REFERENCES users(user_id) on delete cascade

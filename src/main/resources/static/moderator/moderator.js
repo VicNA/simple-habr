@@ -38,7 +38,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
 
     $scope.preparedForPublication = function(articleId, articleTitle, recipient) {
         text = "Ваша статья <<" + articleTitle + ">> опубликована";
-        $scope.sendNotification(text,recipient);
+        $scope.sendNotification(text,recipient,articleId,'article');
 
         $scope.updateStatus(articleId, 'published');
     }
@@ -104,7 +104,7 @@ angular.module('HabrApp').controller('moderatorController', function($rootScope,
             break;
         }
 
-        $scope.sendNotification(text,recipient);
+        $scope.sendNotification(text,recipient, articleIdForDel,'article');
 
         $scope.updateStatus(articleIdForDel, 'hidden');
 

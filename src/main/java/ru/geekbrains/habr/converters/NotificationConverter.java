@@ -20,9 +20,11 @@ public class NotificationConverter {
                 .recipient(notification.getRecipient().getUsername())
                 .sender(notification.getSender().getUsername())
                 .text(notification.getText())
+                .contentId(notification.getContentId())
+                .contentType(notification.getContentType().getField())
                 .dtCreated(notification.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")))
                 .build();
-
+        System.out.println(notificationDto);
         return notificationDto;
     }
 }

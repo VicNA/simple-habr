@@ -153,7 +153,9 @@
                     <table class="table table-success table-striped">
                         <tr ng-repeat="n in notifications">
                             <td>🔔</td>
-                            <td>{{n.text}}</td>
+                            <td>
+                                <a href="{{getLinkContent(n)}}">{{n.text}}</a>
+                            </td>
                             <td>{{n.dtCreated}}</td>
                         </tr>
                     </table>

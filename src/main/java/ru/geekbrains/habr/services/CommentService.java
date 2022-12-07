@@ -9,6 +9,8 @@ import ru.geekbrains.habr.entities.Comment;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.CommentRepository;
+import ru.geekbrains.habr.services.enums.ContentType;
+import ru.geekbrains.habr.services.enums.UserRole;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +41,7 @@ public class CommentService {
         comment.setText(newCommentDto.getText());
         comment.setUser(user);
         comment.setArticle(article);
-
+        comment.setBanned(false);
         if (newCommentDto.getParentCommentId() != null) {
             Optional<Comment> parentComment = findById(newCommentDto.getParentCommentId());
             parentComment.ifPresent(comment::setParentComment);
@@ -47,11 +49,53 @@ public class CommentService {
 
         commentRepository.save(comment);
 
-        String textNotif = "Пользователь " + user.getUsername() + " добавил комментарий к Вашей статье <<" + article.getTitle() + ">>";
-        notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif);
+        sendAllNotification(comment);
     }
 
     public Optional<Comment> findById(Long id) {
         return commentRepository.findById(id);
     }
+
+    @Transactional
+    public void banById(Long id){
+        Optional<Comment> optional= commentRepository.findById(id);
+        if(optional.isPresent()){
+            Comment comment = optional.get();
+            comment.setBanned(true);
+            commentRepository.save(comment);
+        }
+    }
+
+    private void sendAllNotification(Comment comment) {
+
+        String textNotif = String.format("Пользователь %s добавил комментарий к Вашей статье <<%s>>",
+                comment.getUser().getUsername(),comment.getArticle().getTitle());
+        notificationService.createNotification(
+                comment.getArticle().getUser().getUsername(), comment.getUser().getUsername(), textNotif,
+                comment.getArticle().getId(), ContentType.ARTICLE.getField());
+
+        String nameRole = "@moderator";
+
+        if(comment.getText().toLowerCase().contains(nameRole)){
+
+            String whereName = "к статье";
+            String whereId = comment.getArticle().getId().toString();
+            String message = comment.getText().replace(nameRole, "");
+            Long contentId = comment.getArticle().getId();
+            String contentType = ContentType.ARTICLE.getField();
+
+                if(comment.getParentComment()!=null){
+                    whereName = "к комментарию";
+                    whereId = comment.getParentComment().getId().toString();
+                    contentId = comment.getParentComment().getId();
+                    contentType = ContentType.COMMENT.getField();
+                }
+
+            String textNotifForModer = String.format("Пользователь %s призвал Вас %s <<%s>> c формулировкой: \"%s\"",
+                    comment.getUser().getUsername(), whereName, whereId, message);
+            notificationService.createNotificationForSpecificRole(
+                    UserRole.ROLE_MODERATOR, comment.getUser().getUsername(), textNotifForModer, contentId, contentType);
+        }
+    }
+
 }
