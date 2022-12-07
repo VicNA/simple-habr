@@ -3,7 +3,6 @@ angular.module('HabrApp').controller('authorizationController', function ($scope
 
      $scope.functionAuthorization = function () {
             $http.post(contextPath + 'api/v1/authorization', $scope.jwtResp).then(function successCallback (response) {
-                    alert('Вы успешно авторизованы');
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
                     $localStorage.localUser = {username: $scope.jwtResp.username, token: response.data.token};
 
