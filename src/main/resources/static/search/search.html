@@ -29,7 +29,7 @@
   <ul style="padding-left: 10px" ng-repeat="article in articles">
     <div class="row">
       <h4>
-        <a ng-click="setArticle($index)" href="#!/article" data-article-link=""
+        <a href="#!/article/{{article.id}}" data-article-link=""
            data-test-id="article-snippet-title-link" class="tm-article-snippet__title-link">
           <span>{{article.title}}</span>
         </a>

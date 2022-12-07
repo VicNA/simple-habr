@@ -1,8 +1,16 @@
 angular
     .module('HabrApp')
-    .controller('editArticleController', function ($scope, $routeParams, $http, $localStorage, $location) {
-        var articleId = $routeParams.articleId;
-        const contextPath = 'http://' + window.location.host + '/habr/';
+    .controller(
+        'editArticleController',
+        function (
+            $scope,
+            $routeParams,
+            $http,
+            $localStorage,
+            $location
+        ) {
+            const contextPath = 'http://' + window.location.host + '/habr/';
+            var articleId = $routeParams.articleId;
 
 
      $scope.getArticle = function (){

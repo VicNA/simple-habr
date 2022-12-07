@@ -21,7 +21,7 @@
                     }
                 )
                 .when(
-                    '/article',
+                    '/article/:articleId',
                     {
                         templateUrl: 'article/article.html',
                         controller: 'articleController'
