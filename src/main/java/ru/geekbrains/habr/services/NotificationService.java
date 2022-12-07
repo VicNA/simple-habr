@@ -1,6 +1,6 @@
 package ru.geekbrains.habr.services;
 
-/*
+/**
  * Сервис для работы с уведомлениями пользователя
  *
  * @author Миронова Ирина
@@ -12,10 +12,13 @@ import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.NotificationRepository;
+import ru.geekbrains.habr.services.enums.ContentType;
+import ru.geekbrains.habr.services.enums.UserRole;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +39,14 @@ public class NotificationService {
     /**
      * Создание нового уведомления
      *
-     * @param recipient - получатель уведомления
-     * @param sender    - отправитель уведомления
-     * @param text      - текст уведомления
+     * @param recipient   - получатель уведомления
+     * @param sender      - отправитель уведомления
+     * @param text        - текст уведомления
+     * @param contentId   - id комментария/статьи
+     * @param contentType - тип контента (comment/article)
      */
     @Transactional
-    public void createNotification(String recipient, String sender, String text) {
+    public void createNotification(String recipient, String sender, String text, Long contentId, String contentType) {
         User newRecipient = userService.findByUsername(recipient)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Получатель '%s' не найден", recipient))
@@ -56,6 +61,8 @@ public class NotificationService {
         notification.setRecipient(newRecipient);
         notification.setSender(newSender);
         notification.setText(text);
+        notification.setContentId(contentId);
+        notification.setContentType(ContentType.valueOf(contentType.toUpperCase()));
         notificationRepository.save(notification);
     }
 
@@ -99,5 +106,22 @@ public class NotificationService {
      */
     public void deleteNotification(Notification notification) {
         notificationRepository.delete(notification);
+    }
+
+    /**
+     * Создание уведомлений группе пользовтелей с одной ролью
+     *
+     * @param userRole  - роль пользователей
+     * @param sender    - отправитель уведомления
+     * @param text      - текст уведомления
+     */
+    public void createNotificationForSpecificRole(UserRole userRole, String sender, String text,
+                                                  Long contentId, String contentType) {
+        List<String> usernameModerators = userService.findAllByRole(userRole)
+                .stream().map(User::getUsername).collect(Collectors.toList());
+        for (String usernameModerator : usernameModerators) {
+            createNotification(usernameModerator, sender, text, contentId, contentType);
+
+        }
     }
 }

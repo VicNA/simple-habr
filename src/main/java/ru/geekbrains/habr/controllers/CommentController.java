@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.CommentConverter;
 import ru.geekbrains.habr.dtos.CommentDto;
 import ru.geekbrains.habr.dtos.NewCommentDto;
+import ru.geekbrains.habr.dtos.ResponseMessage;
 import ru.geekbrains.habr.entities.Comment;
 import ru.geekbrains.habr.services.CommentService;
 
@@ -53,5 +54,10 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("moderation/ban/{articleId}")
+    public ResponseMessage banById(@PathVariable Long articleId) {
+        commentService.banById(articleId);
+        return new ResponseMessage("Комментарий забанен");
+    }
 }
 

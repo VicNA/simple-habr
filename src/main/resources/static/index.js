@@ -233,11 +233,13 @@ angular
             }
 
             //функция для отправки уведомления
-            $scope.sendNotification = function (text, recipient) {
+            $scope.sendNotification = function (text, recipient, contentId, contentType) {
                 notification = {
                                 "recipient": recipient,
                                 "sender": $localStorage.localUser.username,
-                                "text": text
+                                "text": text,
+                                "contentId": contentId,
+                                "contentType": contentType
                 };
 
                 $http

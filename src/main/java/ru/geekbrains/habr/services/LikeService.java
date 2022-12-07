@@ -9,6 +9,7 @@ import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.LikeRepository;
+import ru.geekbrains.habr.services.enums.ContentType;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -44,7 +45,8 @@ public class LikeService {
             newLike.setArticle(article);
             likeRepository.save(newLike);
 
-            notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif);
+            notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif,
+                    article.getId(), ContentType.ARTICLE.getField());
         } else {
             deleteLike(like.get());
             Optional<Notification> notification = notificationService.findBySenderAndText(user, textNotif);

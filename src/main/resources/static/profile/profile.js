@@ -127,6 +127,16 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
         return (status == 3) ? true : false;
     }
 
+    $scope.getLinkContent = function (not){
+    console.log(not);
+        if(not.contentType === "article"){
+            return "#!/article/".concat(not.contentId);
+        }
+        if(not.contentType === "comment"){
+            return "#!/article/comment/".concat(not.contentId);
+        }
+    }
+
     $scope.getUserInfo();
     $scope.getUserArticles($scope.curPage);
     $scope.getCountNotifications();
