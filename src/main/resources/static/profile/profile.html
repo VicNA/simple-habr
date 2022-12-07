@@ -87,7 +87,7 @@
                 </form>
             </div>
 
-            <span class="col-sm" align="middle">
+            <span class="col-sm">
                 <table class="table">
                     <tr class="table-primary">
                     </tr>
@@ -96,8 +96,8 @@
                         <td>
                             <a ng-click="setArticle($index)" href="#!/article">{{article.title}}</a>
                             <br><span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
-                            <span ng-if="!isPublished(article.status.id)">&nbsp&nbspДата_созд.:&nbsp{{article.dtCreated}}</span>
-                            <span ng-if="isPublished(article.status.id)">&nbsp&nbspДата_публ.:&nbsp{{article.dtPublished}}</span>
+                            <span ng-if="!isPublished(article.status.id)">&nbsp&nbsp&nbsp&nbspДата созд.:&nbsp{{article.dtCreated}}</span>
+                            <span ng-if="isPublished(article.status.id)">&nbsp&nbsp&nbsp&nbspДата публ.:&nbsp{{article.dtPublished}}</span>
                         </td>
                         <td>
                             <span>

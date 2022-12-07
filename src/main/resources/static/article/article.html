@@ -5,14 +5,15 @@
         </h4>
 
         <h6>
-            <span>Автор: </span> <span><strong> <em>{{article.authorUsername}}</em></strong></span>&nbsp;&nbsp;&nbsp;       <span></span>
+            <span>Автор: </span> <span><strong> <em>{{article.authorUsername}}</em></strong></span>&nbsp;&nbsp;&nbsp;
+            <span></span>
         </h6>
 
-        <img  src="{{article.imagePath}}" onerror="this.style.display='none'"/>
+        <img src="{{article.imagePath}}" onerror="this.style.display='none'"/>
         <div>
             <p>{{article.text}}</p>
             <span>{{article.dtPublished}} </span>&nbsp;&nbsp;&nbsp;
-            <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
+            <span>💜🤍🖤{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
             <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
         </div>
     </div>
@@ -22,12 +23,13 @@
     <p class="h4">Комментарии:</p>
     <a ng-click="viewAnswer(0)" class="card-link" ng-show="viewAnswerPanel != 0">Написать свой комментарий</a>
     <div class="form-floating" ng-show="viewAnswerPanel == 0">
-            <textarea class="form-control"  id="textarea"
+            <textarea class="form-control" id="textarea"
                       ng-model="comm.cont"></textarea>
         <label for="textarea">Комментарий</label>
         <div class="d-grid gap-2 col-6 mx-auto">
             <button class="btn btn-primary" type="button"
-                    ng-click="addComment(article.id, null, comm.cont)">Отправить</button>
+                    ng-click="addComment(article.id, null, comm.cont)">Отправить
+            </button>
         </div>
     </div>
 </div>

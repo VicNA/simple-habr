@@ -25,16 +25,8 @@
                     <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.cyrillicName}}</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/search">Поиск</a>
-                </li>
-
                 <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <a class="nav-link" href="#!/authorization">Авторизация</a>
-                </li>
-
-                <li class="nav-item" ng-show="isUserLoggedIn()">
-                    <a class="nav-link" href="#!/profile">Личный кабинет</a>
                 </li>
 
                 <li class="nav-item" ng-show="isModeratorLoggedIn()">
@@ -45,12 +37,23 @@
                     <a class="nav-link" href="#!/admin">Админ</a>
                 </li>
 
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+
                 <li class="nav-item" ng-show="isUserLoggedIn()">
-                    <a class="nav-link" href="#!" ng-click="tryToLogout()">Выход</a>
+                    <a class="nav-link" href="#!/profile" title="Личный кабинет">👤</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#!/help">Помощь</a>
+                    <a class="nav-link" href="#!/search" title="Поиск">🔍</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/help" title="Помощь">❓</a>
+                </li>
+
+                <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <a class="nav-link" href="#!" ng-click="tryToLogout()" title="Выход">✘</a>
                 </li>
             </ul>
         </div>
