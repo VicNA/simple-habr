@@ -3,7 +3,7 @@
     <ul style="padding-left: 10px" ng-repeat="article in articles">
         <div class="row">
             <h4>
-                <a ng-click="setArticle(article.id)" href="#!/article" data-article-link=""
+                <a href="#!/article/{{article.id}}" data-article-link=""
                    data-test-id="article-snippet-title-link" class="tm-article-snippet__title-link">
                     <span>{{article.title}}</span>
                 </a>
@@ -16,7 +16,7 @@
             <img ng-src="{{getSourceImage(article.imagePath)}}" onerror="this.style.display='none'"/>
             <div>
                 <p>{{article.text}}</p>
-                <p><a class="btn" ng-click="setArticle(article.id)" href="#!/article">Дальше &raquo;</a></p>
+                <p><a class="btn" href="#!/article/{{article.id}}">Дальше &raquo;</a></p>
                 <span>{{article.dtPublished}} </span>&nbsp;&nbsp;&nbsp;
                 <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
             </div>

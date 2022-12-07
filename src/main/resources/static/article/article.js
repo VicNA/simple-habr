@@ -5,10 +5,10 @@ angular
         function (
             $rootScope,
             $scope,
+            $routeParams,
             $http,
             $location,
-            $localStorage,
-            $sessionStorage
+            $localStorage
         ) {
             const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
@@ -23,15 +23,15 @@ angular
             ;
             var path;
             var like;
+            var articleId = $routeParams.articleId;
 
             $scope.getArticle = function () {
-                $rootScope.articleId = $sessionStorage.articleId;
-
-                if ($rootScope.articleId == -1) {
+                if (articleId == -1) {
                     $scope.article = defaultArticle;
+                    return;
                 }
 
-                path = rootPath + articlesPath + "/view" + "/" + $rootScope.articleId;
+                path = rootPath + articlesPath + "/view" + "/" + articleId;
                 $http
                     .get(
                         path
@@ -39,7 +39,7 @@ angular
                     .then(
                         function (response) {
                             $scope.article = response.data;
-                            $scope.getListComments($rootScope.articleId);
+                            $scope.getListComments(articleId);
                             $scope.getSourceImage($scope.article.imagePath);
                         }
                     )
@@ -62,7 +62,7 @@ angular
                 ;
             }
 
-            $scope.getArticle($rootScope.articleId);
+            $scope.getArticle();
 
             $scope.getListComments = function(articleId) {
                $http.get(rootPath + commentsPath + '/' + articleId)
