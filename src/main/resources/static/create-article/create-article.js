@@ -29,7 +29,7 @@ angular
             }
             $http.put(contextPath + 'api/v1/articles/createAndPublicate', $scope.articleInf)
                 .then(function successCallback (response) {
-                    alert('Статья отправлена на публикацию');
+                    alert('Статья отправлена на модерацию');
                     $location.path('/profile');
                 }, function failureCallback (response) {
                     alert(response.data.message);
