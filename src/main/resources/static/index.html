@@ -13,53 +13,58 @@
     <link rel="shortcut icon" href="favicon.png" type="image/png">
 </head>
 <body>
-<div class="container" ng-controller="indexController">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" ng-click="resetCategory()" href="#!">Все потоки</a>
-                </li>
+    <div class="container" ng-controller="indexController">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" ng-click="resetCategory()" href="#!">Все потоки</a>
+                    </li>
 
-                <li ng-repeat="category in categories">
-                    <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.cyrillicName}}</a>
-                </li>
+                    <li ng-repeat="category in categories">
+                        <a class="nav-link" ng-click="setCategory($index)" href="#!">{{category.cyrillicName}}</a>
+                    </li>
 
-                <li class="nav-item" ng-show="!isUserLoggedIn()">
-                    <a class="nav-link" href="#!/authorization">Авторизация</a>
-                </li>
+                    <li class="nav-item" ng-show="!isUserLoggedIn()">
+                        <a class="nav-link" href="#!/authorization">Авторизация</a>
+                    </li>
 
-                <li class="nav-item" ng-show="isModeratorLoggedIn()">
-                    <a class="nav-link" href="#!/moderator">Модератор</a>
-                </li>
+                    <li class="nav-item" ng-show="isModeratorLoggedIn()">
+                        <a class="nav-link" href="#!/moderator">Модератор</a>
+                    </li>
 
-                <li class="nav-item" ng-show="isAdminLoggedIn()">
-                    <a class="nav-link" href="#!/admin">Админ</a>
-                </li>
+                    <li class="nav-item" ng-show="isAdminLoggedIn()">
+                        <a class="nav-link" href="#!/admin">Админ</a>
+                    </li>
 
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 
 
-                <li class="nav-item" ng-show="isUserLoggedIn()">
-                    <a class="nav-link" href="#!/profile" title="Личный кабинет">👤</a>
-                </li>
+                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                        <a class="nav-link" href="#!/profile" title="Личный кабинет">👤</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/search" title="Поиск">🔍</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/search" title="Поиск">🔍</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#!/help" title="Помощь">❓</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/help" title="Помощь">❓</a>
+                    </li>
 
-                <li class="nav-item" ng-show="isUserLoggedIn()">
-                    <a class="nav-link" href="#!" ng-click="tryToLogout()" title="Выход">✘</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                        <a class="nav-link" href="#!" ng-click="tryToLogout()" title="Выход">✘</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-    <ng-view></ng-view>
+        <ng-view></ng-view>
+
+        <footer>
+            <p>&copy; Хабр 2022</p>
+        </footer>
+    </div>
 
     <script src="index.js"></script>
     <script src="create-article/create-article.js"></script>
@@ -72,7 +77,5 @@
     <script src="authorization/authorization.js"></script>
     <script src="authorization/registration.js"></script>
     <script src="admin/admin.js"></script>
-
-</div>
 </body>
 </html>
