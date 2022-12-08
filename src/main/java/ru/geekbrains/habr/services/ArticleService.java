@@ -61,6 +61,13 @@ public class ArticleService {
                 PageRequest.of(page, SIZE_PAGE, sort));
     }
 
+    public Page<Article> findByRating(int size) {
+        return articleRepository.findAll(
+                createSpecByFilters(Map.of(Filter.STATUS.getField(), ArticleStatus.PUBLISHED.toString())),
+                PageRequest.of(0, size, Sort.Direction.DESC, Filter.RATING.getField())
+        );
+    }
+
     private Specification<Article> createSpecByFilters(Map<String, String> props) {
         Specification<Article> spec = Specification.where(null);
 

@@ -42,6 +42,11 @@ public class ArticleController {
                 .map(articleConverter::entityToDtoForPage);
     }
 
+    @GetMapping("/rating")
+    public Page<ArticleDto> findByRating() {
+        return articleService.findByRating(5).map(articleConverter::entityToDtoForPage);
+    }
+
     @GetMapping("/view/{id}")
     public ArticleDto findById(@PathVariable Long id) {
         Article article = articleService.findById(id)
