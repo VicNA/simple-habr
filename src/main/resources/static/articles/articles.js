@@ -12,6 +12,7 @@ angular
             const rootPath = 'http://' + window.location.host + '/habr/';
             const articlesPath = 'api/v1/articles';
             const categoryPath = '/category';
+            const ratingPath = rootPath + articlesPath + '/rating';
             var path = rootPath + articlesPath;
 
             $scope.currentPage = 1;
@@ -52,8 +53,7 @@ angular
                             $scope.articles = response.data.content;
                             totalPages = response.data.totalPages;
                             $scope.paginationArray = $scope.generatePagesIndexes(1, totalPages);
-                            console.log(response);
-                            console.log($scope.articles);
+//                            console.log($scope.articles);
                         }
                     )
                 ;
@@ -67,6 +67,12 @@ angular
                 return arr;
             }
 
+            $scope.loadRatingArticles = function() {
+                $http.get(ratingPath).then(function(response) {
+                    $scope.ratingArticles = response.data.content;
+                });
+            }
+
 
             $scope.isPreviousPage = function () {
                 return ($scope.currentPage == 1) ? false : true;
@@ -76,13 +82,14 @@ angular
                 return ($scope.currentPage == totalPages) ? false : true;
             }
 
-            $scope.getArticles($scope.currentPage);
-
             $scope.getSourceImage = function(imagePath){
                 if(imagePath!=null){
                    return rootPath.concat('files/',imagePath);
                }
                return null;
             };
+
+            $scope.getArticles($scope.currentPage);
+            $scope.loadRatingArticles();
   });
 ;
