@@ -7,13 +7,13 @@ public enum Filter {
     STATUS("status"),
     TITLE("title"),
     DT_PUBLISHED("dtPublished"),
+    DT_CREATED("dtCreated"),
     RATING("articleRating.rating"),
-
     DT_BIRTH("dtBirth");
 
-    private final String field;
+    private final String name;
 
-    Filter(String field) {
-        this.field = field;
+    Filter(String name) {
+        this.name = name;
     }
 }
