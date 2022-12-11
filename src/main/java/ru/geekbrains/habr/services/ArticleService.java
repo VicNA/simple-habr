@@ -170,7 +170,7 @@ public class ArticleService {
      * @author Татьяна
      */
     @Transactional
-    public void createArticleFromDto(ArticleDto articleDto) {
+    public Long createArticleFromDto(ArticleDto articleDto) {
         Article article = new Article();
         article.setUser(userService.findByUsername(articleDto.getAuthorUsername()).orElseThrow());
         article.setDtCreated(LocalDateTime.now());
@@ -178,7 +178,8 @@ public class ArticleService {
         article.setText(articleDto.getText());
         article.setStatus(articleDto.getStatus());
         article.setImagePath(articleDto.getImagePath());
-        articleRepository.save(article);
+        Article a = articleRepository.save(article);
+        return a.getId();
     }
 
     /**

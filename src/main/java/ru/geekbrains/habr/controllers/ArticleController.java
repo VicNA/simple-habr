@@ -108,15 +108,21 @@ public class ArticleController {
     }
 
     @PutMapping("/create")
-    public void createArticle(@RequestBody ArticleDto articleDto) {
+    public void createArticle(@RequestBody ArticleDto articleDto
+                            , @RequestParam(name = "categories") String[] categories) {
         articleDto.setStatus(statusService.findByName("hidden").orElseThrow());
-        articleService.createArticleFromDto(articleDto);
+        Long articleId = articleService.createArticleFromDto(articleDto);
+        List<String> categoriesList = Arrays.asList(categories);
+        articleService.updateCategories(articleId, categoriesList);
     }
 
     @PutMapping("/createAndPublicate")
-    public void createAndPublicate(@RequestBody ArticleDto articleDto) {
+    public void createAndPublicate(@RequestBody ArticleDto articleDto
+                                 , @RequestParam(name = "categories") String[] categories) {
         articleDto.setStatus(statusService.findByName(ArticleStatus.MODERATING.toString()).orElseThrow());
-        articleService.createArticleFromDto(articleDto);
+        Long articleId = articleService.createArticleFromDto(articleDto);
+        List<String> categoriesList = Arrays.asList(categories);
+        articleService.updateCategories(articleId, categoriesList);
     }
 
     @GetMapping("/moderation")
