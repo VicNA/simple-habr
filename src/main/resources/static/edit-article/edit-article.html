@@ -36,7 +36,7 @@
                     <div class="action-checkbox">
                         <input id="{{category.name}}" type="checkbox" value="{{category.name}}"
                                ng-checked="selection.indexOf(category.name) > -1"
-                               ng-click="toggleSelection(gender)" />
+                               ng-click="toggleSelection(category.name)" />
                         <label for="{{category.name}}"></label>
                         {{category.cyrillicName}}
                     </div>
