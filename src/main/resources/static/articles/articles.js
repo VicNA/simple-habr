@@ -13,7 +13,11 @@ angular
             const articlesPath = 'api/v1/articles';
             const categoryPath = '/category';
             const ratingPath = rootPath + articlesPath + '/rating';
+            const likesPath = 'api/v1/likes';
             var path = rootPath + articlesPath;
+
+            var currUserLike = false;
+            $scope.likeButton = '🤍';
 
             $scope.currentPage = 1;
             totalPages = 1;
@@ -57,6 +61,29 @@ angular
                         }
                     )
                 ;
+            }
+
+            $scope.addLike = function (articleId) {
+                if(!$localStorage.localUser){
+                    alert("Необходимо авторизоваться");
+                    return;
+                }
+
+                path = rootPath + likesPath + "/add";
+                like =
+                    {
+                        "username": $localStorage.localUser.username,
+                        "articleId": articleId
+                    };
+
+                $http
+                    .post(path + "/add", like)
+                    .then(
+                        function (response) {}
+                    )
+                ;
+
+                $scope.getArticles();
             }
 
             $scope.generatePagesIndexes = function (startPage, endPage) {

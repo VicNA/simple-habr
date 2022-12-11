@@ -14,7 +14,7 @@
                 </div>
             </div>
             <br>
-            <div class="form-group row">
+            <div class="form-group row" style="margin-bottom: 20px;">
                 <div class="col-3">
                     <label for="articleText" >Текст статьи</label>
                     <br>
@@ -28,14 +28,20 @@
                 </div>
                 <div class="col-lg-9">
                                 <textarea type="text" class="form-control" id="articleText"
-                                          placeholder="Заголовок статьи"
+                                          placeholder="Текст статьи"
                                           ng-model="articleInf.text" style="height: 600px;">
                                 </textarea>
                 </div>
+                <div ng-repeat="category in categories">
+                    <div class="action-checkbox">
+                        <input id="{{category.name}}" type="checkbox" value="{{category.name}}"
+                               ng-checked="selection.indexOf(category.name) > -1"
+                               ng-click="toggleSelection(gender)" />
+                        <label for="{{category.name}}"></label>
+                        {{category.cyrillicName}}
+                    </div>
+                </div>
             </div>
-
-            <br>
-
             <button id="updateArticle" class="btn btn-outline-warning btn-sm"
                     style="margin-left: 10px;" type="submit">Сохранить черновик
             </button>

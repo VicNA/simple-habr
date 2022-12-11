@@ -9,9 +9,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.entities.Article;
+import ru.geekbrains.habr.entities.Category;
 import ru.geekbrains.habr.entities.Status;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
+import ru.geekbrains.habr.repositories.CategoryRepository;
 import ru.geekbrains.habr.repositories.specifications.ArticleSpecifcation;
 import ru.geekbrains.habr.services.enums.ArticleStatus;
 import ru.geekbrains.habr.services.enums.ErrorMessage;
@@ -19,6 +21,8 @@ import ru.geekbrains.habr.services.enums.Filter;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,6 +40,7 @@ public class ArticleService {
     private int SIZE_PAGE;
 
     private final ArticleRepository articleRepository;
+    private final CategoryRepository categoryRepository;
     private final UserService userService;
     private final StatusService statusService;
 
@@ -217,5 +222,25 @@ public class ArticleService {
     @Transactional
     public void deleteArticle(Article article) {
         articleRepository.delete(article);
+    }
+/*
+* Меняет категории, к которым привязана статья, на категории с именами из списка
+*  */
+    @Transactional
+    public void updateCategories(Long articleId, List<String> categoriesNames) {
+        Optional<Article> article = articleRepository.findById(articleId);
+
+        if(article.isEmpty()) return;
+
+        articleRepository.clearCategories(article.get().getId());
+
+        Category category;
+        for(String name : categoriesNames){
+            category = categoryRepository.findOneByName(name);
+            articleRepository.addToCategory(article.get().getId(), category.getId());
+            System.out.println(categoryRepository.findOneByName(name).getName());
+        }
+
+
     }
 }
