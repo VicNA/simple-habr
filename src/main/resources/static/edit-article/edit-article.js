@@ -12,8 +12,7 @@ angular
             const contextPath = 'http://' + window.location.host + '/habr/';
             var articleId = $routeParams.articleId;
             const categoriesPath = 'api/v1/categories';
-            $scope.articleCats = [];
-            $scope.selection=[];//категории этой статьи
+            $scope.selection=[];
 
         $scope.getArticle = function (){
             $http.get(contextPath + 'api/v1/articles/view/' + articleId)
