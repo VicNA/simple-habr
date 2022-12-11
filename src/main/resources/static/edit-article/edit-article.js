@@ -46,7 +46,6 @@ angular
                         for (var i in $scope.articleCategories) {
                             $scope.selection.push($scope.articleCategories[i].name);
                         }
-                        //alert($scope.selection);
 
                         $scope.toggleSelection = function toggleSelection(categoryName) {
                             var idx = $scope.selection.indexOf(categoryName);
@@ -70,6 +69,14 @@ angular
                  uploadFile($scope.updateArticle);
                  return;
             }
+
+            var request ='api/v1/articles/'+$scope.articleInf.id+'/updateCategories?categories='+ $scope.selection.join(',');
+            $http.put( contextPath + request)
+                .then(function successCallback (response) {
+                }, function failureCallback (response) {
+                    alert(response.data.message);
+                });
+
             $http.put(contextPath + 'api/v1/articles/updatePublicFields', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья сохранена как черновик');
@@ -85,6 +92,13 @@ angular
                  uploadFile($scope.updateArticleAndPublicate);
                  return;
             }
+            var request ='api/v1/articles/'+$scope.articleInf.id+'/updateCategories?categories='+ $scope.selection.join(',');
+            $http.put( contextPath + request)
+                .then(function successCallback (response) {
+                }, function failureCallback (response) {
+                    alert(response.data.message);
+                });
+
             $http.put(contextPath + 'api/v1/articles/updatePublicFieldsAndPublicate', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья отправлена на модерацию');
