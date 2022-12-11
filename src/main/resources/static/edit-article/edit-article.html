@@ -13,7 +13,8 @@
                                 </textarea>
                 </div>
             </div>
-            <div class="form-group row">
+
+            <div class="form-group row" style="margin-bottom: 20px;">
                 <div class="col-3">
                     <label for="articleText" >Текст статьи</label>
                     <br>
@@ -27,12 +28,41 @@
                 </div>
                 <div class="col-lg-9">
                                 <textarea type="text" class="form-control" id="articleText"
-                                          placeholder="Заголовок статьи"
+                                          placeholder="Текст статьи"
                                           ng-model="articleInf.text" style="height: 600px;">
                                 </textarea>
                 </div>
-            </div>
+                <!--div-- class="col-lg-9">
+                    <fieldset>
+                        <legend>Выберите категории для статьи</legend>
 
+                        <div style="padding-left: 10px; margin-bottom: 0px;" ng-repeat="category in articleCats">
+                            <div>
+                                <input type="checkbox" id="category_{{category.name}}" name="{{category.name}}">
+                                <label for="category_{{category.name}}" >{{category.cyrillicName}} {{category.checked}}</label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div-->
+                <div ng-repeat="category in categories">
+                    <div class="action-checkbox">
+                        <input id="{{category.name}}" type="checkbox" value="{{category.name}}"
+                               ng-checked="selection.indexOf(category.name) > -1"
+                               ng-click="toggleSelection(gender)" />
+                        <label for="{{category.name}}"></label>
+                        {{category.cyrillicName}}
+                    </div>
+                </div>
+            </div>
+            <!--form name="myForm" >
+                <div ng-repeat="gender in genders">
+                    <div class="action-checkbox">
+                        <input id="{{gender}}" type="checkbox" value="{{gender}}" ng-checked="selection.indexOf(gender) > -1" ng-click="toggleSelection(gender)" />
+                        <label for="{{gender}}"></label>
+                        {{gender}}
+                    </div>
+                </div>
+            </form-->
             <button id="updateArticle" class="btn btn-outline-warning btn-sm"
                     style="margin-left: 10px;" type="submit">Сохранить черновик
             </button>

@@ -11,15 +11,55 @@ angular
         ) {
             const contextPath = 'http://' + window.location.host + '/habr/';
             var articleId = $routeParams.articleId;
+            const categoriesPath = 'api/v1/categories';
+            $scope.articleCats = [];
+            $scope.selection=[];//категории этой статьи
 
-
-     $scope.getArticle = function (){
+        $scope.getArticle = function (){
             $http.get(contextPath + 'api/v1/articles/view/' + articleId)
                 .then(function successCallback (response) {
                     $scope.articleInf = response.data;
                     $scope.getSourceImage($scope.articleInf.imagePath);
                 }, function failureCallback (response) {
                     console.log(response);
+                    alert(response.data.message);
+                });
+        }
+
+        $scope.getArticleCategories = function(){
+            $http.get(contextPath + 'api/v1/categories/article/' + articleId)
+                .then(function successCallback (response) {
+                    $scope.articleCategories = response.data;
+                }, function failureCallback (response) {
+                    console.log(response);
+                    alert(response.data.message);
+                });
+        }
+
+        $scope.getCategories = function () {
+            path = contextPath + categoriesPath;
+            $http
+                .get(path)
+                .then(function (response) {
+                        $scope.categories = response.data;
+
+                        for (var i in $scope.articleCategories) {
+                            $scope.selection.push($scope.articleCategories[i].name);
+                        }
+                        //alert($scope.selection);
+
+                        $scope.toggleSelection = function toggleSelection(categoryName) {
+                            var idx = $scope.selection.indexOf(categoryName);
+                            if (idx > -1) {
+                                // is currently selected
+                                $scope.selection.splice(idx, 1);
+                            }
+                            else {
+                                // is newly selected
+                                $scope.selection.push(categoryName);
+                            }
+                        };
+                    }, function failureCallback (response) {
                     alert(response.data.message);
                 });
         }
@@ -56,6 +96,8 @@ angular
 
 
         $scope.getArticle();
+        $scope.getArticleCategories();
+        $scope.getCategories();
 
         function uploadFile(nameFunction){
 

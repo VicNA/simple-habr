@@ -14,6 +14,10 @@ import ru.geekbrains.habr.services.ArticleService;
 import ru.geekbrains.habr.services.StatusService;
 import ru.geekbrains.habr.services.enums.ArticleStatus;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/articles")
 @RequiredArgsConstructor
@@ -84,6 +88,13 @@ public class ArticleController {
     public void updatePublicFields(@RequestBody ArticleDto articleDto) {
         articleDto.setStatus(statusService.findByName("hidden").orElseThrow());
         articleService.updateArticlePublicFieldsFromDto(articleDto);
+    }
+
+    @PutMapping("/{articleId}/updateCategories")
+    public void updateCategories(@PathVariable Long articleId,
+                                 @RequestParam(name = "categories") String[] categories) {
+        List<String> categoriesList = Arrays.asList(categories);
+        articleService.updateCategories(articleId, categoriesList);
     }
 
 
