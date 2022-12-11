@@ -18,6 +18,7 @@
                             <td>{{m.username}}</td>
                             <td ng-show="checked">
                                 <button type="button" class="btn btn-success"
+                                        ng-disabled="m.username === admin"
                                         ng-click="deleteModerator(m.username)">
                                     Удалить
                                 </button>
