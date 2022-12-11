@@ -28,6 +28,13 @@
                     }
                 )
                 .when(
+                    '/article/comment/:commentId',
+                    {
+                        templateUrl: 'article/article.html',
+                        controller: 'articleController'
+                    }
+                )
+                .when(
                     '/profile',
                     {
                         templateUrl: 'profile/profile.html',
@@ -191,7 +198,7 @@ angular
                 }
             };
 
-            $scope.isModeratorLoggedIn = function () {
+            $rootScope.isModeratorLoggedIn = function () {
                 if ($scope.isUserLoggedIn) {
                 let roles = getRoles();
                     for (var i = 0; i < roles.length; i++) {
@@ -204,7 +211,7 @@ angular
                 return false;
             };
 
-            $scope.isAdminLoggedIn = function () {
+            $rootScope.isAdminLoggedIn = function () {
                 if ($scope.isUserLoggedIn) {
                     let roles = getRoles();
                     for (var i = 0; i < roles.length; i++) {

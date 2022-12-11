@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.repositories.RoleRepository;
+import ru.geekbrains.habr.services.enums.UserRole;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +14,8 @@ import java.util.Optional;
 public class RoleService {
     private final RoleRepository roleRepository;
 
-    private final static String ROLE_USER = "ROLE_USER";
     public Role getUserRole() {
-        return roleRepository.findByName(ROLE_USER).get();
+        return roleRepository.findByName(UserRole.ROLE_USER.name()).get();
     }
 
     public Optional<Role> findByName(String role) {

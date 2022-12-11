@@ -15,6 +15,12 @@ import ru.geekbrains.habr.services.enums.UserRole;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Сервис для работы с комметариями
+ *
+ * @author Рожко Алексей
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -24,10 +30,21 @@ public class CommentService {
     private final NotificationService notificationService;
 
 
+    /**
+     * Возвращает список комментариев, написанные к статье.
+     * Без "дочерних" комментариев.
+     *
+     * @param articleId id статьи
+     */
     public List<Comment> findByArticleIdOnlyParentComments(Long articleId) {
         return commentRepository.findByArticleIdAndParentCommentId(articleId, null);
     }
 
+    /**
+     * Обработка нового комментария, проверка на соответствие требованиям.
+     *
+     * @param newCommentDto dto комментария
+     */
     @Transactional
     public void add(NewCommentDto newCommentDto) {
         Comment comment = new Comment();
@@ -42,59 +59,38 @@ public class CommentService {
         comment.setUser(user);
         comment.setArticle(article);
         comment.setBanned(false);
+
         if (newCommentDto.getParentCommentId() != null) {
             Optional<Comment> parentComment = findById(newCommentDto.getParentCommentId());
             parentComment.ifPresent(comment::setParentComment);
         }
 
         commentRepository.save(comment);
-
-        sendAllNotification(comment);
+        notificationService.sendAllNotification(comment);
     }
 
+    /**
+     * Поиск комментария по его id.
+     *
+     * @param id id комментария
+     */
     public Optional<Comment> findById(Long id) {
         return commentRepository.findById(id);
     }
 
+    /**
+     * Заменяет переменную banned в сущности Comment на true
+     *
+     * @param id id комментария
+     */
     @Transactional
-    public void banById(Long id){
-        Optional<Comment> optional= commentRepository.findById(id);
-        if(optional.isPresent()){
+    public void banById(Long id) {
+        Optional<Comment> optional = commentRepository.findById(id);
+
+        if (optional.isPresent()) {
             Comment comment = optional.get();
             comment.setBanned(true);
             commentRepository.save(comment);
-        }
-    }
-
-    private void sendAllNotification(Comment comment) {
-
-        String textNotif = String.format("Пользователь %s добавил комментарий к Вашей статье <<%s>>",
-                comment.getUser().getUsername(),comment.getArticle().getTitle());
-        notificationService.createNotification(
-                comment.getArticle().getUser().getUsername(), comment.getUser().getUsername(), textNotif,
-                comment.getArticle().getId(), ContentType.ARTICLE.getField());
-
-        String nameRole = "@moderator";
-
-        if(comment.getText().toLowerCase().contains(nameRole)){
-
-            String whereName = "к статье";
-            String whereId = comment.getArticle().getId().toString();
-            String message = comment.getText().replace(nameRole, "");
-            Long contentId = comment.getArticle().getId();
-            String contentType = ContentType.ARTICLE.getField();
-
-                if(comment.getParentComment()!=null){
-                    whereName = "к комментарию";
-                    whereId = comment.getParentComment().getId().toString();
-                    contentId = comment.getParentComment().getId();
-                    contentType = ContentType.COMMENT.getField();
-                }
-
-            String textNotifForModer = String.format("Пользователь %s призвал Вас %s <<%s>> c формулировкой: \"%s\"",
-                    comment.getUser().getUsername(), whereName, whereId, message);
-            notificationService.createNotificationForSpecificRole(
-                    UserRole.ROLE_MODERATOR, comment.getUser().getUsername(), textNotifForModer, contentId, contentType);
         }
     }
 

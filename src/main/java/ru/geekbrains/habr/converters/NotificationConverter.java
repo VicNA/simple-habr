@@ -24,7 +24,7 @@ public class NotificationConverter {
                 .contentType(notification.getContentType().getField())
                 .dtCreated(notification.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")))
                 .build();
-        System.out.println(notificationDto);
+
         return notificationDto;
     }
 }

@@ -8,6 +8,7 @@ package ru.geekbrains.habr.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.habr.entities.Comment;
 import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
@@ -17,6 +18,7 @@ import ru.geekbrains.habr.services.enums.UserRole;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,6 +49,9 @@ public class NotificationService {
      */
     @Transactional
     public void createNotification(String recipient, String sender, String text, Long contentId, String contentType) {
+        if(recipient.equals(sender)){
+            return;
+        }
         User newRecipient = userService.findByUsername(recipient)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Получатель '%s' не найден", recipient))
@@ -124,4 +129,43 @@ public class NotificationService {
 
         }
     }
+
+    /**
+     * Создание уведомлений для нового комментария
+     *
+     * @param comment  - комментарий
+     */
+    public void sendAllNotification(Comment comment) {
+
+        String textNotif = String.format("Пользователь %s добавил комментарий к Вашей статье <<%s>>",
+                comment.getUser().getUsername(), comment.getArticle().getTitle());
+        createNotification(
+                comment.getArticle().getUser().getUsername(), comment.getUser().getUsername(), textNotif,
+                comment.getArticle().getId(), ContentType.ARTICLE.getField());
+
+        String nameRole = "@moderator ";
+
+        if (comment.getText().toLowerCase().contains(nameRole)) {
+
+            String whereName = "к статье";
+            String whereId = comment.getArticle().getId().toString();
+            String message = comment.getText().replace(nameRole, "");
+            Long contentId = comment.getArticle().getId();
+            String contentType = ContentType.ARTICLE.getField();
+
+            if (comment.getParentComment() != null) {
+                whereName = "к комментарию";
+                whereId = comment.getParentComment().getId().toString();
+                contentId = comment.getParentComment().getId();
+                contentType = ContentType.COMMENT.getField();
+            }
+
+            String textNotifForModer = String.format("Пользователь %s призвал Вас %s <<%s>> c формулировкой: \"%s\"",
+                    comment.getUser().getUsername(), whereName, whereId, message);
+            createNotificationForSpecificRole(
+                    UserRole.ROLE_MODERATOR, comment.getUser().getUsername(), textNotifForModer, contentId, contentType);
+        }
+    }
+
+
 }
