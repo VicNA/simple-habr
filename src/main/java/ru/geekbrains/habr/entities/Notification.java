@@ -2,6 +2,7 @@ package ru.geekbrains.habr.entities;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.geekbrains.habr.services.enums.ContentType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,6 +26,12 @@ public class Notification {
 
     @Column(name = "text")
     private String text;
+
+    @Column(name = "content_id")
+    private Long contentId;
+
+    @Enumerated(EnumType.STRING)
+    private ContentType contentType;
 
     @CreationTimestamp
     @Column(name = "dt_created")

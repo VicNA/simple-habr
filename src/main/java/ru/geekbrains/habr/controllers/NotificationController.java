@@ -54,7 +54,8 @@ public class NotificationController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void createNotification(@RequestBody NotificationDto notifDto) {
-        notificationService.createNotification(notifDto.getRecipient(), notifDto.getSender(), notifDto.getText());
+        notificationService.createNotification(notifDto.getRecipient(), notifDto.getSender(), notifDto.getText(),
+                notifDto.getContentId(), notifDto.getContentType());
     }
 
 

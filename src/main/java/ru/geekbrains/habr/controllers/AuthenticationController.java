@@ -17,7 +17,12 @@ import ru.geekbrains.habr.exceptions.AppError;
 import ru.geekbrains.habr.services.UserService;
 import ru.geekbrains.habr.utils.JwtTokenUtil;
 
-
+/**
+ * Контроллер REST API аутентификации пользователей
+ *
+ * @author Рожко Алексей
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -28,6 +33,13 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+
+    /**
+     * Получение токена при авторизации пользователей.
+     *
+     * @param jwtRequest логин/пароль пользователя
+     * @return ResponseEntity с токеном авторизованного пользователя
+     */
     @PostMapping("/authorization")
     public ResponseEntity<?> authentication(@RequestBody JwtRequest jwtRequest) {
         try {
@@ -45,6 +57,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    /**
+     * Добавления нового пользователя.
+     *
+     * @param newUserDto параметры нового пользователя
+     * @return ResponseEntity с токеном авторизованного пользователя
+     */
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@RequestBody NewUserDto newUserDto) {
 
@@ -71,6 +89,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    /**
+     * Запрос на обновление токена.
+     *
+     * @param tokenRequest текущий токен
+     * @return ResponseEntity с новым токеном
+     */
     @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshToken(@RequestBody String tokenRequest) {
         UserDetails userDetails = userService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(tokenRequest));

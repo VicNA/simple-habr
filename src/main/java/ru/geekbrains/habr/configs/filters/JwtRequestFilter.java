@@ -16,6 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Фильтр Jwt токенов.
+ * Проверка токена в headers http запроса на соответствие
+ * и добавление в контекст данных о пользователе, если токен валидный.
+ * Выполняется до {@code UsernamePasswordAuthenticationFilter}
+ *
+ * @author Рожко Алексей
+ * @version 1.0
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -39,6 +48,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if ((username != null) && (SecurityContextHolder.getContext().getAuthentication() == null)) {
             UserDetails userDetails = userService.loadUserByUsername(username);
+
             if (jwtTokenUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
