@@ -95,17 +95,17 @@
 <div class="container">
     <div class="col-6">
 
-    <a><strong>Забанить:</strong></a>
-    <div class="input-group flex-nowrap">
-        <span class="input-group-text" id="addon-wrapping">@</span>
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username"
-               aria-describedby="addon-wrapping" ng-model="banUser.username">
-        <input type="number" class="form-control" placeholder="quantity days" aria-label="quantity days"
-               aria-describedby="addon-wrapping" ng-model="banUser.daysBan">
-        <button class="btn btn-outline-secondary" type="button" id="button"
-                ng-disabled="!(banUser.username && banUser.daysBan)" ng-click="addBanUser(banUser)">
-            Бан
-        </button>
-    </div>
+        <a><strong>Забанить:</strong></a>
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">@</span>
+            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                   aria-describedby="addon-wrapping" ng-model="banUser.username">
+            <input type="number" class="form-control" placeholder="quantity days" aria-label="quantity days"
+                   aria-describedby="addon-wrapping" ng-model="banUser.daysBan">
+            <button class="btn btn-outline-secondary" type="button" id="button"
+                    ng-disabled="!(banUser.username && banUser.daysBan)" ng-click="addBanUser(banUser)">
+                Бан
+            </button>
+        </div>
     </div>
 </div>

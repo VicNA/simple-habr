@@ -3,15 +3,17 @@
         <form ng-submit="functionAuthorization()">
             <div>
                 <label for="inputUsername" class="form-label">Логин</label>
-                <input type="text" class="form-control" id="inputUsername" placeholder="username" ng-model="jwtResp.username">
+                <input type="text" class="form-control" id="inputUsername" placeholder="username"
+                       ng-model="jwtResp.username">
             </div>
             <div>
                 <label for="inputPassword" class="form-label">Пароль</label>
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="jwtResp.password">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password"
+                       ng-model="jwtResp.password">
             </div>
 
             <div class="mx-auto py-1">
-                <button class="btn btn-primary px-2" style ="btn-padding-y: 10px;" type="submit">Авторизоваться</button>
+                <button class="btn btn-primary px-2" style="btn-padding-y: 10px;" type="submit">Авторизоваться</button>
             </div>
         </form>
         <div class="mx-auto py-1">

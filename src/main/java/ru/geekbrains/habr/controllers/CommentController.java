@@ -5,10 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.CommentConverter;
+import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.dtos.CommentDto;
 import ru.geekbrains.habr.dtos.NewCommentDto;
 import ru.geekbrains.habr.dtos.ResponseMessage;
+import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.entities.Comment;
+import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.CommentService;
 
 import java.util.List;
@@ -30,7 +33,7 @@ public class CommentController {
     /**
      * Возвращает комментарии статьи
      *
-     * @param  articleId - id статьи
+     * @param articleId - id статьи
      * @return Список dto комментариев статьи
      */
     @GetMapping("/{articleId}")
@@ -54,10 +57,31 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("moderation/ban/{articleId}")
-    public ResponseMessage banById(@PathVariable Long articleId) {
-        commentService.banById(articleId);
+    /**
+     * Изменяет статус комментария на "забанен"
+     *
+     * @param commentId id комментария
+     * @return ResponseMessage с успешным ответом
+     */
+
+    @PostMapping("moderation/ban/{commentId}")
+    public ResponseMessage banById(@PathVariable Long commentId) {
+        commentService.banById(commentId);
         return new ResponseMessage("Комментарий забанен");
     }
-}
 
+    /**
+     * Возвращает id статьи по комментарию,
+     * который в ней написан
+     *
+     * @param commentId - id комментария
+     * @return id статьи
+     */
+    @GetMapping("/getArticleId/{commentId}")
+    public Long findArticleIdByCommentId(@PathVariable Long commentId) {
+        return commentService.findById(commentId).orElseThrow(
+                        () -> new ResourceNotFoundException(
+                                String.format("Комментарий с id = '%d' не найден", commentId)))
+                .getArticle().getId();
+    }
+}
