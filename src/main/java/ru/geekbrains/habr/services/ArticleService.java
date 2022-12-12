@@ -225,7 +225,8 @@ public class ArticleService {
     @Transactional
     public void deleteArticle(Long id) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), id)));
 
         articleRepository.delete(article);
     }
