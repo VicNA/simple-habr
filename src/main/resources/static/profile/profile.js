@@ -83,11 +83,15 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
         $scope.articleDel = index;
     }
 
+    $scope.closeNotification = function (){
+         setTimeout(() => $("#notificationModal [data-bs-dismiss=modal]").trigger({ type: "click" }), 0);
+    }
+
     $scope.deleteArticle = function (articleId){
         if (articleId != null) {
                $http.delete(contextPath + 'api/v1/articles/' + articleId)
                    .then(function successCallback (response) {
-                       setTimeout(() => $("#exampleModal [data-bs-dismiss=modal]").trigger({ type: "click" }), 0);
+                       setTimeout(() => $("#notificationModal [data-bs-dismiss=modal]").trigger({ type: "click" }), 0);
                        $scope.getUserArticles($scope.curPage);
                    }, function failureCallback (response) {
                        console.log(response);
@@ -125,6 +129,19 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
 
     $scope.isPublished = function (status) {
         return (status == 3) ? true : false;
+    }
+
+    $scope.getLinkContent = function (not){
+
+        if(not.contentType === "article"){
+            $("#notificationModal [data-bs-dismiss=modal]").trigger({ type: "click" });
+            $location.path('/article/'.concat(not.contentId));
+        }
+
+        if(not.contentType === "comment"){
+            $("#notificationModal [data-bs-dismiss=modal]").trigger({ type: "click" });
+            $location.path('/article/comment/'.concat(not.contentId));
+        }
     }
 
     $scope.getUserInfo();

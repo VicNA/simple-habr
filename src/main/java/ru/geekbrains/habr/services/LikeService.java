@@ -9,6 +9,7 @@ import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.LikeRepository;
+import ru.geekbrains.habr.services.enums.ContentType;
 import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.services.enums.InfoMessage;
 

@@ -38,4 +38,7 @@ public class Comment {
     @CreationTimestamp
     @Column(name = "dt_created")
     private LocalDateTime dtCreated;
+
+    @Column(name = "banned")
+    private Boolean banned;
 }

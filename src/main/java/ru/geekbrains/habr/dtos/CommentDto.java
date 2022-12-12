@@ -21,5 +21,5 @@ public class CommentDto {
     private String username;
     private String date;
     private List<CommentDto> comments;
-
+    private boolean banned;
 }

@@ -14,5 +14,7 @@ public class NotificationDto {
     private String recipient;
     private String sender;
     private String text;
+    private Long contentId;
+    private String contentType;
     private String dtCreated;
 }

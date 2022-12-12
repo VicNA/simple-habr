@@ -11,10 +11,18 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.CommentRepository;
 import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.services.enums.InfoMessage;
+import ru.geekbrains.habr.services.enums.ContentType;
+import ru.geekbrains.habr.services.enums.UserRole;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Сервис для работы с комметариями
+ *
+ * @author Рожко Алексей
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -24,10 +32,21 @@ public class CommentService {
     private final NotificationService notificationService;
 
 
+    /**
+     * Возвращает список комментариев, написанные к статье.
+     * Без "дочерних" комментариев.
+     *
+     * @param articleId id статьи
+     */
     public List<Comment> findByArticleIdOnlyParentComments(Long articleId) {
         return commentRepository.findByArticleIdAndParentCommentId(articleId, null);
     }
 
+    /**
+     * Обработка нового комментария, проверка на соответствие требованиям.
+     *
+     * @param newCommentDto dto комментария
+     */
     @Transactional
     public void add(NewCommentDto newCommentDto) {
         Comment comment = new Comment();
@@ -45,6 +64,7 @@ public class CommentService {
         comment.setText(newCommentDto.getText());
         comment.setUser(user);
         comment.setArticle(article);
+        comment.setBanned(false);
 
         if (newCommentDto.getParentCommentId() != null) {
             Optional<Comment> parentComment = findById(newCommentDto.getParentCommentId());
@@ -52,15 +72,32 @@ public class CommentService {
         }
 
         commentRepository.save(comment);
-
-        String textNotif = String.format(
-                InfoMessage.NOTIFICATION_COMMENT_INFO.getField(), user.getUsername(), article.getTitle()
-        );
-
-        notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif);
+        notificationService.sendAllNotification(comment);
     }
 
+    /**
+     * Поиск комментария по его id.
+     *
+     * @param id id комментария
+     */
     public Optional<Comment> findById(Long id) {
         return commentRepository.findById(id);
     }
+
+    /**
+     * Заменяет переменную banned в сущности Comment на true
+     *
+     * @param id id комментария
+     */
+    @Transactional
+    public void banById(Long id) {
+        Optional<Comment> optional = commentRepository.findById(id);
+
+        if (optional.isPresent()) {
+            Comment comment = optional.get();
+            comment.setBanned(true);
+            commentRepository.save(comment);
+        }
+    }
+
 }

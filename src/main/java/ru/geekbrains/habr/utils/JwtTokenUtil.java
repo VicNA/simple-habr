@@ -14,14 +14,29 @@ import ru.geekbrains.habr.entities.Role;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Утилита для обработки Jwt токенов
+ *
+ * @author Рожко Алексей
+ * @version 1.0
+ */
 @Component
 public class JwtTokenUtil {
+    /**
+     * Хранится в кодировке base64
+     */
     @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.lifetime}")
     private Integer jwtLifetime;
 
+    /**
+     * Генерация нового токена.
+     *
+     * @param userDetails Основная информация о пользователе
+     * @return Токен
+     */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> rolesList = userDetails.getAuthorities().stream()
@@ -42,10 +57,21 @@ public class JwtTokenUtil {
     }
 
 
+    /**
+     * Получение username из токена.
+     *
+     * @param token Токен
+     * @return username
+     */
     public String getUsernameFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
     }
 
+    /**
+     * Получение основной информации, хранящейся в токене.
+     *
+     * @param token Токен
+     */
     public Claims getClaimsFromToken(String token){
         return Jwts.parserBuilder()
                 .setSigningKey((Decoders.BASE64.decode(secret)))
@@ -54,6 +80,13 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
+    /**
+     * Проверка токена на соответствие.
+     *
+     * @param token  Токен
+     * @param userDetails Основная информация о пользователе
+     * @return true - если токен валидный, false - если нет.
+     */
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = getUsernameFromToken(token);
 
@@ -67,6 +100,7 @@ public class JwtTokenUtil {
 
             return false;
         }
+
         return true;
     }
 
