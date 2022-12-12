@@ -7,6 +7,12 @@ import ru.geekbrains.habr.repositories.CategoryRepository;
 
 import java.util.List;
 
+/**
+ * Сервис для работы с категориями
+ *
+ * @author
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class CategoryService {

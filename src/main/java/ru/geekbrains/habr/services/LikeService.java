@@ -16,6 +16,12 @@ import ru.geekbrains.habr.services.enums.InfoMessage;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+/**
+ * Сервис для работы с лайками
+ *
+ * @author Медведев Максим
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class LikeService {
@@ -24,6 +30,11 @@ public class LikeService {
     private final ArticleService articleService;
     private final NotificationService notificationService;
 
+    /**
+     * Добавление нового лайка
+     *
+     * @param likeDto dto лайка
+     */
     @Transactional
     public void add(LikeDto likeDto) {
         User user = userService.findByUsername(likeDto.getUsername())
@@ -63,6 +74,11 @@ public class LikeService {
         }
     }
 
+    /**
+     * Удаление лайка
+     *
+     * @param like лайк
+     */
     public void deleteLike(Like like) {
         likeRepository.delete(like);
     }

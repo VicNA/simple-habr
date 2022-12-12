@@ -45,7 +45,6 @@ public class ArticleConverter {
         return articleDto;
     }
 
-    // TODO Может стоит переименовать метод?
     public Article2Dto entityTo2Dto(Article article) {
         return new Article2Dto(
                 article.getId(),

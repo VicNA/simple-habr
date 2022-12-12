@@ -167,6 +167,4 @@ public class NotificationService {
                     UserRole.ROLE_MODERATOR, comment.getUser().getUsername(), textNotifForModer, contentId, contentType);
         }
     }
-
-
 }

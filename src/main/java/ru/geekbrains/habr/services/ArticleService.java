@@ -1,6 +1,7 @@
 package ru.geekbrains.habr.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,10 +22,18 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Сервис для работы со статьями
+ *
+ * @author
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
-    private final int SIZE_PAGE = 3;
+
+    @Value("${pagination.page-size}")
+    private int SIZE_PAGE;
 
     private final ArticleRepository articleRepository;
     private final UserService userService;
@@ -116,6 +125,13 @@ public class ArticleService {
                 PageRequest.of(page, SIZE_PAGE, Sort.by("dtCreated").descending()));
     }
 
+    /**
+     * Сохраняет изменения в статье
+     *
+     * @param articleDto DTO статьи
+     *
+     * @author Татьяна
+     */
     @Transactional
     public void updateArticlePublicFieldsFromDto(ArticleDto articleDto) {
         Article article = findById(articleDto.getId())
@@ -141,6 +157,13 @@ public class ArticleService {
     }
 
 
+    /**
+     * Создание новой статьи
+     *
+     * @param articleDto DTO статьи
+     *
+     * @author Татьяна
+     */
     @Transactional
     public void createArticleFromDto(ArticleDto articleDto) {
         Article article = new Article();

@@ -39,8 +39,8 @@ public class AdminController {
     /**
      * Изменяет роли пользователя
      *
-     * @param username Имя пользователя
-     * @param role Присваемая роль
+     * @param username - Имя пользователя
+     * @param role - Присваиваемая роль
      */
     @PutMapping("/update/role")
     public void updateRoleModerator(

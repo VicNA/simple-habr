@@ -7,6 +7,12 @@ import ru.geekbrains.habr.repositories.StatusRepository;
 
 import java.util.Optional;
 
+/**
+ * Сервис для работы со статусами
+ *
+ * @author
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class StatusService {

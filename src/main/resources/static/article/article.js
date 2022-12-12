@@ -69,7 +69,9 @@ angular
                 $http
                     .post(path + "/add", like)
                     .then(
-                        function (response) {}
+                        function (response) {
+                            location.reload();
+                        }
                     )
                 ;
             }

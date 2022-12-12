@@ -1,5 +1,6 @@
 package ru.geekbrains.habr.validations;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.exceptions.ValidationException;
@@ -13,6 +14,10 @@ import java.util.List;
 
 @Component
 public class UserInfoValidator implements Validator<UserDto> {
+
+    @Value("${validation.birth-min-date}")
+    private LocalDate birthMinDate;
+
     @Override
     public void validate(UserDto userDto) {
         List<ValidationFieldError> errorList = new ArrayList<>();
@@ -22,8 +27,8 @@ public class UserInfoValidator implements Validator<UserDto> {
             return;
         }
 
-        if (userDto.getDtBirth().isBefore(LocalDate.of(1952, 1, 1))) {
-            message = String.format(ErrorMessage.USER_MIN_BIRTH_ERROR.getField(), "yyy");
+        if (userDto.getDtBirth().isBefore(birthMinDate)) {
+            message = String.format(ErrorMessage.USER_MIN_BIRTH_ERROR.getField(), birthMinDate.toString());
             errorList.add(new ValidationFieldError(Filter.DT_BIRTH.getField(), userDto.getDtBirth().toString(), message));
         }
 
