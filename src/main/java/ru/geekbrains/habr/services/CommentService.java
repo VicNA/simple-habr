@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Сервис для работы с комметариями
+ * Сервис обработки комментариев
  *
  * @author Рожко Алексей
  * @version 1.0
@@ -33,16 +33,17 @@ public class CommentService {
      * Возвращает список комментариев, написанные к статье.
      * Без "дочерних" комментариев.
      *
-     * @param articleId id статьи
+     * @param articleId Идентификатор статьи
+     * @return Список комментариев
      */
     public List<Comment> findByArticleIdOnlyParentComments(Long articleId) {
         return commentRepository.findByArticleIdAndParentCommentId(articleId, null);
     }
 
     /**
-     * Обработка нового комментария, проверка на соответствие требованиям.
+     * Добавление нового комментария, проверка на соответствие требованиям.
      *
-     * @param newCommentDto dto комментария
+     * @param newCommentDto DTO комментария
      */
     @Transactional
     public void add(NewCommentDto newCommentDto) {
@@ -73,9 +74,10 @@ public class CommentService {
     }
 
     /**
-     * Поиск комментария по его id.
+     * Находит комментарий по идентификатору
      *
-     * @param id id комментария
+     * @param id Идентификатор комментария
+     * @return The optional
      */
     public Optional<Comment> findById(Long id) {
         return commentRepository.findById(id);
