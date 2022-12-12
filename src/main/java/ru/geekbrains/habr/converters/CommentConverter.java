@@ -1,10 +1,9 @@
 package ru.geekbrains.habr.converters;
 
 import org.springframework.stereotype.Component;
-import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.dtos.CommentDto;
-import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.entities.Comment;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class CommentConverter {
 
-    private static final String bannedText = "Комментарий удалён по какой-то причине";
+    private static final String bannedText = ErrorMessage.COMMENT_DELETE_ERROR.getField();
 
     public static CommentDto entityToDto(Comment comment) {
         CommentDto dto = new CommentDto().builder()

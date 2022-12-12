@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum ContentType {
     COMMENT("comment"),
     ARTICLE("article");
+
     private final String field;
 
     ContentType(String field) {

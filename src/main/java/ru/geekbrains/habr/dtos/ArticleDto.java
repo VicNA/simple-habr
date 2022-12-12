@@ -3,9 +3,6 @@ package ru.geekbrains.habr.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ru.geekbrains.habr.entities.Status;
-import ru.geekbrains.habr.entities.User;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor

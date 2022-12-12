@@ -5,14 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.habr.converters.CommentConverter;
-import ru.geekbrains.habr.dtos.ArticleDto;
 import ru.geekbrains.habr.dtos.CommentDto;
 import ru.geekbrains.habr.dtos.NewCommentDto;
 import ru.geekbrains.habr.dtos.ResponseMessage;
-import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.entities.Comment;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.CommentService;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
+import ru.geekbrains.habr.services.enums.InfoMessage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,7 +67,7 @@ public class CommentController {
     @PostMapping("moderation/ban/{commentId}")
     public ResponseMessage banById(@PathVariable Long commentId) {
         commentService.banById(commentId);
-        return new ResponseMessage("Комментарий забанен");
+        return new ResponseMessage(InfoMessage.COMMENT_BAN_INFO.getField());
     }
 
     /**
@@ -80,8 +80,8 @@ public class CommentController {
     @GetMapping("/getArticleId/{commentId}")
     public Long findArticleIdByCommentId(@PathVariable Long commentId) {
         return commentService.findById(commentId).orElseThrow(
-                        () -> new ResourceNotFoundException(
-                                String.format("Комментарий с id = '%d' не найден", commentId)))
+                () -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.COMMENT_ID_ERROR.getField(), commentId)))
                 .getArticle().getId();
     }
 }

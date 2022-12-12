@@ -15,11 +15,11 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.NotificationRepository;
 import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.services.enums.ContentType;
+import ru.geekbrains.habr.services.enums.InfoMessage;
 import ru.geekbrains.habr.services.enums.UserRole;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -50,7 +50,7 @@ public class NotificationService {
      */
     @Transactional
     public void createNotification(String recipient, String sender, String text, Long contentId, String contentType) {
-        if(recipient.equals(sender)){
+        if (recipient.equals(sender)) {
             return;
         }
         User newRecipient = userService.findByUsername(recipient)
@@ -117,9 +117,9 @@ public class NotificationService {
     /**
      * Создание уведомлений группе пользовтелей с одной ролью
      *
-     * @param userRole  - роль пользователей
-     * @param sender    - отправитель уведомления
-     * @param text      - текст уведомления
+     * @param userRole - роль пользователей
+     * @param sender   - отправитель уведомления
+     * @param text     - текст уведомления
      */
     public void createNotificationForSpecificRole(UserRole userRole, String sender, String text,
                                                   Long contentId, String contentType) {
@@ -134,11 +134,11 @@ public class NotificationService {
     /**
      * Создание уведомлений для нового комментария
      *
-     * @param comment  - комментарий
+     * @param comment - комментарий
      */
     public void sendAllNotification(Comment comment) {
 
-        String textNotif = String.format("Пользователь %s добавил комментарий к Вашей статье <<%s>>",
+        String textNotif = String.format(InfoMessage.NOTIFICATION_COMMENT_INFO.getField(),
                 comment.getUser().getUsername(), comment.getArticle().getTitle());
         createNotification(
                 comment.getArticle().getUser().getUsername(), comment.getUser().getUsername(), textNotif,
@@ -161,7 +161,7 @@ public class NotificationService {
                 contentType = ContentType.COMMENT.getField();
             }
 
-            String textNotifForModer = String.format("Пользователь %s призвал Вас %s <<%s>> c формулировкой: \"%s\"",
+            String textNotifForModer = String.format(InfoMessage.NOTIFICATION_CALL_INFO.getField(),
                     comment.getUser().getUsername(), whereName, whereId, message);
             createNotificationForSpecificRole(
                     UserRole.ROLE_MODERATOR, comment.getUser().getUsername(), textNotifForModer, contentId, contentType);

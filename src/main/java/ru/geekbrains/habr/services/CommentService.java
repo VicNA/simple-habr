@@ -10,9 +10,6 @@ import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.CommentRepository;
 import ru.geekbrains.habr.services.enums.ErrorMessage;
-import ru.geekbrains.habr.services.enums.InfoMessage;
-import ru.geekbrains.habr.services.enums.ContentType;
-import ru.geekbrains.habr.services.enums.UserRole;
 
 import java.util.List;
 import java.util.Optional;

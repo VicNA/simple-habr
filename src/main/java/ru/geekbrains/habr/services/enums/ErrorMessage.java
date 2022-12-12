@@ -12,7 +12,13 @@ public enum ErrorMessage {
 
     AUTHENTICATION_PASSWORD_ERROR("Пароли не совпадают"),
     AUTHENTICATION_INCORRECT_PASSWORD_ERROR("Некорректный логин или пароль"),
-    AUTHENTICATION_INCORRECT_USERNAME_ERROR("Пользователь с таким именем уже существует");
+    AUTHENTICATION_INCORRECT_USERNAME_ERROR("Пользователь с таким именем уже существует"),
+
+    COMMENT_ID_ERROR("Комментарий с id = '%d' не найден"),
+    COMMENT_DELETE_ERROR("Комментарий удалён по какой-то причине"),
+
+    FILE_LOAD_ERROR("Ошибка загрузки файла"),
+    IMAGE_ERROR("Картинка отсутствует");
 
     private final String field;
 

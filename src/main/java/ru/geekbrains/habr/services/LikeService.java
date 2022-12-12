@@ -50,9 +50,9 @@ public class LikeService {
             likeRepository.save(newLike);
 
             if (!article.getUser().getUsername().equals(user.getUsername())) {
-                notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif);
+                notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif,
+                        article.getId(), ContentType.ARTICLE.getField());
             }
-
         } else {
             deleteLike(like.get());
             Optional<Notification> notification = notificationService.findBySenderAndText(user, textNotif);

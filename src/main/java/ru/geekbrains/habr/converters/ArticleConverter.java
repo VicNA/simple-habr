@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 public class ArticleConverter {
     private static final int LENGTH = 200;
 
-    public ArticleDto entityToDto(Article article){
+    public ArticleDto entityToDto(Article article) {
         ArticleDto articleDto = new ArticleDto(
                 article.getId(),
                 article.getTitle(),
@@ -25,22 +25,26 @@ public class ArticleConverter {
                 "",
                 article.getArticleTotal().getLikesTotal(),
                 article.getArticleTotal().getCommentsTotal());
-        if(article.getDtPublished()!= null){
+
+        if (article.getDtPublished() != null) {
             articleDto.setDtPublished(article.getDtPublished().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
         }
-        if(article.getDtCreated()!= null){
+
+        if (article.getDtCreated() != null) {
             articleDto.setDtCreated(article.getDtCreated().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        }
+
+        return articleDto;
+    }
+
+    public ArticleDto entityToDtoForPage(Article article) {
+        ArticleDto articleDto = entityToDto(article);
+        if (articleDto.getText().length() > LENGTH) {
+            articleDto.setText(article.getText().substring(0, LENGTH) + "...");
         }
         return articleDto;
     }
 
-    public ArticleDto entityToDtoForPage(Article article){
-        ArticleDto articleDto = entityToDto(article);
-        if(articleDto.getText().length()>LENGTH){
-            articleDto.setText(article.getText().substring(0,LENGTH) + "...");
-        }
-        return articleDto;
-    }
     // TODO Может стоит переименовать метод?
     public Article2Dto entityTo2Dto(Article article) {
         return new Article2Dto(
