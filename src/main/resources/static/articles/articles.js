@@ -17,7 +17,7 @@ angular
             var path = rootPath + articlesPath;
 
             var currUserLike = false;
-            $scope.likeButton = '🤍';
+            $scope.likeButton = '💜';/*🤍*/
 
             $scope.currentPage = 1;
             totalPages = 1;
@@ -57,7 +57,6 @@ angular
                             $scope.articles = response.data.content;
                             totalPages = response.data.totalPages;
                             $scope.paginationArray = $scope.generatePagesIndexes(1, totalPages);
-//                            console.log($scope.articles);
                         }
                     )
                 ;
@@ -68,7 +67,7 @@ angular
                     alert("Необходимо авторизоваться");
                     return;
                 }
-
+                /*
                 path = rootPath + likesPath + "/add";
                 like =
                     {
@@ -83,7 +82,7 @@ angular
                     )
                 ;
 
-                $scope.getArticles();
+                $scope.getArticles();*/
             }
 
             $scope.generatePagesIndexes = function (startPage, endPage) {

@@ -19,7 +19,8 @@
                     <p>{{article.text}}</p>
                     <p><a class="btn" href="#!/article/{{article.id}}">Дальше &raquo;</a></p>
                     <span>{{article.dtPublished}} </span>&nbsp;&nbsp;&nbsp;
-                    <span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
+                    <button type="button" style="border-style: none;background: none;" ng-click="addLike(article.id)"> {{likeButton}}</button>{{article.likesTotal}}&nbsp;&nbsp;&nbsp;
+                    <span>💬{{article.commentsTotal}} </span>
                 </div>
             </div>
             <hr>
