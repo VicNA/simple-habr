@@ -22,6 +22,12 @@ spring:
 upload:
   path: src/main/resources/files
 
+validation:
+  birth-min-date: 01.01.1952
+
+pagination:
+  page-size: 3
+
 jwt:
   secret: aCpJRmldQD0yTys0fVJgI3gjfjV+Sm1BRXRXMWI6TTF9X0k2JVJwY35JdWs1SG9zLG9edzlZW2Y6dSsrSDp4
   lifetime: 36000000

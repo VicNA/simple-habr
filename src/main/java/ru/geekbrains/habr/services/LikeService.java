@@ -10,10 +10,18 @@ import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.LikeRepository;
 import ru.geekbrains.habr.services.enums.ContentType;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
+import ru.geekbrains.habr.services.enums.InfoMessage;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+/**
+ * Сервис для работы с лайками
+ *
+ * @author Медведев Максим
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class LikeService {
@@ -22,20 +30,27 @@ public class LikeService {
     private final ArticleService articleService;
     private final NotificationService notificationService;
 
+    /**
+     * Добавление нового лайка
+     *
+     * @param likeDto dto лайка
+     */
     @Transactional
     public void add(LikeDto likeDto) {
         User user = userService.findByUsername(likeDto.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Пользователь '%s' не найден",
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(),
                                 likeDto.getUsername()))
                 );
 
         Article article = articleService.findById(likeDto.getArticleId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья '%d' не найдена",
-                        likeDto.getArticleId()))
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), likeDto.getArticleId()))
                 );
 
-        String textNotif = "Пользователь " + user.getUsername() + " поставил лайк Вашей статье <<" + article.getTitle() + ">>";
+        String textNotif = String.format(
+                InfoMessage.NOTIFICATION_LIKE_INFO.getField(), user.getUsername(), article.getTitle()
+        );
 
         Optional<Like> like = likeRepository.findByUserAndArticle(user, article);
 
@@ -45,8 +60,10 @@ public class LikeService {
             newLike.setArticle(article);
             likeRepository.save(newLike);
 
-            notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif,
-                    article.getId(), ContentType.ARTICLE.getField());
+            if (!article.getUser().getUsername().equals(user.getUsername())) {
+                notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif,
+                        article.getId(), ContentType.ARTICLE.getField());
+            }
         } else {
             deleteLike(like.get());
             Optional<Notification> notification = notificationService.findBySenderAndText(user, textNotif);
@@ -57,6 +74,11 @@ public class LikeService {
         }
     }
 
+    /**
+     * Удаление лайка
+     *
+     * @param like лайк
+     */
     public void deleteLike(Like like) {
         likeRepository.delete(like);
     }

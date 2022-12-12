@@ -13,6 +13,7 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.ArticleService;
 import ru.geekbrains.habr.services.StatusService;
 import ru.geekbrains.habr.services.enums.ArticleStatus;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -50,7 +51,9 @@ public class ArticleController {
     @GetMapping("/view/{id}")
     public ArticleDto findById(@PathVariable Long id) {
         Article article = articleService.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), id))
+                );
 
         return articleConverter.entityToDto(article);
     }
@@ -89,7 +92,7 @@ public class ArticleController {
 
     @PutMapping("/updatePublicFieldsAndPublicate")
     public void updatePublicFieldsAndPublicate(@RequestBody ArticleDto articleDto) {
-        articleDto.setStatus(statusService.findByName("moderating").orElseThrow());
+        articleDto.setStatus(statusService.findByName(ArticleStatus.MODERATING.toString()).orElseThrow());
         articleService.updateArticlePublicFieldsFromDto(articleDto);
     }
 
@@ -101,7 +104,7 @@ public class ArticleController {
 
     @PutMapping("/createAndPublicate")
     public void createAndPublicate(@RequestBody ArticleDto articleDto) {
-        articleDto.setStatus(statusService.findByName("moderating").orElseThrow());
+        articleDto.setStatus(statusService.findByName(ArticleStatus.MODERATING.toString()).orElseThrow());
         articleService.createArticleFromDto(articleDto);
     }
 
@@ -113,7 +116,7 @@ public class ArticleController {
             page = 1;
         }
 
-        return articleService.findAllByStatusPage("moderating", page - 1)
+        return articleService.findAllByStatusPage(ArticleStatus.MODERATING.toString(), page - 1)
                 .map(articleConverter::entityTo2Dto);
     }
 
@@ -127,7 +130,10 @@ public class ArticleController {
     @DeleteMapping("/{id}")
     public void deleteArticle(@PathVariable Long id) {
         Article article = articleService.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья с id = '%d' не найдена", id)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), id))
+                );
+
         articleService.deleteArticle(article);
     }
 }

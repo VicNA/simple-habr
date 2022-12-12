@@ -15,6 +15,7 @@ import ru.geekbrains.habr.dtos.NewUserDto;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.AppError;
 import ru.geekbrains.habr.services.UserService;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.utils.JwtTokenUtil;
 
 /**
@@ -48,8 +49,12 @@ public class AuthenticationController {
         } catch (BadCredentialsException e) {
 
             return new ResponseEntity<>(
-                    new AppError(HttpStatus.UNAUTHORIZED.value(), "Некорректный логин или пароль"),
-                    HttpStatus.UNAUTHORIZED);
+                    new AppError(
+                            HttpStatus.UNAUTHORIZED.value(),
+                            ErrorMessage.AUTHENTICATION_INCORRECT_PASSWORD_ERROR.getField()
+                    ),
+                    HttpStatus.UNAUTHORIZED
+            );
         }
         UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);
@@ -68,14 +73,22 @@ public class AuthenticationController {
 
         if (!newUserDto.getPassword().equals(newUserDto.getConfirmPassword())) {
             return new ResponseEntity<>(
-                    new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"),
-                    HttpStatus.BAD_REQUEST);
+                    new AppError(
+                            HttpStatus.BAD_REQUEST.value(),
+                            ErrorMessage.AUTHENTICATION_PASSWORD_ERROR.getField()
+                    ),
+                    HttpStatus.BAD_REQUEST
+            );
         }
 
         if (userService.findByUsername(newUserDto.getUsername()).isPresent()) {
             return new ResponseEntity<>(
-                    new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с таким именем уже существует"),
-                    HttpStatus.BAD_REQUEST);
+                    new AppError(
+                            HttpStatus.BAD_REQUEST.value(),
+                            ErrorMessage.AUTHENTICATION_INCORRECT_USERNAME_ERROR.getField()
+                    ),
+                    HttpStatus.BAD_REQUEST
+            );
         }
 
         User user = new User();

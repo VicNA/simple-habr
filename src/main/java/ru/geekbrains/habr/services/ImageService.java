@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -46,10 +47,10 @@ public class ImageService {
 
                 return fullName;
             } catch (Exception e) {
-                throw new RuntimeException("Ошибка загрузки файла");
+                throw new RuntimeException(ErrorMessage.FILE_LOAD_ERROR.getField());
             }
         } else {
-            throw new RuntimeException("А картинки-то нету");
+            throw new RuntimeException(ErrorMessage.IMAGE_ERROR.getField());
         }
     }
 

@@ -9,8 +9,7 @@ import ru.geekbrains.habr.entities.Comment;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.CommentRepository;
-import ru.geekbrains.habr.services.enums.ContentType;
-import ru.geekbrains.habr.services.enums.UserRole;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,10 +49,14 @@ public class CommentService {
         Comment comment = new Comment();
         User user = userService.findByUsername(newCommentDto.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Пользователь '%s' не найден", newCommentDto.getUsername())));
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), newCommentDto.getUsername()))
+                );
+
         Article article = articleService.findById(newCommentDto.getArticleId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Статья с id '%d' не найдена", newCommentDto.getArticleId())));
+                        String.format(
+                                ErrorMessage.ARTICLE_ID_ERROR.getField(), newCommentDto.getArticleId()))
+                );
 
         comment.setText(newCommentDto.getText());
         comment.setUser(user);

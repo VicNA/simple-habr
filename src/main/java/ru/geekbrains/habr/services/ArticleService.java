@@ -1,6 +1,7 @@
 package ru.geekbrains.habr.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,6 +14,7 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
 import ru.geekbrains.habr.repositories.specifications.ArticleSpecifcation;
 import ru.geekbrains.habr.services.enums.ArticleStatus;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.services.enums.Filter;
 
 import javax.transaction.Transactional;
@@ -20,10 +22,18 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Сервис для работы со статьями
+ *
+ * @author
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
-    private final int SIZE_PAGE = 3;
+
+    @Value("${pagination.page-size}")
+    private int SIZE_PAGE;
 
     private final ArticleRepository articleRepository;
     private final UserService userService;
@@ -115,11 +125,19 @@ public class ArticleService {
                 PageRequest.of(page, SIZE_PAGE, Sort.by("dtCreated").descending()));
     }
 
+    /**
+     * Сохраняет изменения в статье
+     *
+     * @param articleDto DTO статьи
+     *
+     * @author Татьяна
+     */
     @Transactional
     public void updateArticlePublicFieldsFromDto(ArticleDto articleDto) {
         Article article = findById(articleDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья '%s' не найдена",
-                        articleDto.getTitle())));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), articleDto.getTitle()))
+                );
 
         //Если нет изменений - выходим
         if (article.getTitle().equals(articleDto.getTitle())
@@ -132,13 +150,20 @@ public class ArticleService {
         article.setTitle(articleDto.getTitle());
         article.setStatus(articleDto.getStatus());
 
-        if(article.getImagePath()!=null && !article.getImagePath().equals(articleDto.getImagePath())){
+        if (article.getImagePath() != null && !article.getImagePath().equals(articleDto.getImagePath())) {
             imageService.deleteImage(article.getImagePath());
         }
         article.setImagePath(articleDto.getImagePath());
     }
 
 
+    /**
+     * Создание новой статьи
+     *
+     * @param articleDto DTO статьи
+     *
+     * @author Татьяна
+     */
     @Transactional
     public void createArticleFromDto(ArticleDto articleDto) {
         Article article = new Article();

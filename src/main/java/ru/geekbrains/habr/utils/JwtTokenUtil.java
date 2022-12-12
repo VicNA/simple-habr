@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ru.geekbrains.habr.entities.Role;
 
 
 import java.util.*;
@@ -72,7 +71,7 @@ public class JwtTokenUtil {
      *
      * @param token Токен
      */
-    public Claims getClaimsFromToken(String token){
+    public Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey((Decoders.BASE64.decode(secret)))
                 .build()
@@ -83,20 +82,20 @@ public class JwtTokenUtil {
     /**
      * Проверка токена на соответствие.
      *
-     * @param token  Токен
+     * @param token       Токен
      * @param userDetails Основная информация о пользователе
      * @return true - если токен валидный, false - если нет.
      */
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = getUsernameFromToken(token);
 
-        if(username.isEmpty() || !username.equals(userDetails.getUsername())){
+        if (username.isEmpty() || !username.equals(userDetails.getUsername())) {
 
             return false;
         }
         Date date = getClaimsFromToken(token).getExpiration();
 
-        if (date == null || date.before(new Date())){
+        if (date == null || date.before(new Date())) {
 
             return false;
         }

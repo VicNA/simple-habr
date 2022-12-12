@@ -10,18 +10,24 @@ import ru.geekbrains.habr.dtos.UserBannedDto;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.entities.User;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
+import ru.geekbrains.habr.services.enums.InfoMessage;
 import ru.geekbrains.habr.services.enums.UserRole;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.UserRepository;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для работы с пользователями
+ *
+ * @author
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -35,8 +41,9 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateUserInfoFromDto(UserDto userDto) {
         User user = findByUsername(userDto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден",
-                        userDto.getUsername())));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), userDto.getUsername()))
+                );
 
         user.setUsername(userDto.getUsername());
         user.setRealname(userDto.getRealname());
@@ -50,13 +57,15 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUsername(String username) {
-        User user = findByUsername(username).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден", username)));
+        User user = findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), username))
+                );
 
-        if(user.getDateBan()!=null && user.getDateBan().isAfter(LocalDateTime.now())){
+        if (user.getDateBan() != null && user.getDateBan().isAfter(LocalDateTime.now())) {
             String dateBan = user.getDateBan().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm"));
 
-            throw new ResourceNotFoundException(String.format("Пользователь '%s' забанен до %s", username,dateBan));
+            throw new ResourceNotFoundException(String.format(InfoMessage.USER_BAN_INFO.getField(), username, dateBan));
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
@@ -110,8 +119,9 @@ public class UserService implements UserDetailsService {
 
     public void banUser(UserBannedDto userBannedDto) {
         User user = findByUsername(userBannedDto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден",
-                        userBannedDto.getUsername())));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), userBannedDto.getUsername()))
+                );
 
         user.setDateBan(LocalDateTime.now().plusDays(userBannedDto.daysBan));
 
