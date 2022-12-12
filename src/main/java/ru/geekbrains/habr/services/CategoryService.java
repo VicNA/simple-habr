@@ -8,16 +8,18 @@ import ru.geekbrains.habr.repositories.CategoryRepository;
 import java.util.List;
 
 /**
- * Сервис для работы с категориями
- *
- * @author
- * @version 1.0
+ * Сервис обработки категории
  */
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
+    /**
+     * Получает список категории
+     *
+     * @return Список
+     */
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }

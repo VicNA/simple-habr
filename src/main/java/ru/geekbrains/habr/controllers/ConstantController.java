@@ -13,6 +13,6 @@ public class ConstantController {
 
     @GetMapping("/publishedDate")
     public List<String> getPublishedDate() {
-        return List.of(Filter.DT_PUBLISHED.getField(), Filter.RATING.getField());
+        return List.of(Filter.DT_PUBLISHED.getName(), Filter.RATING.getName());
     }
 }

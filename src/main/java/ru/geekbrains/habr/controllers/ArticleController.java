@@ -146,11 +146,6 @@ public class ArticleController {
 
     @DeleteMapping("/{id}")
     public void deleteArticle(@PathVariable Long id) {
-        Article article = articleService.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), id))
-                );
-
-        articleService.deleteArticle(article);
+        articleService.deleteArticle(id);
     }
 }

@@ -29,12 +29,12 @@ public class UserInfoValidator implements Validator<UserDto> {
 
         if (userDto.getDtBirth().isBefore(birthMinDate)) {
             message = String.format(ErrorMessage.USER_MIN_BIRTH_ERROR.getField(), birthMinDate.toString());
-            errorList.add(new ValidationFieldError(Filter.DT_BIRTH.getField(), userDto.getDtBirth().toString(), message));
+            errorList.add(new ValidationFieldError(Filter.DT_BIRTH.getName(), userDto.getDtBirth().toString(), message));
         }
 
         if (userDto.getDtBirth().isAfter(LocalDate.now())) {
             message = ErrorMessage.USER_MAX_BIRTH_ERROR.getField();
-            errorList.add(new ValidationFieldError(Filter.DT_BIRTH.getField(), userDto.getDtBirth().toString(), message));
+            errorList.add(new ValidationFieldError(Filter.DT_BIRTH.getName(), userDto.getDtBirth().toString(), message));
         }
 
         if (!errorList.isEmpty()) {
