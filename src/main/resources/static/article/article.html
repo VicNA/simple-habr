@@ -13,9 +13,13 @@
         <img src="{{article.imagePath}}" onerror="this.style.display='none'"/>
         <div>
             <p>{{article.text}}</p>
-            <span>{{article.dtPublished}} </span>&nbsp;&nbsp;&nbsp;
-            <span>💜🤍🖤{{article.likesTotal}}</span>&nbsp;&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
-            <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
+            <span>{{article.dtPublished}} </span>
+            <button type="button"
+                    style="border-style: none;background: none;"
+                    ng-click="addLike()">
+                {{likeButton}}
+            </button>{{article.likesTotal}}
+            &nbsp;&nbsp;&nbsp;<span>💬&nbsp;{{article.commentsTotal}} </span>
         </div>
     </div>
 </div>

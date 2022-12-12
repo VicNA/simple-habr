@@ -23,4 +23,8 @@ public class CategoryService {
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
+
+    public List<Category> findAllByArticleId(Long articleId)  {
+        return categoryRepository.findAllByArticleId(articleId);
+    }
 }

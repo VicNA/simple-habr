@@ -25,6 +25,7 @@ angular
             var path;
             var like;
             var articleId;
+            $scope.likeButton = '💜';/*🤍*/
 
             $scope.getArticle = function () {
                 if (articleId == -1) {
@@ -43,8 +44,7 @@ angular
                             $scope.getListComments(articleId);
                             $scope.getSourceImage($scope.article.imagePath);
                         }
-                    )
-                ;
+                    );
             }
 
             if($routeParams.commentId){
@@ -59,6 +59,11 @@ angular
             }
 
             $scope.addLike = function () {
+                if(!$localStorage.localUser){
+                    alert("Необходимо авторизоваться");
+                    return;
+                }
+
                 path = rootPath + likesPath;
                 like =
                     {
@@ -72,8 +77,7 @@ angular
                         function (response) {
                             location.reload();
                         }
-                    )
-                ;
+                    );
             }
 
             $scope.getListComments = function(articleId) {
@@ -97,7 +101,9 @@ angular
                 .then(function successCallback (response) {
                    $scope.getListComments(articleId);
                    delete $scope.viewAnswerPanel;
-               });
+                });
+
+                $scope.article.commentsTotal =  $scope.article.commentsTotal+1;
             }
 
             $scope.viewAnswer = function(id){

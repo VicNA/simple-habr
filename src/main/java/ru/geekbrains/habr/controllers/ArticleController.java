@@ -15,6 +15,10 @@ import ru.geekbrains.habr.services.StatusService;
 import ru.geekbrains.habr.services.enums.ArticleStatus;
 import ru.geekbrains.habr.services.enums.ErrorMessage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/articles")
 @RequiredArgsConstructor
@@ -89,6 +93,13 @@ public class ArticleController {
         articleService.updateArticlePublicFieldsFromDto(articleDto);
     }
 
+    @PutMapping("/{articleId}/updateCategories")
+    public void updateCategories(@PathVariable Long articleId,
+                                 @RequestParam(name = "categories") String[] categories) {
+        List<String> categoriesList = Arrays.asList(categories);
+        articleService.updateCategories(articleId, categoriesList);
+    }
+
 
     @PutMapping("/updatePublicFieldsAndPublicate")
     public void updatePublicFieldsAndPublicate(@RequestBody ArticleDto articleDto) {
@@ -97,15 +108,21 @@ public class ArticleController {
     }
 
     @PutMapping("/create")
-    public void createArticle(@RequestBody ArticleDto articleDto) {
+    public void createArticle(@RequestBody ArticleDto articleDto
+                            , @RequestParam(name = "categories") String[] categories) {
         articleDto.setStatus(statusService.findByName("hidden").orElseThrow());
-        articleService.createArticleFromDto(articleDto);
+        Long articleId = articleService.createArticleFromDto(articleDto);
+        List<String> categoriesList = Arrays.asList(categories);
+        articleService.updateCategories(articleId, categoriesList);
     }
 
     @PutMapping("/createAndPublicate")
-    public void createAndPublicate(@RequestBody ArticleDto articleDto) {
+    public void createAndPublicate(@RequestBody ArticleDto articleDto
+                                 , @RequestParam(name = "categories") String[] categories) {
         articleDto.setStatus(statusService.findByName(ArticleStatus.MODERATING.toString()).orElseThrow());
-        articleService.createArticleFromDto(articleDto);
+        Long articleId = articleService.createArticleFromDto(articleDto);
+        List<String> categoriesList = Arrays.asList(categories);
+        articleService.updateCategories(articleId, categoriesList);
     }
 
     @GetMapping("/moderation")

@@ -11,9 +11,10 @@ angular
         ) {
             const contextPath = 'http://' + window.location.host + '/habr/';
             var articleId = $routeParams.articleId;
+            const categoriesPath = 'api/v1/categories';
+            $scope.selection=[];
 
-
-     $scope.getArticle = function (){
+        $scope.getArticle = function (){
             $http.get(contextPath + 'api/v1/articles/view/' + articleId)
                 .then(function successCallback (response) {
                     $scope.articleInf = response.data;
@@ -24,12 +25,57 @@ angular
                 });
         }
 
+        $scope.getArticleCategories = function(){
+            $http.get(contextPath + 'api/v1/categories/article/' + articleId)
+                .then(function successCallback (response) {
+                    $scope.articleCategories = response.data;
+                }, function failureCallback (response) {
+                    console.log(response);
+                    alert(response.data.message);
+                });
+        }
+
+        $scope.getCategories = function () {
+            path = contextPath + categoriesPath;
+            $http
+                .get(path)
+                .then(function (response) {
+                        $scope.categories = response.data;
+
+                        for (var i in $scope.articleCategories) {
+                            $scope.selection.push($scope.articleCategories[i].name);
+                        }
+
+                        $scope.toggleSelection = function toggleSelection(categoryName) {
+                            var idx = $scope.selection.indexOf(categoryName);
+                            if (idx > -1) {
+                                // is currently selected
+                                $scope.selection.splice(idx, 1);
+                            }
+                            else {
+                                // is newly selected
+                                $scope.selection.push(categoryName);
+                            }
+                        };
+                    }, function failureCallback (response) {
+                    alert(response.data.message);
+                });
+        }
+
         $scope.updateArticle = function (){
             $scope.articleInf.authorUsername = $localStorage.localUser.username;
             if($scope.newFile!=null && !$scope.articleInf.imagePath){
                  uploadFile($scope.updateArticle);
                  return;
             }
+
+            var request ='api/v1/articles/'+$scope.articleInf.id+'/updateCategories?categories='+ $scope.selection.join(',');
+            $http.put( contextPath + request)
+                .then(function successCallback (response) {
+                }, function failureCallback (response) {
+                    alert(response.data.message);
+                });
+
             $http.put(contextPath + 'api/v1/articles/updatePublicFields', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья сохранена как черновик');
@@ -45,6 +91,13 @@ angular
                  uploadFile($scope.updateArticleAndPublicate);
                  return;
             }
+            var request ='api/v1/articles/'+$scope.articleInf.id+'/updateCategories?categories='+ $scope.selection.join(',');
+            $http.put( contextPath + request)
+                .then(function successCallback (response) {
+                }, function failureCallback (response) {
+                    alert(response.data.message);
+                });
+
             $http.put(contextPath + 'api/v1/articles/updatePublicFieldsAndPublicate', $scope.articleInf)
                 .then(function successCallback (response) {
                     alert('Статья отправлена на модерацию');
@@ -56,6 +109,8 @@ angular
 
 
         $scope.getArticle();
+        $scope.getArticleCategories();
+        $scope.getCategories();
 
         function uploadFile(nameFunction){
 
