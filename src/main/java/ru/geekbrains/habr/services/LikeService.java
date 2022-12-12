@@ -9,6 +9,8 @@ import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.LikeRepository;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
+import ru.geekbrains.habr.services.enums.InfoMessage;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -25,16 +27,18 @@ public class LikeService {
     public void add(LikeDto likeDto) {
         User user = userService.findByUsername(likeDto.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Пользователь '%s' не найден",
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(),
                                 likeDto.getUsername()))
                 );
 
         Article article = articleService.findById(likeDto.getArticleId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья '%d' не найдена",
-                        likeDto.getArticleId()))
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), likeDto.getArticleId()))
                 );
 
-        String textNotif = "Пользователь " + user.getUsername() + " поставил лайк Вашей статье <<" + article.getTitle() + ">>";
+        String textNotif = String.format(
+                InfoMessage.NOTIFICATION_LIKE_INFO.getField(), user.getUsername(), article.getTitle()
+        );
 
         Optional<Like> like = likeRepository.findByUserAndArticle(user, article);
 
@@ -44,7 +48,10 @@ public class LikeService {
             newLike.setArticle(article);
             likeRepository.save(newLike);
 
-            notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif);
+            if (!article.getUser().getUsername().equals(user.getUsername())) {
+                notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif);
+            }
+
         } else {
             deleteLike(like.get());
             Optional<Notification> notification = notificationService.findBySenderAndText(user, textNotif);

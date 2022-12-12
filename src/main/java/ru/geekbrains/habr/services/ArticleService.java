@@ -13,6 +13,7 @@ import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.ArticleRepository;
 import ru.geekbrains.habr.repositories.specifications.ArticleSpecifcation;
 import ru.geekbrains.habr.services.enums.ArticleStatus;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.services.enums.Filter;
 
 import javax.transaction.Transactional;
@@ -118,8 +119,9 @@ public class ArticleService {
     @Transactional
     public void updateArticlePublicFieldsFromDto(ArticleDto articleDto) {
         Article article = findById(articleDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Статья '%s' не найдена",
-                        articleDto.getTitle())));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), articleDto.getTitle()))
+                );
 
         //Если нет изменений - выходим
         if (article.getTitle().equals(articleDto.getTitle())
@@ -132,7 +134,7 @@ public class ArticleService {
         article.setTitle(articleDto.getTitle());
         article.setStatus(articleDto.getStatus());
 
-        if(article.getImagePath()!=null && !article.getImagePath().equals(articleDto.getImagePath())){
+        if (article.getImagePath() != null && !article.getImagePath().equals(articleDto.getImagePath())) {
             imageService.deleteImage(article.getImagePath());
         }
         article.setImagePath(articleDto.getImagePath());

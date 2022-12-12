@@ -12,6 +12,7 @@ import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.NotificationRepository;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -44,12 +45,12 @@ public class NotificationService {
     public void createNotification(String recipient, String sender, String text) {
         User newRecipient = userService.findByUsername(recipient)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Получатель '%s' не найден", recipient))
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), recipient))
                 );
 
         User newSender = userService.findByUsername(sender)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Отправитель '%s' не найден", sender))
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), sender))
                 );
 
         Notification notification = new Notification();

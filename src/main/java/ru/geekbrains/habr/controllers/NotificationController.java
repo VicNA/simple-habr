@@ -15,6 +15,7 @@ import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.NotificationService;
 import ru.geekbrains.habr.services.UserService;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +39,9 @@ public class NotificationController {
     @GetMapping
     public List<NotificationDto> findAllByUser(@RequestParam(name = "username") String username) {
         User user = userService.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден", username)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), username))
+                );
 
         return notificationService.findAllByUser(user).stream()
                 .map(notificationConverter::entityToDto)
@@ -67,7 +70,9 @@ public class NotificationController {
     @GetMapping("/count")
     public int countNotification(@RequestParam(name = "username") String username) {
         User user = userService.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден", username)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), username))
+                );
 
         return notificationService.countNotification(user);
     }
@@ -80,7 +85,9 @@ public class NotificationController {
     @DeleteMapping
     public void deleteNotificationsByUsername(@RequestParam(name = "username") String username) {
         User user = userService.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден", username)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), username))
+                );
 
         notificationService.deleteNotificationsByUser(user);
     }

@@ -8,6 +8,7 @@ import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.User;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.services.UserService;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.validations.UserInfoValidator;
 
 @RestController
@@ -21,7 +22,9 @@ public class UserController {
     @GetMapping("/{username}")
     public UserDto findByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден", username)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), username))
+                );
 
         return userConverter.entityToDto(user);
     }
