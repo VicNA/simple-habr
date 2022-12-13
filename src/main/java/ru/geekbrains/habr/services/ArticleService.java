@@ -21,13 +21,15 @@ import ru.geekbrains.habr.services.enums.Filter;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
  * Сервис обработки статей
+ *
+ * @author
+ * @version 1.0
  */
 @Service
 @RequiredArgsConstructor
@@ -44,7 +46,8 @@ public class ArticleService {
     private final ImageService imageService;
 
     /**
-     * Получает страницу опубликованных статей с указанной сортировкой
+     * Находит все опубликованные статьи указанного статуса
+     * отсортированных по дате публикации
      *
      * @param page   Номер старницы
      * @param status Статус статей
@@ -57,16 +60,16 @@ public class ArticleService {
     }
 
     /**
-     * Получает страницу опубликованных статей с указанной сортировкой
-     * по искомому слову в загаловке статей
+     * Находит статьи с определенным статусом и отфильтрованным по наименованию статьи
+     * и указанной сортировкой
      *
      * @param page      Номер старницы
      * @param status    Статус статьи
-     * @param titlePart Искомое слово
+     * @param titlePart Искомое слово в наименовании статьи
      * @param sort      Сортировка
      * @return Страницу статей
      */
-    public Page<Article> findAllPage(int page, ArticleStatus status, String titlePart, Sort sort) {
+    public Page<Article> findByFilter(int page, ArticleStatus status, String titlePart, Sort sort) {
         return articleRepository.findAll(
                 createSpecByFilters(Map.of(
                         Filter.STATUS.getName(), status.toString(), Filter.TITLE.getName(), titlePart)),
@@ -74,7 +77,7 @@ public class ArticleService {
     }
 
     /**
-     * Получает страницу опубликованных статей с сортировкой по рейтингу
+     * Находит опубликованные статьи отсортированных по рейтингу
      *
      * @param size Количество записей
      * @return Страницу статей
@@ -109,7 +112,7 @@ public class ArticleService {
     }
 
     /**
-     * Получает статью по идентификатору
+     * Находит статью по идентификатору
      *
      * @param id Идентификатор
      * @return the optional
@@ -119,7 +122,7 @@ public class ArticleService {
     }
 
     /**
-     * Получает страницу статей определенной категории
+     * Находит опубликованные статьи определенной категории
      *
      * @param id   Идентификатор категории
      * @param page Номер страницы
@@ -132,7 +135,7 @@ public class ArticleService {
     }
 
     /**
-     * Получает страницу статей определенного пользователя
+     * Находит статьи определенного пользователя
      *
      * @param username Имя пользователя
      * @param page     Номер страницы

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Контроллер REST API личного кабинета админа
+ * Контроллер REST API для обработки запросов личного кабинета админа
  *
  * @author Николаев Виктор
  * @version 1.0
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AdminController {
     private final UserService userService;
+
     private final UserConverter userConverter;
 
     /**
