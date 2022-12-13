@@ -23,8 +23,18 @@
                                           ng-model="articleInf.text" style="height: 600px;">
                                 </textarea>
                             </div>
+                            <div ng-repeat="category in categories">
+                                <div class="action-checkbox">
+                                    <input id="{{category.name}}" type="checkbox" value="{{category.name}}"
+                                           ng-checked="selection.indexOf(category.name) > -1"
+                                           ng-click="toggleSelection(category.name)" />
+                                    <label for="{{category.name}}"></label>
+                                    {{category.cyrillicName}}
+                                </div>
+                            </div> 
                        </div>
-
+                        <input type="file" select-ng-files name="file" ng-model="newFile"
+                               accept="image/png, image/gif, image/jpeg">
                         <button id="createArticle" class="btn btn-outline-warning btn-sm"
                                 style="margin-left: 10px;" type="submit">Сохранить черновик
                         </button>
@@ -37,3 +47,4 @@
 
     </div>
 </div>
+<hr>

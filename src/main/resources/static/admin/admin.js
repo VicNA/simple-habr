@@ -1,5 +1,6 @@
-angular.module('HabrApp').controller('adminController', function($rootScope, $scope, $http, $localStorage) {
+angular.module('HabrApp').controller('adminController', function($rootScope, $scope, $http, $localStorage, $route) {
     const contextPath = 'http://' + window.location.host + '/habr/api/v1/admin';
+    $scope.admin = $localStorage.localUser.username;
 
     $scope.getListModerators = function() {
        $http.get(contextPath + '/view/moderators')

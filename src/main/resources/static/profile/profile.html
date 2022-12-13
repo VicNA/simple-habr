@@ -11,9 +11,15 @@
             </div>
             <div class="col-sm" align="middle">
                 <form action="#!/create-article/">
-                    <button id="orderSubmit777" class="btn btn-outline-info btn-sm"
-                            style="margin-left: 10px;" type="submit">Создать новую статью
-                    </button>
+                    <span>
+                        <button id="orderSubmit777" class="btn btn-outline-info btn-sm"
+                                style="margin-left: 10px;" type="submit">Создать новую статью
+                        </button>
+                        <span ng-if="isNotifications()" data-bs-toggle="modal" data-bs-target="#notificationModal"
+                              title="Уведомления"
+                              ng-click="">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp🔔{{countNotifications}}</span>
+                        <span ng-if="!isNotifications()">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp🔕</span>
+                    </span>
                 </form>
             </div>
         </div>
@@ -23,15 +29,32 @@
     <br>
     <br>
 
-    <div class="container">
+    <span class="container">
         <div class="row">
             <div class="col">
             </div>
             <div class="col" align="middle">
                 <strong>Статьи:</strong>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <button class="page-link" id="previewBtnLK" ng-disabled="!isPreviousPageLK()"
+                                    ng-click="getUserArticles(curPage-1)"><<
+                            </button>
+                        </li>
+                        <li class="page-item" ng-repeat="pageIndex in paginationArrayLK">
+                            <button class="page-link" ng-click="getUserArticles(pageIndex)">{{pageIndex}}</button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" id="nextBtnLK" ng-disabled="!isNextPageLK()"
+                                    ng-click="getUserArticles(curPage + 1)">>>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
-        <div class="row">
+        <span class="row">
             <div class="col-sm">
                 <form class="align-middle" ng-submit="updateUser()">
                     <div class="form-group row">
@@ -57,26 +80,34 @@
                         </div>
                     </div>
 
+                    <br>
                     <button id="userSubmit" class="btn btn-outline-warning btn-sm"
                             style="margin-left: 10px;" type="submit">Сохранить данные
                     </button>
                 </form>
             </div>
 
-            <div class="col-sm" align="middle">
+            <span class="col-sm">
                 <table class="table">
                     <tr class="table-primary">
                     </tr>
                     <tbody>
                     <tr ng-repeat="article in userArticles">
-                        <td><a ng-click="setArticle($index)" href="#!/article">{{article.title}}</a></td>
+                        <td>
+                            <a href="#!/article/{{article.id}}">{{article.title}}</a>
+                            <br><span>💜{{article.likesTotal}}</span>&nbsp;&nbsp;<span>💬{{article.commentsTotal}} </span>
+                            <span ng-if="!isPublished(article.status.id)">&nbsp&nbsp&nbsp&nbspДата созд.:&nbsp{{article.dtCreated}}</span>
+                            <span ng-if="isPublished(article.status.id)">&nbsp&nbsp&nbsp&nbspДата публ.:&nbsp{{article.dtPublished}}</span>
+                        </td>
                         <td>
                             <span>
                                 <div>
-                                    <a href="#!/edit-article/{{article.id}}" title="Редактирование статьи">✎</a>
+                                    <a href="#!/edit-article/{{article.id}}" title="Редактирование статьи"
+                                       style="text-decoration:none">✎</a>
                                 </div>
                                 <div>
-                                    <button class="btn"><i class="fa fa-trash"></i></button>
+                                    <a data-bs-toggle="modal" data-bs-target="#exampleModal" title="Удаление статьи"
+                                       ng-click="setArticleForDel(article.id)">❌</a>
                                 </div>
                             </span>
                         </td>
@@ -86,6 +117,55 @@
                     </tr>
                     </tbody>
                 </table>
+            </span>
+        </span>
+    </span>
+
+    <!-- Модальное окно для удаления статьи-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Внимание!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Вы действительно хотите удалить статью?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="deleteArticle(articleDel)">Да</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для вывода оповещений-->
+    <div class="modal fade" id="notificationModal" tabindex="-1" width="70" aria-labelledby="notificationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Уведомления</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-success table-striped">
+                        <tr ng-repeat="n in notifications">
+                            <td>🔔</td>
+                            <td>
+                                <a href="" ng-click="getLinkContent(n)">{{n.text}}</a>
+                            </td>
+                            <td>{{n.dtCreated}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="deleteNotifications()">Удалить все
+                        уведомления
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
             </div>
         </div>
     </div>
@@ -93,8 +173,6 @@
     <br>
     <br>
     <br>
-    <br>
-    <br>
-
+    <hr>
 
 </div>

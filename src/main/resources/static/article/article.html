@@ -1,8 +1,44 @@
-<div class="s3">
-    <ul>
-        <a href="#!">К списку статей</a>
-        <p>Статья: {{article.title}}</p>
-        <p>{{article.text}}</p>
-        <button type="button" class="btn btn-primary" ng-click="addLike()">Like</button>
-    </ul>
+<div class="col-8">
+    <br>
+    <div class="row">
+        <h4>
+            <span>{{article.title}}</span>
+        </h4>
+
+        <h6>
+            <span>Автор: </span> <span><strong> <em>{{article.authorUsername}}</em></strong></span>&nbsp;&nbsp;&nbsp;
+            <span></span>
+        </h6>
+
+        <img src="{{article.imagePath}}" onerror="this.style.display='none'"/>
+        <div>
+            <p>{{article.text}}</p>
+            <span>{{article.dtPublished}} </span>
+            <button type="button"
+                    style="border-style: none;background: none;"
+                    ng-click="addLike()">
+                {{likeButton}}
+            </button>{{article.likesTotal}}
+            &nbsp;&nbsp;&nbsp;<span>💬&nbsp;{{article.commentsTotal}} </span>
+        </div>
+    </div>
 </div>
+
+<div>
+    <p class="h4">Комментарии:</p>
+    <a ng-click="viewAnswer(0)" class="card-link" ng-show="viewAnswerPanel != 0">Написать свой комментарий</a>
+    <div class="form-floating" ng-show="viewAnswerPanel == 0">
+            <textarea class="form-control" id="textarea"
+                      ng-model="comm.cont"></textarea>
+        <label for="textarea">Комментарий</label>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary" type="button"
+                    ng-click="addComment(article.id, null, comm.cont)">Отправить
+            </button>
+        </div>
+    </div>
+</div>
+<div ng-repeat="comm in comments" ng-include="'article/comment/comment.html'"></div>
+<br>
+<hr>
+

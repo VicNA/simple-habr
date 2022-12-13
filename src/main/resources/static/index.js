@@ -21,7 +21,14 @@
                     }
                 )
                 .when(
-                    '/article',
+                    '/article/:articleId',
+                    {
+                        templateUrl: 'article/article.html',
+                        controller: 'articleController'
+                    }
+                )
+                .when(
+                    '/article/comment/:commentId',
                     {
                         templateUrl: 'article/article.html',
                         controller: 'articleController'
@@ -34,10 +41,12 @@
                         controller: 'profileController'
                     }
                 )
-                .when('/moderator', {
-                    templateUrl: 'moderator/moderator.html',
-                    controller: 'moderatorController'
-                    })
+                .when('/moderator',
+                    {
+                        templateUrl: 'moderator/moderator.html',
+                        controller: 'moderatorController'
+                    }
+                )
                 .when(
                     '/edit-article/:articleId',
                     {
@@ -46,12 +55,12 @@
                     }
                 )
                 .when(
-                '/create-article',
-                {
-                    templateUrl: 'create-article/create-article.html',
-                    controller: 'createArticleController'
-                }
-            )
+                    '/create-article',
+                    {
+                        templateUrl: 'create-article/create-article.html',
+                        controller: 'createArticleController'
+                    }
+                )
                 .when(
                     '/authorization',
                     {
@@ -73,6 +82,19 @@
                         controller: 'adminController'
                     }
                 )
+                .when(
+                    '/search',
+                    {
+                        templateUrl: 'search/search.html',
+                        controller: 'searchController'
+                    }
+                )
+                .when(
+                    '/help',
+                    {
+                        templateUrl: 'help/help.html'
+                    }
+                )
                 .otherwise(
                     {
                         redirectTo: '/'
@@ -81,8 +103,9 @@
             ;
         }
 
-    function run($rootScope, $http, $localStorage) {
+    function run($http, $localStorage) {
         if ($localStorage.localUser) {
+            $http.defaults.headers.common.Authorization = '';
             try {
                 let jwt = $localStorage.localUser.token;
                 let payload = JSON.parse(atob(jwt.split('.')[1]));
@@ -90,18 +113,24 @@
                 if (currentTime > payload.exp) {
                     console.log("Token is expired!!!");
                     delete $localStorage.localUser;
-                    $http.defaults.headers.common.Authorization = '';
                 }
                 else {
-                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken', $localStorage.localUser.token)
-                    .then(function (response) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + jwt;
+                    $http.post('http://' + window.location.host + '/habr/api/v1/refreshToken', jwt)
+                    .then(function successCallback (response) {
                         $localStorage.localUser.token = response.data.token;
+                        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.localUser.token;
+                    }, function failureCallback (response) {
+                         console.log(response);
+                         alert(response.data.message);
+                        delete $localStorage.localUser;
+                        $http.defaults.headers.common.Authorization = '';
                     });
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.localUser.token;
                 }
             } catch (e) {
                console.log('Ошибка обновления токена' + e);
             }
+
         }
     }
 })();
@@ -118,6 +147,7 @@ angular
         ) {
             const rootPath = 'http://' + window.location.host + '/habr/';
             const categoriesPath = 'api/v1/categories';
+            const contextPathNotification = 'http://' + window.location.host + '/habr/api/v1/notifications';
             const defaultCategory =
                 {
                     id: -1,
@@ -168,11 +198,11 @@ angular
                 }
             };
 
-            $scope.isModeratorLoggedIn = function () {
+            $rootScope.isModeratorLoggedIn = function () {
                 if ($scope.isUserLoggedIn) {
                 let roles = getRoles();
                     for (var i = 0; i < roles.length; i++) {
-                        if (roles[i] === 'ROLE_MODERATOR') {
+                        if (roles[i] == 'ROLE_MODERATOR') {
                     return true;
                         }
                     }
@@ -181,11 +211,11 @@ angular
                 return false;
             };
 
-            $scope.isAdminLoggedIn = function () {
+            $rootScope.isAdminLoggedIn = function () {
                 if ($scope.isUserLoggedIn) {
                     let roles = getRoles();
                     for (var i = 0; i < roles.length; i++) {
-                        if (roles[i] === 'ROLE_ADMIN') {
+                        if (roles[i] == 'ROLE_ADMIN') {
 
                             return true;
                         }
@@ -208,6 +238,26 @@ angular
                         }
             return roles;
             }
+
+            //функция для отправки уведомления
+            $scope.sendNotification = function (text, recipient, contentId, contentType) {
+                notification = {
+                                "recipient": recipient,
+                                "sender": $localStorage.localUser.username,
+                                "text": text,
+                                "contentId": contentId,
+                                "contentType": contentType
+                };
+
+                $http
+                     .post(contextPathNotification + "/create", notification)
+                     .then(
+                         function (response) {}
+                )
+            };
+
+
+
         }
     )
 ;

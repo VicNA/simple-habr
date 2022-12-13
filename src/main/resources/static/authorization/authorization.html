@@ -2,22 +2,31 @@
     <div class="center mx-auto">
         <form ng-submit="functionAuthorization()">
             <div>
-                <label for="inputUsername" class="form-label">Username</label>
-                <input type="text" class="form-control" id="inputUsername" placeholder="username" ng-model="jwtResp.username">
+                <label for="inputUsername" class="form-label">Логин</label>
+                <input type="text" class="form-control" id="inputUsername" placeholder="username"
+                       ng-model="jwtResp.username">
             </div>
             <div>
-                <label for="inputPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="jwtResp.password">
+                <label for="inputPassword" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password"
+                       ng-model="jwtResp.password">
             </div>
 
             <div class="mx-auto py-1">
-                <button class="btn btn-primary px-2" style ="btn-padding-y: 10px;" type="submit">Sign in</button>
+                <button class="btn btn-primary px-2" style="btn-padding-y: 10px;" type="submit">Авторизоваться</button>
             </div>
         </form>
         <div class="mx-auto py-1">
-            <a type="submit" class="btn btn-primary" href="#!/registration">Sign up</a>
+            <a type="submit" class="btn btn-primary" href="#!/registration">Зарегистрироваться</a>
         </div>
     </div>
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>
 
 <link rel="stylesheet" href="authorization/auth.css">

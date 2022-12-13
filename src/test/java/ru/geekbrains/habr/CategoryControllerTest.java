@@ -43,13 +43,13 @@ public class CategoryControllerTest {
         category1.setId(1L);
         category1.setName("Marketing");
 
-        CategoryDto categoryDto1 = new CategoryDto(category1.getId(), category1.getName());
+        CategoryDto categoryDto1 = new CategoryDto(category1.getId(), category1.getName(), category1.getCyrillicName());
 
         Category category2 = new Category();
         category2.setId(2L);
         category2.setName("Design");
 
-        CategoryDto categoryDto2 = new CategoryDto(category2.getId(), category2.getName());
+        CategoryDto categoryDto2 = new CategoryDto(category2.getId(), category2.getName(), category2.getCyrillicName());
 
         List<Category> categoryList = new ArrayList<>(Arrays.asList(category1, category2));
 

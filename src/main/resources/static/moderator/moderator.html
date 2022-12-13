@@ -1,20 +1,120 @@
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
     <table class="table">
+        <br>
         <thead>
-            Ожидающие статьи:
+        <strong>Ожидающие статьи:</strong>
         </thead>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <button class="page-link" id="previewBtn" ng-disabled="!isPreviousPageM()"
+                            ng-click="getArticlesModeration(curPageM-1)"><<
+                    </button>
+                </li>
+                <li class="page-item" ng-repeat="pageIndex in paginationArrayM">
+                    <button class="page-link" ng-click="getArticlesModeration(pageIndex)">{{pageIndex}}</button>
+                </li>
+                <li class="page-item">
+                    <button class="page-link" id="nextBtn" ng-disabled="!isNextPageM()"
+                            ng-click="getArticlesModeration(curPageM + 1)">>>
+                    </button>
+                </li>
+            </ul>
+        </nav>
         <tbody>
-            <tr ng-repeat="article in articlesModeration">
-                <td><a href="#!/article" ng-click="setArticle($index)">{{article.title}}</a></td>
-                <td>{{article.username}}</td>
-                <td>{{article.dtCreated}}</td>
-                <td>
-                    <button type="button" class="btn btn-success" ng-click="updateStatus(article.id, 'published')">Утвердить</button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger" ng-click="updateStatus(article.id, 'hidden')">Отклонить</button>
-                </td>
-            </tr>
+        <tr ng-repeat="article in articlesModeration">
+            <td><a href="#!/article/{{article.id}}">{{article.title}}</a></td>
+            <td>{{article.username}}</td>
+            <td>{{article.dtCreated}}</td>
+            <td>
+                <button type="button" class="btn btn-success"
+                        ng-click="preparedForPublication(article.id,article.title,article.username)">Утвердить
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger"
+                        ng-click="prepareForDelete(article.id,article.title, article.username)">Отклонить
+                </button>
+            </td>
+        </tr>
         </tbody>
     </table>
+
+
+    <!-- Модальное окно для отображения причин отказа от публикации статей-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Укажите причину отклонения статьи</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                               checked ng-click="checkIndex(1)">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Статья не актуальна
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                               ng-click="checkIndex(2)">
+                        <label class="form-check-label" for="flexRadioDefault2">
+                            В статье содержатся нецензурные выражения
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
+                               ng-click="checkIndex(3)">
+                        <label class="form-check-label" for="flexRadioDefault3">
+                            Плагиат
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4"
+                               ng-click="checkIndex(4)">
+                        <label class="form-check-label" for="flexRadioDefault4">
+                            Другая причина
+                        </label>
+                        <input type="text" class="form-control" id="descriptionArea"
+                               placeholder="Укажите причину отклонения статьи"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="deleteArticle()">Да</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<br>
+<br>
+<div class="container">
+    <div class="col-6">
+
+        <a><strong>Забанить:</strong></a>
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">@</span>
+            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                   aria-describedby="addon-wrapping" ng-model="banUser.username">
+            <input type="number" class="form-control" placeholder="quantity days" aria-label="quantity days"
+                   aria-describedby="addon-wrapping" ng-model="banUser.daysBan">
+            <button class="btn btn-outline-secondary" type="button" id="button"
+                    ng-disabled="!(banUser.username && banUser.daysBan)" ng-click="addBanUser(banUser)">
+                Бан
+            </button>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<hr>

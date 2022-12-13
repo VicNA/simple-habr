@@ -13,13 +13,33 @@
                                 </textarea>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="articleText" class="col-lg-3 col-form-label">Текст статьи</label>
+            <br>
+            <div class="form-group row" style="margin-bottom: 20px;">
+                <div class="col-3">
+                    <label for="articleText" >Текст статьи</label>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="row-bg row-form-label">
+                        <input type="file" select-ng-files name="file" ng-model="newFile"
+                               accept="image/png, image/gif, image/jpeg">
+                        <img  src="{{sourceImage}}" onerror="this.style.display='none'" class="img-thumbnail"/>
+                    </div>
+                </div>
                 <div class="col-lg-9">
                                 <textarea type="text" class="form-control" id="articleText"
-                                          placeholder="Заголовок статьи"
+                                          placeholder="Текст статьи"
                                           ng-model="articleInf.text" style="height: 600px;">
                                 </textarea>
+                </div>
+                <div ng-repeat="category in categories">
+                    <div class="action-checkbox">
+                        <input id="{{category.name}}" type="checkbox" value="{{category.name}}"
+                               ng-checked="selection.indexOf(category.name) > -1"
+                               ng-click="toggleSelection(category.name)" />
+                        <label for="{{category.name}}"></label>
+                        {{category.cyrillicName}}
+                    </div>
                 </div>
             </div>
 
@@ -33,3 +53,4 @@
         </form>
     </div>
 </div>
+<br>

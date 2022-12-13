@@ -6,20 +6,28 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.habr.dtos.UserBannedDto;
 import ru.geekbrains.habr.dtos.UserDto;
 import ru.geekbrains.habr.entities.Role;
 import ru.geekbrains.habr.entities.User;
-import ru.geekbrains.habr.enums.BaseRole;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
+import ru.geekbrains.habr.services.enums.InfoMessage;
+import ru.geekbrains.habr.services.enums.UserRole;
 import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для работы с пользователями
+ *
+ * @author
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -33,8 +41,9 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateUserInfoFromDto(UserDto userDto) {
         User user = findByUsername(userDto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден",
-                        userDto.getUsername())));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), userDto.getUsername()))
+                );
 
         user.setUsername(userDto.getUsername());
         user.setRealname(userDto.getRealname());
@@ -48,9 +57,18 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUsername(String username) {
-        User user = findByUsername(username).orElseThrow(() -> new ResourceNotFoundException(String.format("Пользователь '%s' не найден",
-                username)));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        User user = findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), username))
+                );
+
+        if (user.getDateBan() != null && user.getDateBan().isAfter(LocalDateTime.now())) {
+            String dateBan = user.getDateBan().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm"));
+
+            throw new ResourceNotFoundException(String.format(InfoMessage.USER_BAN_INFO.getField(), username, dateBan));
+        }
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
@@ -62,9 +80,8 @@ public class UserService implements UserDetailsService {
      *
      * @param role Роль пользователя
      * @return Список пользователей
-     * @author Николаев Виктор
      */
-    public List<User> findAllByRole(BaseRole role) {
+    public List<User> findAllByRole(UserRole role) {
         return userRepository.findAll(role.name());
     }
 
@@ -72,25 +89,23 @@ public class UserService implements UserDetailsService {
      * Обновляет список ролей у пользователя
      *
      * @param username Имя пользователя
-     * @param baseRole Присваемая роль
-     * @author Николаев Виктор
+     * @param userRole Присваемая роль
      */
     @Transactional
-    public void updateUserRole(String username, BaseRole baseRole) {
+    public void updateUserRole(String username, UserRole userRole) {
         userRepository.findByUsername(username).ifPresent(user -> {
 
-            // Каждая последующая роль включает в себя предыдущие роли
-            if (baseRole.ordinal() + 1 == user.getRoles().size()) return;
+            if (userRole.getRoles().size() == user.getRoles().size()) return;
 
             List<Role> roles = new ArrayList<>();
 
-            switch (baseRole) {
+            switch (userRole) {
                 case ROLE_USER:
-                    roleService.findByName(baseRole.name()).ifPresent(roles::add);
+                    roleService.findByName(userRole.name()).ifPresent(roles::add);
                     break;
                 case ROLE_MODERATOR:
                     roles.addAll(roleService.findByNameIn(
-                            List.of(BaseRole.ROLE_USER.name(), BaseRole.ROLE_MODERATOR.name())));
+                            List.of(UserRole.ROLE_USER.name(), UserRole.ROLE_MODERATOR.name())));
                     break;
                 case ROLE_ADMIN:
                     roles.addAll(roleService.findAll());
@@ -102,4 +117,14 @@ public class UserService implements UserDetailsService {
         });
     }
 
+    public void banUser(UserBannedDto userBannedDto) {
+        User user = findByUsername(userBannedDto.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(), userBannedDto.getUsername()))
+                );
+
+        user.setDateBan(LocalDateTime.now().plusDays(userBannedDto.daysBan));
+
+        userRepository.save(user);
+    }
 }

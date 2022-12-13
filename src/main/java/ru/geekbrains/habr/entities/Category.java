@@ -16,4 +16,6 @@ public class Category {
     @Column(name = "category_name")
     private String name;
 
+    @Column(name = "category_name_cyr")
+    private String cyrillicName;
 }

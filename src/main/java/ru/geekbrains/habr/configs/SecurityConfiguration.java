@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.geekbrains.habr.configs.filters.JwtRequestFilter;
-import ru.geekbrains.habr.services.UserService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -24,17 +23,23 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/api/v1/refreshToken").hasRole("USER")
-            .antMatchers("/api/v1/admin","/api/v1/admin/**").hasRole("ADMIN")
-            .antMatchers("/api/v1/articles/moderation","/api/v1/articles/moderation/**").hasRole("MODERATOR")
-            .antMatchers("/api/v1/**").permitAll();
+                .cors().disable()
+                .authorizeRequests()
+                .antMatchers("/api/v1/likes/add").authenticated()
+                .antMatchers("/api/v1/comments/add").authenticated()
+                .antMatchers("/api/v1/refreshToken").authenticated()
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                .antMatchers("/**/moderation/**").hasRole("MODERATOR")
+                .antMatchers("/api/v1/authorization").not().authenticated()
+                .antMatchers("/api/v1/**").permitAll()
+
+                .and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // для работы h2-console
         http.headers().frameOptions().disable();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

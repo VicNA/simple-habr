@@ -9,7 +9,7 @@ spring:
     username: sa
     password:
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
@@ -19,6 +19,14 @@ spring:
       settings:
         web-allow-others: false
 
+upload:
+  path: src/main/resources/files
+
+validation:
+  birth-min-date: 01.01.1952
+
+pagination:
+  page-size: 3
 
 jwt:
   secret: aCpJRmldQD0yTys0fVJgI3gjfjV+Sm1BRXRXMWI6TTF9X0k2JVJwY35JdWs1SG9zLG9edzlZW2Y6dSsrSDp4

@@ -5,34 +5,81 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.habr.dtos.LikeDto;
 import ru.geekbrains.habr.entities.Article;
 import ru.geekbrains.habr.entities.Like;
+import ru.geekbrains.habr.entities.Notification;
 import ru.geekbrains.habr.entities.User;
-import ru.geekbrains.habr.repositories.ArticleRepository;
+import ru.geekbrains.habr.exceptions.ResourceNotFoundException;
 import ru.geekbrains.habr.repositories.LikeRepository;
-import ru.geekbrains.habr.repositories.UserRepository;
+import ru.geekbrains.habr.services.enums.ContentType;
+import ru.geekbrains.habr.services.enums.ErrorMessage;
+import ru.geekbrains.habr.services.enums.InfoMessage;
 
+import javax.transaction.Transactional;
+import java.util.Optional;
+
+/**
+ * Сервис для работы с лайками
+ *
+ * @author Медведев Максим
+ * @version 1.0
+ */
 @Service
 @RequiredArgsConstructor
 public class LikeService {
     private final LikeRepository likeRepository;
-    private final UserRepository userRepository;
-    private final ArticleRepository articleRepository;
+    private final UserService userService;
+    private final ArticleService articleService;
+    private final NotificationService notificationService;
 
+    /**
+     * Добавление нового лайка
+     *
+     * @param likeDto dto лайка
+     */
+    @Transactional
     public void add(LikeDto likeDto) {
-        User user = userRepository.findByUsername(likeDto.getUsername()).orElse(null);
-        Article article = articleRepository.findById(likeDto.getArticleId()).orElse(null);
+        User user = userService.findByUsername(likeDto.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.USER_USERNAME_ERROR.getField(),
+                                likeDto.getUsername()))
+                );
 
-        if (user == null || article == null) return;
+        Article article = articleService.findById(likeDto.getArticleId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format(ErrorMessage.ARTICLE_ID_ERROR.getField(), likeDto.getArticleId()))
+                );
 
-        Like like = likeRepository.findByUserAndArticle(user, article).orElse(null);
+        String textNotif = String.format(
+                InfoMessage.NOTIFICATION_LIKE_INFO.getField(), user.getUsername(), article.getTitle()
+        );
 
-        if (like == null) {
-            like = new Like();
-            like.setUser(user);
-            like.setArticle(article);
+        Optional<Like> like = likeRepository.findByUserAndArticle(user, article);
 
-            likeRepository.save(like);
+        if (!like.isPresent()) {
+            Like newLike = new Like();
+            newLike.setUser(user);
+            newLike.setArticle(article);
+            likeRepository.save(newLike);
+
+            if (!article.getUser().getUsername().equals(user.getUsername())) {
+                notificationService.createNotification(article.getUser().getUsername(), user.getUsername(), textNotif,
+                        article.getId(), ContentType.ARTICLE.getField());
+            }
         } else {
-            likeRepository.delete(like);
+            deleteLike(like.get());
+            Optional<Notification> notification = notificationService.findBySenderAndText(user, textNotif);
+
+            if (notification.isPresent()) {
+                notificationService.deleteNotification(notification.get());
+            }
         }
+    }
+
+    /**
+     * Удаление лайка
+     *
+     * @param like лайк
+     */
+    public void deleteLike(Like like) {
+        likeRepository.delete(like);
     }
 }

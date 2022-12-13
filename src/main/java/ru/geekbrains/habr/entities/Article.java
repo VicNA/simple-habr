@@ -3,6 +3,8 @@ package ru.geekbrains.habr.entities;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.geekbrains.habr.entities.view.ArticleRating;
+import ru.geekbrains.habr.entities.view.ArticleTotal;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,6 +38,9 @@ public class Article {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "image_path")
+    private String imagePath;
+
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
@@ -48,4 +53,11 @@ public class Article {
     )
     private Collection<Category> categories;
 
+    @OneToOne
+    @JoinColumn(name = "article_id")
+    private ArticleTotal articleTotal;
+
+    @OneToOne
+    @JoinColumn(name = "article_id")
+    private ArticleRating articleRating;
 }
