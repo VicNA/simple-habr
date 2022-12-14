@@ -18,9 +18,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Контроллер REST API комметариев
+ * Контроллер обработки запросов к комментариям
  *
  * @author Рожко Алексей
+ *
  * @version 1.0
  */
 @RestController

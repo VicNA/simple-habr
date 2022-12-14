@@ -19,9 +19,10 @@ import ru.geekbrains.habr.services.enums.ErrorMessage;
 import ru.geekbrains.habr.utils.JwtTokenUtil;
 
 /**
- * Контроллер REST API аутентификации пользователей
+ * Контроллер аутентификации пользователей
  *
  * @author Рожко Алексей
+ *
  * @version 1.0
  */
 @RestController
@@ -36,7 +37,7 @@ public class AuthenticationController {
 
 
     /**
-     * Получение токена при авторизации пользователей.
+     * Получает токен при авторизации пользователей.
      *
      * @param jwtRequest логин/пароль пользователя
      * @return ResponseEntity с токеном авторизованного пользователя
@@ -63,7 +64,7 @@ public class AuthenticationController {
     }
 
     /**
-     * Добавления нового пользователя.
+     * Добавляет нового пользователя.
      *
      * @param newUserDto параметры нового пользователя
      * @return ResponseEntity с токеном авторизованного пользователя
@@ -103,7 +104,7 @@ public class AuthenticationController {
     }
 
     /**
-     * Запрос на обновление токена.
+     * Обновляет токен
      *
      * @param tokenRequest текущий токен
      * @return ResponseEntity с новым токеном

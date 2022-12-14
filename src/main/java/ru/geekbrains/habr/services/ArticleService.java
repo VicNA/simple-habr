@@ -28,7 +28,10 @@ import java.util.Optional;
 /**
  * Сервис обработки статей
  *
- * @author
+ * @author Николаев Виктор
+ * @author Миронова Ирина
+ * @author Татьяна Коваленко
+ *
  * @version 1.0
  */
 @Service
@@ -40,7 +43,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final CategoryRepository categoryRepository;
-    
+
     private final UserService userService;
     private final StatusService statusService;
     private final ImageService imageService;
@@ -147,7 +150,7 @@ public class ArticleService {
     }
 
     /**
-     * Сохраняет изменения в статье
+     * Сохраняет изменения получаемой статьи в БД
      *
      * @param articleDto DTO статьи
      */
@@ -195,7 +198,7 @@ public class ArticleService {
     }
 
     /**
-     * Получает страницу статей определенного статуса
+     * Получает статьи с определенным статусом
      *
      * @param status Имя статуса
      * @param page   Номер страницы
@@ -206,7 +209,7 @@ public class ArticleService {
     }
 
     /**
-     * Изменяет статус статьи
+     * Сохраняет изменения статуса статьи
      *
      * @param articleId  Идентификатор статьи
      * @param statusName Наименование статуса
@@ -239,24 +242,26 @@ public class ArticleService {
 
         articleRepository.delete(article);
     }
-/*
-* Меняет категории, к которым привязана статья, на категории с именами из списка
-*  */
+
+    /**
+     * Меняет категории, к которым привязана статья, на категории с именами из списка
+     *
+     * @param articleId       Идентификатор статьи
+     * @param categoriesNames Список категории
+     */
     @Transactional
     public void updateCategories(Long articleId, List<String> categoriesNames) {
         Optional<Article> article = articleRepository.findById(articleId);
 
-        if(article.isEmpty()) return;
+        if (article.isEmpty()) return;
 
         articleRepository.clearCategories(article.get().getId());
 
         Category category;
-        for(String name : categoriesNames){
+        for (String name : categoriesNames) {
             category = categoryRepository.findOneByName(name);
             articleRepository.addToCategory(article.get().getId(), category.getId());
             System.out.println(categoryRepository.findOneByName(name).getName());
         }
-
-
     }
 }

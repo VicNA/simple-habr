@@ -1,11 +1,5 @@
 package ru.geekbrains.habr.controllers;
 
-/*
- * Контроллер для работы с уведомлениями пользователя
- *
- * @author Миронова Ирина
- */
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,15 +14,21 @@ import ru.geekbrains.habr.services.enums.ErrorMessage;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * Контроллер обработки запросов к системе уведомлений
+ *
+ * @author Миронова Ирина
+ *
+ * @version 1.0
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notifications")
 public class NotificationController {
     private final NotificationService notificationService;
     private final UserService userService;
-    private final NotificationConverter notificationConverter;
 
+    private final NotificationConverter notificationConverter;
 
     /**
      * Получает список уведомлений указанного пользователя
@@ -48,7 +48,6 @@ public class NotificationController {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * Создание нового уведомления
      *
@@ -60,7 +59,6 @@ public class NotificationController {
         notificationService.createNotification(notifDto.getRecipient(), notifDto.getSender(), notifDto.getText(),
                 notifDto.getContentId(), notifDto.getContentType());
     }
-
 
     /**
      * Возвращает количество уведомлений указанного пользователя

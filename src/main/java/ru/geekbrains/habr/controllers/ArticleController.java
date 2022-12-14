@@ -18,9 +18,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Контроллер REST API для обработки запросов связанных с статьями
+ * Контроллер обработки запросов к статьям
  *
- * @author
+ * @author Николаев Виктор
+ * @author Миронова Ирина
+ * @author Рожко Алексей
+ * @author Татьяна Коваленко
+ *
  * @version 1.0
  */
 @RestController
@@ -127,7 +131,7 @@ public class ArticleController {
     }
 
     /**
-     * Update public fields.
+     * Изменяет данные получаемой статьи и переводит в статус "скрытый"
      *
      * @param articleDto DTO статьи
      */
@@ -138,23 +142,22 @@ public class ArticleController {
     }
 
     /**
-     * Update categories.
+     * Изменяет список категории конкретной статьи
      *
-     * @param articleId  the article id
-     * @param categories the categories
+     * @param articleId  Идентификатор статьи
+     * @param categories Список категории
      */
     @PutMapping("/{articleId}/updateCategories")
     public void updateCategories(@PathVariable Long articleId,
                                  @RequestParam(name = "categories") String[] categories) {
-        List<String> categoriesList = Arrays.asList(categories);
-        articleService.updateCategories(articleId, categoriesList);
+        articleService.updateCategories(articleId, Arrays.asList(categories));
     }
 
 
     /**
-     * Update public fields and publicate.
+     * Изменяет данные получаемой статьи и переводит в статус "в модерации"
      *
-     * @param articleDto the article dto
+     * @param articleDto DTO статьи
      */
     @PutMapping("/updatePublicFieldsAndPublicate")
     public void updatePublicFieldsAndPublicate(@RequestBody ArticleDto articleDto) {
@@ -163,25 +166,25 @@ public class ArticleController {
     }
 
     /**
-     * Create article.
+     * Добавляет новую статью и переводит в статус "скрытый"
      *
-     * @param articleDto the article dto
-     * @param categories the categories
+     * @param articleDto DTO статьи
+     * @param categories Список категории
      */
     @PutMapping("/create")
     public void createArticle(@RequestBody ArticleDto articleDto
                             , @RequestParam(name = "categories") String[] categories) {
-        articleDto.setStatus(statusService.findByName("hidden").orElseThrow());
+        articleDto.setStatus(statusService.findByName(ArticleStatus.HIDDEN.toString()).orElseThrow());
         Long articleId = articleService.createArticleFromDto(articleDto);
         List<String> categoriesList = Arrays.asList(categories);
         articleService.updateCategories(articleId, categoriesList);
     }
 
     /**
-     * Create and publicate.
+     * Добавляет новую статью и переводит в статус "в модерации"
      *
-     * @param articleDto the article dto
-     * @param categories the categories
+     * @param articleDto DTO статьи
+     * @param categories Список категории
      */
     @PutMapping("/createAndPublicate")
     public void createAndPublicate(@RequestBody ArticleDto articleDto
@@ -193,28 +196,24 @@ public class ArticleController {
     }
 
     /**
-     * Find all by status page page.
+     * Возвращает статьи с статусом "на модерации"
      *
-     * @param page the page
-     * @return the page
+     * @param page Номер страницы
+     * @return Страницу DTO статей
      */
     @GetMapping("/moderation")
     public Page<Article2Dto> findAllByStatusPage(
-            @RequestParam(required = false, defaultValue = "1", name = "page") Integer page) {
+            @RequestParam(defaultValue = "1", name = "page") Integer page) {
 
-        if (page < 1) {
-            page = 1;
-        }
-
-        return articleService.findAllByStatusPage(ArticleStatus.MODERATING.toString(), page - 1)
+        return articleService.findAllByStatusPage(ArticleStatus.MODERATING.toString(), getPage(page))
                 .map(articleConverter::entityTo2Dto);
     }
 
     /**
-     * Update status.
+     * Изменяет статус статьи
      *
-     * @param articleId  the article id
-     * @param statusName the status name
+     * @param articleId  Идентификатор статьи
+     * @param statusName наименование нового статуса
      */
     @PutMapping("/moderation/{id}/updateStatus")
     public void updateStatus(@PathVariable(name = "id") Long articleId,
@@ -224,9 +223,9 @@ public class ArticleController {
     }
 
     /**
-     * Delete article.
+     * Удаляет статью
      *
-     * @param id the id
+     * @param id Идентификатор статьи
      */
     @DeleteMapping("/{id}")
     public void deleteArticle(@PathVariable Long id) {

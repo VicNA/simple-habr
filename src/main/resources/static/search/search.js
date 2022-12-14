@@ -9,7 +9,7 @@ angular.module('HabrApp').controller('searchController', function($rootScope, $s
 
     $scope.getFilterDtPublished = function () {
         if ($scope.filters.length == 0) {
-            $http.get(constantPath + '/publishedDate').then(function(response) {
+            $http.get(constantPath + '/sortingNames').then(function(response) {
                 $scope.filters = response.data
             });
         }

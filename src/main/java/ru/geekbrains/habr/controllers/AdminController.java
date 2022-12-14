@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Контроллер REST API для обработки запросов личного кабинета админа
+ * Контроллер обработки запросов личного кабинета админа
  *
  * @author Николаев Виктор
+ *
  * @version 1.0
  */
 

@@ -10,9 +10,10 @@ import ru.geekbrains.habr.dtos.ResponseMessage;
 import ru.geekbrains.habr.services.ImageService;
 
 /**
- * Контроллер для загрузки изображений
+ * Контроллер обработки изображений
  *
  * @author Рожко Алексей
+ *
  * @version 1.0
  */
 @RestController
@@ -22,7 +23,11 @@ public class ImageController {
 
     private final ImageService imageService;
 
-
+    /**
+     * Загружает изображение на сервер
+     * @param file Файл изображения
+     * @return
+     */
     @PostMapping()
     private ResponseMessage addImage(@RequestParam("file") MultipartFile file){
         return new ResponseMessage(imageService.saveImage(file));

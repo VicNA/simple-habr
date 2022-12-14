@@ -13,9 +13,10 @@ import java.io.FileOutputStream;
 import java.util.UUID;
 
 /**
- * Сервис для работы с с изображениями
+ * Сервис для работы с изображениями
  *
  * @author Рожко Алексей
+ *
  * @version 1.0
  */
 @Service
