@@ -67,7 +67,8 @@
                     <div class="form-group row">
                         <label for="dtBirth" class="col-sm-2 col-form-label">Дата рождения</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="dtBirth" value={{userInf.dtBirth}}
+                            <input type="date" class="form-control" id="dtBirth" asp-format="{0:yyyy-MM-dd}"
+                                   value={{userInf.dtBirth}}
                                    ng-model-options="{timezone:'UTC'}" ng-model="userInf.dtBirth">
                         </div>
                     </div>
@@ -169,6 +170,7 @@
             </div>
         </div>
     </div>
+
 
     <br>
     <br>
