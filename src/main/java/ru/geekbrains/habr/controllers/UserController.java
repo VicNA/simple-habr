@@ -55,7 +55,7 @@ public class UserController {
     }
 
     /**
-     * Блокировка пользователя
+     * Блокирует пользователя на указанное время
      *
      * @param userBannedDto the user banned dto
      */

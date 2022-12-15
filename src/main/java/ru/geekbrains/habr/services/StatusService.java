@@ -10,7 +10,8 @@ import java.util.Optional;
 /**
  * Сервис для работы со статусами
  *
- * @author
+ * @author Татьяна Коваленко
+ *
  * @version 1.0
  */
 @Service
@@ -18,6 +19,12 @@ import java.util.Optional;
 public class StatusService {
     private final StatusRepository statusRepository;
 
+    /**
+     * Находит статус по наименованию
+     *
+     * @param name Наименование статуса
+     * @return Статус
+     */
     public Optional<Status> findByName(String name) {
         return statusRepository.findByName(name);
     }

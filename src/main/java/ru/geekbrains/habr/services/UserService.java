@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
  * Сервис для работы с пользователями
  *
  * @author
+ *
  * @version 1.0
  */
 @Service
@@ -34,10 +35,21 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
 
+    /**
+     * Find by username optional.
+     *
+     * @param username the username
+     * @return the optional
+     */
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
+    /**
+     * Update user info from dto.
+     *
+     * @param userDto the user dto
+     */
     @Transactional
     public void updateUserInfoFromDto(UserDto userDto) {
         User user = findByUsername(userDto.getUsername())
@@ -51,8 +63,13 @@ public class UserService implements UserDetailsService {
         user.setDescription(userDto.getDescription());
     }
 
+    /**
+     * Create user.
+     *
+     * @param user the user
+     */
     public void createUser(User user) {
-        user.setRoles(List.of(roleService.getUserRole()));
+        user.setRoles(List.of(roleService.findByName(UserRole.ROLE_USER.name()).get()));
         userRepository.save(user);
     }
 
@@ -117,6 +134,11 @@ public class UserService implements UserDetailsService {
         });
     }
 
+    /**
+     * Ban user.
+     *
+     * @param userBannedDto the user banned dto
+     */
     public void banUser(UserBannedDto userBannedDto) {
         User user = findByUsername(userBannedDto.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException(

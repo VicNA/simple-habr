@@ -18,6 +18,7 @@ import java.util.Optional;
  * Сервис обработки комментариев
  *
  * @author Рожко Алексей
+ *
  * @version 1.0
  */
 @Service
@@ -41,7 +42,7 @@ public class CommentService {
     }
 
     /**
-     * Добавление нового комментария, проверка на соответствие требованиям.
+     * Добавляет новый комментарий, проверяет на соответствие требованиям.
      *
      * @param newCommentDto DTO комментария
      */
@@ -86,7 +87,7 @@ public class CommentService {
     /**
      * Заменяет переменную banned в сущности Comment на true
      *
-     * @param id id комментария
+     * @param id Идентификатор комментария
      */
     @Transactional
     public void banById(Long id) {

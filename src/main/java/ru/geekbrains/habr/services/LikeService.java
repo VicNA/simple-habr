@@ -20,6 +20,8 @@ import java.util.Optional;
  * Сервис для работы с лайками
  *
  * @author Медведев Максим
+ * @author Миронова Ирина
+ *
  * @version 1.0
  */
 @Service
@@ -31,9 +33,9 @@ public class LikeService {
     private final NotificationService notificationService;
 
     /**
-     * Добавление нового лайка
+     * Добавляет новый лайк
      *
-     * @param likeDto dto лайка
+     * @param likeDto DTO лайка
      */
     @Transactional
     public void add(LikeDto likeDto) {
@@ -75,7 +77,7 @@ public class LikeService {
     }
 
     /**
-     * Удаление лайка
+     * Удаляет лайк
      *
      * @param like лайк
      */

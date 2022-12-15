@@ -5,6 +5,10 @@ import ru.geekbrains.habr.entities.Article;
 
 /**
  * Спецификация сущности статей
+ *
+ * @author Николаев Виктор
+ *
+ * @version 1.0
  */
 public class ArticleSpecifcation {
 

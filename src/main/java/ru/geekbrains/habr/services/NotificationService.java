@@ -4,6 +4,9 @@ package ru.geekbrains.habr.services;
  * Сервис для работы с уведомлениями пользователя
  *
  * @author Миронова Ирина
+ * @author Рожко Алексей
+ *
+ * @version 1.0
  */
 
 import lombok.RequiredArgsConstructor;
@@ -40,7 +43,7 @@ public class NotificationService {
     }
 
     /**
-     * Создание нового уведомления
+     * Создает новое уведомление
      *
      * @param recipient   - получатель уведомления
      * @param sender      - отправитель уведомления
@@ -84,7 +87,7 @@ public class NotificationService {
 
 
     /**
-     * Удаление всех уведомлений указанного пользователя
+     * Удаляет все уведомления указанного пользователя
      *
      * @param user - пользователь
      */
@@ -106,7 +109,7 @@ public class NotificationService {
     }
 
     /**
-     * Удаление уведомления
+     * Удаляет уведомления
      *
      * @param notification - уведомление
      */
@@ -115,7 +118,7 @@ public class NotificationService {
     }
 
     /**
-     * Создание уведомлений группе пользовтелей с одной ролью
+     * Создает уведомление группе пользовтелей с одной ролью
      *
      * @param userRole - роль пользователей
      * @param sender   - отправитель уведомления
@@ -132,7 +135,7 @@ public class NotificationService {
     }
 
     /**
-     * Создание уведомлений для нового комментария
+     * Создает уведомление для нового комментария
      *
      * @param comment - комментарий
      */

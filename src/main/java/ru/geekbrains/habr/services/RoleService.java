@@ -13,6 +13,7 @@ import java.util.Optional;
  * Сервис для работы с ролями
  *
  * @author Николаев Виктор
+ *
  * @version 1.0
  */
 @Service
@@ -21,38 +22,29 @@ public class RoleService {
     private final RoleRepository roleRepository;
 
     /**
-     * Получение роли пользователя
+     * Находит роль по наименованию
      *
-     * @return роль
-     */
-    public Role getUserRole() {
-        return roleRepository.findByName(UserRole.ROLE_USER.name()).get();
-    }
-
-    /**
-     * Получение списка ролей пользователя
-     *
-     * @param role - название роли
-     * @return список ролей
+     * @param role Наименование роли
+     * @return Роль
      */
     public Optional<Role> findByName(String role) {
         return roleRepository.findByName(role);
     }
 
     /**
-     * Получение списка ролей пользователя
+     * Находит роли по списку наименований
      *
-     * @param names - список имен
-     * @return список ролей
+     * @param names Список наименований ролей
+     * @return Список ролей
      */
     public List<Role> findByNameIn(List<String> names) {
         return roleRepository.findByNameIn(names);
     }
 
     /**
-     * Получение списка ролей пользователя
+     * Находит все имеющиеся роли
      *
-     * @return список ролей
+     * @return Список ролей
      */
     public List<Role> findAll() {
         return roleRepository.findAll();
