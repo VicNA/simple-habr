@@ -11,6 +11,7 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
                $scope.userInf = response.data;
                roles = response.data.roles;
                $scope.role = roles[0].name;
+               $localStorage.valDate = $scope.userInf.dtBirth;
 
                if (roles.length > 1) {
                  let names = roles.map(item => item.name).join(' & ');
@@ -23,6 +24,13 @@ angular.module('HabrApp').controller('profileController', function ($rootScope,$
     }
 
     $scope.updateUser = function (){
+       if (document.getElementById("dtBirth").value == ""){
+           document.getElementById("dtBirth").value = $localStorage.valDate;
+           $scope.userInf.dtBirth = $localStorage.valDate
+       }
+
+       $localStorage.valDate = document.getElementById("dtBirth").value;
+
        $http.put(contextPath + 'api/v1/user/update', $scope.userInf)
           .then(function successCallback (response) {
               alert('Данные о пользователе сохранены');
